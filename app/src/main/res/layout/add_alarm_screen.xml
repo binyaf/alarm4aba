@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:textAlignment="center"
+    android:gravity="center"
+    android:background="@color/light_green"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/alarmDateText"
+        android:layout_width="180dp"
+        android:layout_height="20dp"
+        android:layout_margin="1sp"
+        android:gravity="bottom|center"
+        android:hint="@string/alarm_date_label"
+        android:text="@string/alarm_date_label"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/selectDateText"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="25sp"
+        android:layout_marginTop="0sp"
+        android:background="@color/light_blue"
+        android:gravity="center"
+        android:hint="date"
+        android:inputType="none"
+        android:padding="10dp"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/alarmTimeText"
+        android:layout_width="180dp"
+        android:layout_height="20dp"
+        android:layout_margin="1sp"
+        android:gravity="bottom|center"
+        android:hint="@string/alarm_time_label"
+        android:text="@string/alarm_time_label"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/selectTimeText"
+        android:layout_width="180dp"
+        android:layout_height="51dp"
+        android:layout_marginBottom="25sp"
+        android:layout_marginTop="0sp"
+        android:background="@color/light_blue"
+        android:gravity="center"
+        android:hint="time"
+        android:inputType="none"
+        android:padding="10dp"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/alarmDurationText"
+        android:layout_width="180dp"
+        android:layout_height="20dp"
+        android:layout_margin="1sp"
+        android:gravity="bottom|center"
+        android:hint="Alarm Duration"
+        android:text="@string/alarm_duration_label"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        android:textStyle="normal" />
+
+    <NumberPicker
+        android:id="@+id/numberPicker"
+        android:background="@color/light_blue"
+        android:padding="10dp"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:layout_width="180dp"
+        android:layout_marginBottom="25sp"
+        android:layout_marginTop="0sp"
+        android:layout_height="71dp"/>
+
+    <Button
+        android:id="@+id/addAlarmOk"
+        android:layout_width="180dp"
+        android:layout_height="51dp"
+        android:padding="10dp"
+        android:text="@string/save"
+        android:textAllCaps="false"
+        android:textColor="#897"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:layout_margin="25sp"
+        android:drawableRight="@drawable/save_icon"/>
+</LinearLayout>

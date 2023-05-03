@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:textAlignment="center"
+    android:gravity="center"
+    android:background="@color/light_green"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/createAlarmBtn"
+        android:layout_width="180dp"
+        android:layout_height="51dp"
+        android:layout_centerInParent="true"
+        android:text="@string/create"
+        android:textAllCaps="false"
+        android:hint="createEditBtn"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:drawableRight="@drawable/add_icon"
+        android:textColor="#897" />
+
+    <Button
+        android:id="@+id/editAlarmBtn"
+        android:layout_width="180dp"
+        android:layout_height="51dp"
+        android:layout_centerInParent="true"
+        android:text="@string/edit"
+        android:textStyle="bold"
+        android:textAllCaps="false"
+        android:hint="createEditBtn"
+        android:textSize="20sp"
+        android:visibility="invisible"
+        android:drawableRight="@drawable/edit_icon"
+        android:textColor="#897" />
+
+    <TextView
+        android:id="@+id/dateTimeText"
+        android:layout_width="180dp"
+        android:layout_height="121dp"
+        android:layout_margin="45sp"
+        android:background="@color/light_blue"
+        android:hint="alarm"
+        android:lineSpacingExtra="5dp"
+        android:gravity="center"
+        android:inputType="none"
+        android:padding="18dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
+        android:textSize="16sp"
+        android:visibility="invisible"
+        android:textAllCaps="false"/>
+
+    <Button
+        android:id="@+id/deleteAlarmBtn"
+        android:layout_width="180dp"
+        android:layout_height="41dp"
+        android:textAllCaps="false"
+        android:text="@string/delete"
+        android:textSize="20sp"
+        android:layout_centerInParent="true"
+        android:visibility="invisible"
+        android:background="@color/light_red"
+        android:drawableRight="@drawable/delete_icon"
+        android:textStyle="bold"
+        android:textColor="@color/white">
+    </Button>
+
+</LinearLayout>
