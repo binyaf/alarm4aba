@@ -5,12 +5,14 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
-
+import com.bumptech.glide.Glide;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.alarms.myalarm.R;
@@ -22,14 +24,15 @@ import java.util.Calendar;
 public class MainActivity extends AppCompatActivity {
 
     private TextView dateTimeText;
+
     private DateFormat dateTimeFormat = new SimpleDateFormat("dd/MM/YYY HH:mm");
     private Calendar alarmDateAndTime;
     private Button createAlarmBtn;
-
     private Button editAlarmBtn;
     private Button deleteAlarmBtn;
     private AlarmManager alarmManager;
     private int alarmDurationSec;
+    private CountDownTimer countDownTimer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,11 +56,39 @@ public class MainActivity extends AppCompatActivity {
                     "<font size=30 color=" + Color.BLACK + "><b> " + dateTimeFormat.format(alarmDateAndTime.getTime()) +
                     "</b></font>";
             dateTimeText.setText(Html.fromHtml(html));
-           // dateTimeText.setText("Alarm will start at: " + dateTimeFormat.format(alarmDateAndTime.getTime()));
+
             createAlarmBtn.setVisibility(View.INVISIBLE);
             editAlarmBtn.setVisibility(View.VISIBLE);
             deleteAlarmBtn.setVisibility(View.VISIBLE);
             dateTimeText.setVisibility(View.VISIBLE);
+
+
+            dateTimeText.setOnClickListener(new View.OnClickListener() {
+                int clicksOnEmptyTextView = 0;
+                @Override
+                public void onClick(View v) {
+                    clicksOnEmptyTextView++;
+
+                    if (clicksOnEmptyTextView == 7) {
+                        ImageView imageView = findViewById(R.id.imageView);
+                        Glide.with(v.getContext()).asGif().load(R.raw.sha_shalom).into(imageView);
+                        Log.d("AnimationClick", "Show animation!!!");
+                        clicksOnEmptyTextView = 0;
+                        CountDownTimer timer = new CountDownTimer(15000, 1000) {
+                            public void onTick(long millisUntilFinished) {
+                                // Do nothing
+                            }
+                            public void onFinish() {
+                                imageView.setVisibility(View.GONE);
+                            }
+                        }.start();
+                        return;
+                    } else {
+                        Log.d("AnimationClick", "number of clicks = " + clicksOnEmptyTextView);
+                        return;
+                    }
+                }
+            });
         } else {
             alarmDateAndTime = createCalendarWithDefaultValues();
             alarmDurationSec = 20;
@@ -102,4 +133,10 @@ public class MainActivity extends AppCompatActivity {
         return cal;
     }
 
+    protected void onDestroy() {
+        super.onDestroy();
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
+    }
 }

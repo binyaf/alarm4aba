@@ -35,6 +35,7 @@
         android:drawableRight="@drawable/edit_icon"
         android:textColor="#897" />
 
+
     <TextView
         android:id="@+id/dateTimeText"
         android:layout_width="180dp"
@@ -67,4 +68,8 @@
         android:textColor="@color/white">
     </Button>
 
+    <ImageView
+        android:layout_width="180dp"
+        android:layout_height="141dp"
+        android:id="@+id/imageView"/>
 </LinearLayout>
