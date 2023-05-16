@@ -99,10 +99,17 @@ public class SetAlarmActivity extends AppCompatActivity {
             alarmDurationSec = Integer.parseInt(alarmDurationValues[value]);
 
             PendingIntent pendingIntent = IntentCreator.getAlarmPendingIntent(this, getApplication(), alarmDurationSec);
-            Log.d("TAG", "Alarm was set to " + dateTimeFormat.format(alarmDateAndTime.getTime()));
-            Calendar now = Calendar.getInstance();
-            Log.d("TAG", "Time now is " + dateTimeFormat.format(now.getTime()));
-            alarmManager.set(AlarmManager.RTC_WAKEUP, alarmDateAndTime.getTimeInMillis(), pendingIntent);
+            Log.d("TAG", "#### Time now  is now " +
+                    dateTimeFormat.format(Calendar.getInstance().getTime()));
+            Log.d("TAG", "#### Alarm was set to " + dateTimeFormat.format(alarmDateAndTime.getTime()));
+
+            AlarmManager.AlarmClockInfo alarmClockInfo =
+                    new AlarmManager.AlarmClockInfo(alarmDateAndTime.getTimeInMillis(), pendingIntent);
+            alarmManager.setAlarmClock(alarmClockInfo, pendingIntent);
+
+
+        //    alarmManager.set(AlarmManager.RTC_WAKEUP, alarmDateAndTime.getTimeInMillis(), pendingIntent);
+
             Intent i = new Intent(this, MainActivity.class);
             i.putExtra("alarmDateAndTime",alarmDateAndTime);
             i.putExtra("alarmDurationSec", alarmDurationSec);
