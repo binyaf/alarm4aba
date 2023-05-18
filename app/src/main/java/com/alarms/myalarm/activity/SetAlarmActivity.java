@@ -16,6 +16,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.alarms.myalarm.R;
+import com.alarms.myalarm.tools.IntentCreator;
+import com.alarms.myalarm.types.AlarmType;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -23,18 +25,18 @@ import java.util.Calendar;
 
 public class SetAlarmActivity extends AppCompatActivity {
 
-    private Button addAlarmBtn;
     private AlarmManager alarmManager;
     private DatePickerDialog datePickerDialog;
     private TimePickerDialog timePickerDialog;
     private Calendar alarmDateAndTime;
     private TextView dateText;
     private TextView timeText;
-    private DateFormat dateFormat = new SimpleDateFormat("dd/MM/YYY");
-    private DateFormat timeFormat = new SimpleDateFormat("HH:mm");
-    private DateFormat dateTimeFormat = new SimpleDateFormat("dd/MM/YYY HH:mm:ss");
+    private final DateFormat dateFormat = new SimpleDateFormat("dd/MM/YYY");
+    private final DateFormat timeFormat = new SimpleDateFormat("HH:mm");
+    private final DateFormat dateTimeFormat = new SimpleDateFormat("dd/MM/YYY HH:mm:ss");
     private NumberPicker numberPicker;
     private int alarmDurationSec;
+    private AlarmType alarmType;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,9 +47,10 @@ public class SetAlarmActivity extends AppCompatActivity {
         if (extras != null) {
             alarmDateAndTime = (Calendar) getIntent().getSerializableExtra("alarmDateAndTime");
             alarmDurationSec = getIntent().getIntExtra("alarmDurationSec", 20);
+            alarmType = (AlarmType) getIntent().getSerializableExtra(("alarmType"));
+
         } else {
-            alarmDateAndTime = Calendar.getInstance();
-            alarmDurationSec = 20;
+            throw new RuntimeException("in this screen, intent must have 'extras'");
         }
 
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
@@ -93,28 +96,27 @@ public class SetAlarmActivity extends AppCompatActivity {
             datePickerDialog.show();
         });
 
-        addAlarmBtn = findViewById(R.id.addAlarmOk);
-        addAlarmBtn.setOnClickListener(v -> {
+        Button saveAlarm = findViewById(R.id.addAlarmOk);
+        saveAlarm.setOnClickListener(v -> {
             int value = numberPicker.getValue();
             alarmDurationSec = Integer.parseInt(alarmDurationValues[value]);
 
-            PendingIntent pendingIntent = IntentCreator.getAlarmPendingIntent(this, getApplication(), alarmDurationSec);
-            Log.d("TAG", "#### Time now  is now " +
-                    dateTimeFormat.format(Calendar.getInstance().getTime()));
-            Log.d("TAG", "#### Alarm was set to " + dateTimeFormat.format(alarmDateAndTime.getTime()));
+            PendingIntent pendingIntent = IntentCreator.getAlarmPendingIntent(this, getApplication(), alarmDurationSec, alarmType);
+            Log.d("ALARM", "now: " + dateTimeFormat.format(Calendar.getInstance().getTime()) + " | " +
+                    "alarm: " + dateTimeFormat.format(alarmDateAndTime.getTime())  + " | " +
+                    "type: " + alarmType.toString());
 
             AlarmManager.AlarmClockInfo alarmClockInfo =
                     new AlarmManager.AlarmClockInfo(alarmDateAndTime.getTimeInMillis(), pendingIntent);
             alarmManager.setAlarmClock(alarmClockInfo, pendingIntent);
 
-
-        //    alarmManager.set(AlarmManager.RTC_WAKEUP, alarmDateAndTime.getTimeInMillis(), pendingIntent);
-
-            Intent i = new Intent(this, MainActivity.class);
+            Intent i = new Intent(this, AlarmDetailsActivity.class);
             i.putExtra("alarmDateAndTime",alarmDateAndTime);
             i.putExtra("alarmDurationSec", alarmDurationSec);
+            i.putExtra("alarmType", alarmType);
             startActivity(i);
         });
 
     }
+
 }

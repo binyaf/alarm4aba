@@ -3,6 +3,7 @@
     <string name="app_name">Alarm4Aba</string>
     <string name="save">Save</string>
     <string name="create">Create Alarm</string>
+    <string name="createMincha">Mincha Reminder</string>
     <string name="delete">Delete Alarm</string>
     <string name="edit">Edit Alarm</string>
     <string name="alarm_duration_label">Alarm Duration (sec.)</string>

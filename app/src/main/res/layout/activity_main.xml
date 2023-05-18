@@ -10,66 +10,31 @@
 
     <Button
         android:id="@+id/createAlarmBtn"
-        android:layout_width="180dp"
+        android:layout_width="220dp"
         android:layout_height="51dp"
         android:layout_centerInParent="true"
         android:text="@string/create"
         android:textAllCaps="false"
-        android:hint="createEditBtn"
-        android:textStyle="bold"
-        android:textSize="20sp"
-        android:drawableRight="@drawable/add_icon"
-        android:textColor="#897" />
-
-    <Button
-        android:id="@+id/editAlarmBtn"
-        android:layout_width="180dp"
-        android:layout_height="51dp"
-        android:layout_centerInParent="true"
-        android:text="@string/edit"
-        android:textStyle="bold"
-        android:textAllCaps="false"
-        android:hint="createEditBtn"
-        android:textSize="20sp"
-        android:visibility="invisible"
-        android:drawableRight="@drawable/edit_icon"
-        android:textColor="#897" />
-
-
-    <TextView
-        android:id="@+id/dateTimeText"
-        android:layout_width="180dp"
-        android:layout_height="180dp"
-        android:layout_margin="45sp"
-        android:background="@color/light_blue"
+        android:hint="createBtn"
         android:gravity="center"
-        android:hint="alarm"
-        android:inputType="none"
-        android:lineSpacingExtra="5dp"
-        android:padding="18dp"
-        android:textAllCaps="false"
-        android:textColor="@color/black"
-        android:textColorHint="@color/black"
-        android:textSize="16sp"
-        android:visibility="invisible" />
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:drawableEnd="@drawable/add_icon"
+        android:textColor="#897" />
 
     <Button
-        android:id="@+id/deleteAlarmBtn"
-        android:layout_width="180dp"
-        android:layout_height="41dp"
-        android:textAllCaps="false"
-        android:text="@string/delete"
-        android:textSize="20sp"
+        android:id="@+id/createMinchaAlarmBtn"
+        android:layout_width="220dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="80dp"
         android:layout_centerInParent="true"
-        android:visibility="invisible"
-        android:background="@color/light_red"
-        android:drawableRight="@drawable/delete_icon"
+        android:text="@string/createMincha"
+        android:textAllCaps="false"
+        android:gravity="center"
+        android:hint="createMinchaBtn"
         android:textStyle="bold"
-        android:textColor="@color/white">
-    </Button>
+        android:textSize="20sp"
+        android:drawableEnd="@drawable/add_icon"
+        android:textColor="#897" />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="180dp"
-        android:layout_height="141dp" />
 </LinearLayout>

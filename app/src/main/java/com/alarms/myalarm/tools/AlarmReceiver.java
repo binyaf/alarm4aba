@@ -1,4 +1,4 @@
-package com.alarms.myalarm;
+package com.alarms.myalarm.tools;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -14,6 +14,10 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
+import com.alarms.myalarm.R;
+import com.alarms.myalarm.activity.MainActivity;
+import com.alarms.myalarm.types.AlarmType;
+
 import java.util.Calendar;
 
 public class AlarmReceiver extends BroadcastReceiver {
@@ -22,15 +26,19 @@ public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         int alarmDurationSec = 20;
+        AlarmType alarmType = AlarmType.REGULAR;
 
         if (intent.getExtras() != null) {
             alarmDurationSec = intent.getIntExtra("alarmDurationSec", 20);
+            alarmType = (AlarmType) intent.getSerializableExtra(("alarmType"));
         }
         // we will use vibrator first
         Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
         vibrator.vibrate(8000);
 
-        Toast.makeText(context, "Alarm! Wake up! Wake up!", Toast.LENGTH_LONG).show();
+        String toastText =
+                alarmType == AlarmType.MINCHA ? "Sun et is in 15 min! don't forget Mincha!!":"Wake up! Wake up!";
+        Toast.makeText(context, toastText, Toast.LENGTH_LONG).show();
         Uri alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
         if (alarmUri == null) {
             alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
@@ -46,6 +54,11 @@ public class AlarmReceiver extends BroadcastReceiver {
                 ringtone.stop();
             }
         }, alarmDurationSec * 1000);
+
+        // go to the main activity
+        Intent activityIntent = new Intent(context, MainActivity.class);
+        activityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(activityIntent);
 
     }
 }
