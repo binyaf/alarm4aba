@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.alarms.myalarm.R;
 import com.alarms.myalarm.tools.IntentCreator;
 import com.alarms.myalarm.types.AlarmType;
+import com.alarms.myalarm.types.IntentKeys;
 import com.kosherjava.zmanim.ZmanimCalendar;
 import com.kosherjava.zmanim.util.GeoLocation;
 
@@ -41,9 +42,9 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, SetAlarmActivity.class);
             alarmDateAndTime = createCalendarWithDefaultValues();
             alarmDurationSec = 20;
-            intent.putExtra("alarmDateAndTime",alarmDateAndTime);
-            intent.putExtra("alarmDurationSec", alarmDurationSec);
-            intent.putExtra("alarmType", AlarmType.REGULAR);
+            intent.putExtra(IntentKeys.ALARM_CALENDAR, alarmDateAndTime);
+            intent.putExtra(IntentKeys.ALARM_DURATION, alarmDurationSec);
+            intent.putExtra(IntentKeys.ALARM_TYPE, AlarmType.REGULAR);
             startActivity(intent);
         });
 
@@ -61,9 +62,9 @@ public class MainActivity extends AppCompatActivity {
 
             Intent i = new Intent(this, AlarmDetailsActivity.class);
 
-            i.putExtra("alarmDateAndTime",alarmDateAndTime);
-            i.putExtra("alarmDurationSec", alarmDurationSec);
-            i.putExtra("alarmType", AlarmType.MINCHA);
+            i.putExtra(IntentKeys.ALARM_CALENDAR, alarmDateAndTime);
+            i.putExtra(IntentKeys.ALARM_DURATION, alarmDurationSec);
+            i.putExtra(IntentKeys.ALARM_TYPE, AlarmType.MINCHA);
             startActivity(i);
 
         });

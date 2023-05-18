@@ -28,6 +28,7 @@ import androidx.core.content.ContextCompat;
 import com.alarms.myalarm.R;
 import com.alarms.myalarm.tools.IntentCreator;
 import com.alarms.myalarm.types.AlarmType;
+import com.alarms.myalarm.types.IntentKeys;
 import com.bumptech.glide.Glide;
 import com.kosherjava.zmanim.ZmanimCalendar;
 import com.kosherjava.zmanim.hebrewcalendar.HebrewDateFormatter;
@@ -68,9 +69,9 @@ public class AlarmDetailsActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            alarmDateAndTime = (Calendar) getIntent().getSerializableExtra("alarmDateAndTime");
-            alarmDurationSec = getIntent().getIntExtra("alarmDurationSec", 20);
-            alarmType = (AlarmType) getIntent().getSerializableExtra(("alarmType"));
+            alarmDateAndTime = (Calendar) getIntent().getSerializableExtra(IntentKeys.ALARM_CALENDAR);
+            alarmDurationSec = getIntent().getIntExtra(IntentKeys.ALARM_DURATION, 20);
+            alarmType = (AlarmType) getIntent().getSerializableExtra((IntentKeys.ALARM_TYPE));
         }
 
         if (alarmDateAndTime != null) {
@@ -153,9 +154,9 @@ public class AlarmDetailsActivity extends AppCompatActivity {
 
         editAlarmBtn.setOnClickListener(v -> {
             Intent i = new Intent(this, SetAlarmActivity.class);
-            i.putExtra("alarmDateAndTime", alarmDateAndTime);
-            i.putExtra("alarmDurationSec", alarmDurationSec);
-            i.putExtra("alarmType", alarmType);
+            i.putExtra(IntentKeys.ALARM_CALENDAR, alarmDateAndTime);
+            i.putExtra(IntentKeys.ALARM_DURATION, alarmDurationSec);
+            i.putExtra(IntentKeys.ALARM_TYPE, alarmType);
             startActivity(i);
         });
 

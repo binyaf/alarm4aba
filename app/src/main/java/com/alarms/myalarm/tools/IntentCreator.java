@@ -8,14 +8,15 @@ import android.os.Build;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.alarms.myalarm.types.AlarmType;
+import com.alarms.myalarm.types.IntentKeys;
 
 public class IntentCreator {
     public static PendingIntent getAlarmPendingIntent(AppCompatActivity activity, Application application,
                                                       int alarmDurationSec, AlarmType alarmType) {
 
         Intent intent = new Intent(activity, AlarmReceiver.class);
-        intent.putExtra("alarmDurationSec", alarmDurationSec);
-        intent.putExtra("alarmType", alarmType);
+        intent.putExtra(IntentKeys.ALARM_DURATION, alarmDurationSec);
+        intent.putExtra(IntentKeys.ALARM_TYPE, alarmType);
         // we call broadcast using pendingIntent 33 >= 31
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             return PendingIntent.getBroadcast(

@@ -17,6 +17,7 @@ import androidx.annotation.RequiresApi;
 import com.alarms.myalarm.R;
 import com.alarms.myalarm.activity.MainActivity;
 import com.alarms.myalarm.types.AlarmType;
+import com.alarms.myalarm.types.IntentKeys;
 
 import java.util.Calendar;
 
@@ -29,8 +30,8 @@ public class AlarmReceiver extends BroadcastReceiver {
         AlarmType alarmType = AlarmType.REGULAR;
 
         if (intent.getExtras() != null) {
-            alarmDurationSec = intent.getIntExtra("alarmDurationSec", 20);
-            alarmType = (AlarmType) intent.getSerializableExtra(("alarmType"));
+            alarmDurationSec = intent.getIntExtra(IntentKeys.ALARM_DURATION, 20);
+            alarmType = (AlarmType) intent.getSerializableExtra((IntentKeys.ALARM_TYPE));
         }
         // we will use vibrator first
         Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
