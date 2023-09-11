@@ -50,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
     private Button editAlarmBtn;
     private Button deleteAlarmBtn;
 
-    private Button addAlarmBtn;
 
     private AlarmManager alarmManager;
 
@@ -59,10 +58,11 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout linearLayout;
 
     private AlarmsPersistService alarmsPersistService;
-    private final int MAX_ALARMS = 4;
+    public static final int MAX_ALARMS = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         locationService = new LocationService();
         alarmsPersistService = new AlarmsPersistService(getApplicationContext());
         Log.d("MainActivity", "onCreate");
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
         deleteAlarmBtn = findViewById(R.id.deleteAlarmBtn);
         editAlarmBtn = findViewById(R.id.editAlarmBtn);
-        addAlarmBtn = findViewById(R.id.addAdditionAlarmBtn);
+        Button addAlarmBtn = findViewById(R.id.addAdditionAlarmBtn);
         linearLayout = findViewById(R.id.alarmsLayout);
 
         Map<Integer, Alarm> allAlarms = alarmsPersistService.getAlarms();
@@ -91,7 +91,9 @@ public class MainActivity extends AppCompatActivity {
 
         for (Integer alarmId : allAlarms.keySet()) {
             Alarm alarm = allAlarms.get(alarmId);
-            createTextViewForAlarm(alarm, allAlarms, layoutParams);
+            if (alarm != null) {
+                createTextViewForAlarm(alarm, allAlarms, layoutParams);
+            }
         }
 
         addAlarmBtn.setOnClickListener(v -> {
@@ -325,7 +327,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private String prepareAlarmDetailsText(Alarm alarm) {
-        DateTimesFormats formats = new DateTimesFormats();
+
         Calendar alarmDate = alarm.getDateAndTime();
 
         JewishDate jd = new JewishDate(alarmDate);
@@ -334,9 +336,9 @@ public class MainActivity extends AppCompatActivity {
         String hebrewDate = hdf.format(jd);
 
         String text = "<br><font color=" + Color.GRAY + "  size=3 >&nbsp;Alarm will start at: </font><br>" +
-                "<font size=30 color=" + Color.BLACK + ">&nbsp;<b> " + formats.dateFormat.format(alarmDate.getTime()) +
+                "<font size=30 color=" + Color.BLACK + ">&nbsp;<b> " + DateTimesFormats.dateFormat.format(alarmDate.getTime()) +
                 "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>" + hebrewDate + "</b>" +
-                "</b>\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>" + formats.timeFormat.format(alarmDate.getTime()) + "</b>" +
+                "</b>\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>" + DateTimesFormats.timeFormat.format(alarmDate.getTime()) + "</b>" +
                 "</font><br>";
 
         if (alarm.getType() == AlarmType.MINCHA) {
@@ -379,14 +381,13 @@ public class MainActivity extends AppCompatActivity {
         long sunset  = zcal.getSunset().getTime();
 
         DateFormat timeFormat = DateTimesFormats.timeFormat;
-        String times =
+        return
                 "<br> Latest Shema MGA: " + timeFormat.format(szMGA) + "<br><br>" +
                         " Latest Shema GRA: " + timeFormat.format(szGRA) + "<br><br>" +
                         " Latest Shachris MGA: " + timeFormat.format(szTfilaMGA) + "<br><br>" +
                         " Latest Shachris  GRA: " + timeFormat.format(szTfilaGRA) + "<br><br>" +
                         " Midday: " + timeFormat.format(midDay) + "<br><br>" +
                         " Sunset: " + timeFormat.format(sunset);
-        return times;
     }
 
 }

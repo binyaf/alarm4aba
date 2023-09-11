@@ -26,6 +26,7 @@ import com.alarms.myalarm.types.IntentKeys;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
@@ -37,9 +38,9 @@ public class SetAlarmActivity extends AppCompatActivity {
 
     private TextView dateText;
     private TextView timeText;
-    private final DateFormat dateFormat = new SimpleDateFormat("dd/MM/YYY");
-    private final DateFormat timeFormat = new SimpleDateFormat("HH:mm");
-    private final DateFormat dateTimeFormat = new SimpleDateFormat("dd/MM/YYY HH:mm:ss");
+    private final DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyy", Locale.US);
+    private final DateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.US);
+    private final DateFormat dateTimeFormat = new SimpleDateFormat("dd/MM/yy HH:mm:ss", Locale.US);
     private NumberPicker numberPicker;
 
     private AlarmsPersistService alarmsPersistService;
