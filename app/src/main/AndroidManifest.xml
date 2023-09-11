@@ -23,7 +23,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.SetAlarmActivity" android:theme="@style/Theme.AppCompat"> </activity>
-        <activity android:name=".activity.AlarmDetailsActivity" android:theme="@style/Theme.AppCompat"> </activity>
         <receiver android:name="com.alarms.myalarm.tools.AlarmReceiver" android:exported="true"></receiver>
     </application>
 

@@ -1,12 +1,14 @@
 package com.alarms.myalarm.activity;
 
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.NumberPicker;
@@ -16,43 +18,48 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.alarms.myalarm.R;
+import com.alarms.myalarm.tools.AlarmsPersistService;
 import com.alarms.myalarm.tools.IntentCreator;
-import com.alarms.myalarm.types.AlarmType;
+import com.alarms.myalarm.types.Alarm;
 import com.alarms.myalarm.types.IntentKeys;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Map;
+import java.util.UUID;
 
 public class SetAlarmActivity extends AppCompatActivity {
 
     private AlarmManager alarmManager;
     private DatePickerDialog datePickerDialog;
     private TimePickerDialog timePickerDialog;
-    private Calendar alarmDateAndTime;
+
     private TextView dateText;
     private TextView timeText;
     private final DateFormat dateFormat = new SimpleDateFormat("dd/MM/YYY");
     private final DateFormat timeFormat = new SimpleDateFormat("HH:mm");
     private final DateFormat dateTimeFormat = new SimpleDateFormat("dd/MM/YYY HH:mm:ss");
     private NumberPicker numberPicker;
-    private int alarmDurationSec;
-    private AlarmType alarmType;
+
+    private AlarmsPersistService alarmsPersistService;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_alarm_screen);
+        alarmsPersistService = new AlarmsPersistService(getApplicationContext());
 
+        Alarm alarm;
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            alarmDateAndTime = (Calendar) getIntent().getSerializableExtra(IntentKeys.ALARM_CALENDAR);
-            alarmDurationSec = getIntent().getIntExtra(IntentKeys.ALARM_DURATION, 20);
-            alarmType = (AlarmType) getIntent().getSerializableExtra((IntentKeys.ALARM_TYPE));
-
+            alarm = (Alarm) getIntent().getSerializableExtra(IntentKeys.ALARM);
         } else {
             throw new RuntimeException("in this screen, intent must have 'extras'");
         }
+
+        Calendar alarmDateAndTime = alarm.getDateAndTime();
+        int alarmDuration = alarm.getDuration();
 
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         dateText = findViewById(R.id.selectDateText);
@@ -62,11 +69,12 @@ public class SetAlarmActivity extends AppCompatActivity {
         numberPicker = findViewById(R.id.numberPicker);
 
         numberPicker.setTextColor(Color.BLACK);
-        String[] alarmDurationValues = new String[]{"10","20","30","40","50","60","70","80","90","100","110","120"};
+        String[] alarmDurationValues = new String[]{"5", "10", "15","20"
+                ,"25","30","40","50","60","70","80","90","100","110","120"};
         numberPicker.setMinValue(0);
         numberPicker.setMaxValue(alarmDurationValues.length - 1);
         numberPicker.setDisplayedValues(alarmDurationValues);
-        numberPicker.setValue((alarmDurationSec/10)-1);
+        numberPicker.setValue((alarmDuration/10)-1);
 
         timeText.setOnClickListener(v -> {
             timePickerDialog = new TimePickerDialog(this,
@@ -97,26 +105,57 @@ public class SetAlarmActivity extends AppCompatActivity {
             datePickerDialog.show();
         });
 
+
         Button saveAlarm = findViewById(R.id.addAlarmOk);
         saveAlarm.setOnClickListener(v -> {
-            int value = numberPicker.getValue();
-            alarmDurationSec = Integer.parseInt(alarmDurationValues[value]);
 
-            PendingIntent pendingIntent = IntentCreator.getAlarmPendingIntent(this, getApplication(), alarmDurationSec, alarmType);
-            Log.d("ALARM", "now: " + dateTimeFormat.format(Calendar.getInstance().getTime()) + " | " +
-                    "alarm: " + dateTimeFormat.format(alarmDateAndTime.getTime())  + " | " +
-                    "type: " + alarmType.toString());
+            if (alarmDateAndTime.after(Calendar.getInstance())) {
+                int value = numberPicker.getValue();
+                alarm.setDuration(Integer.parseInt(alarmDurationValues[value]));
 
-            AlarmManager.AlarmClockInfo alarmClockInfo =
-                    new AlarmManager.AlarmClockInfo(alarmDateAndTime.getTimeInMillis(), pendingIntent);
-            alarmManager.setAlarmClock(alarmClockInfo, pendingIntent);
+                saveAlarm(alarm);
 
-            Intent i = new Intent(this, AlarmDetailsActivity.class);
-            i.putExtra(IntentKeys.ALARM_CALENDAR, alarmDateAndTime);
-            i.putExtra(IntentKeys.ALARM_DURATION, alarmDurationSec);
-            i.putExtra(IntentKeys.ALARM_TYPE, alarmType);
-            startActivity(i);
+               Intent i = new Intent(this, MainActivity.class);
+               startActivity(i);
+
+            } else {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Warning!")
+                        .setMessage(Html.fromHtml("alarm is in the past"))
+                        .setIcon(R.drawable.warning_icon)
+                        .setPositiveButton("OK", (dialog, which) -> dialog.dismiss()).create();
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+            }
         });
+    }
+
+    private void saveAlarm(Alarm alarm) {
+
+        if (alarm.getId() == 0) {
+            alarm.setId(UUID.randomUUID().hashCode());
+        }
+
+        PendingIntent pendingIntent = IntentCreator.getAlarmPendingIntent(this, getApplication(), alarm);
+        Log.d("ALARM", "now: " + dateTimeFormat.format(Calendar.getInstance().getTime()) + " | " +
+                "alarm: " + dateTimeFormat.format(alarm.getDateAndTime().getTime())  + " | " +
+                "type: " + alarm.getType().toString());
+
+        AlarmManager.AlarmClockInfo alarmClockInfo =
+                new AlarmManager.AlarmClockInfo(alarm.getDateAndTime().getTimeInMillis(), pendingIntent);
+        alarmManager.setAlarmClock(alarmClockInfo, pendingIntent);
+
+        // save alarm on local file
+        saveAlarmToSharePreferences(alarm);
+
+    }
+
+    private void saveAlarmToSharePreferences(Alarm alarm) {
+
+        Map<Integer, Alarm> allAlarms = alarmsPersistService.getAlarms();
+        allAlarms.put(alarm.getId(), alarm);
+        alarmsPersistService.saveAlarms(allAlarms);
 
     }
 

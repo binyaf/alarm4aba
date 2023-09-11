@@ -7,38 +7,47 @@ import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
-import com.alarms.myalarm.R;
 import com.alarms.myalarm.activity.MainActivity;
+import com.alarms.myalarm.types.Alarm;
 import com.alarms.myalarm.types.AlarmType;
 import com.alarms.myalarm.types.IntentKeys;
 
-import java.util.Calendar;
+import java.util.Map;
 
 public class AlarmReceiver extends BroadcastReceiver {
+
+
+    private AlarmsPersistService alarmsPersistService;
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     public void onReceive(Context context, Intent intent) {
-        int alarmDurationSec = 20;
+
+
+        alarmsPersistService = new AlarmsPersistService(context);
+
+        int alarmDurationSec = 10;
         AlarmType alarmType = AlarmType.REGULAR;
+        Alarm alarm = null;
 
         if (intent.getExtras() != null) {
-            alarmDurationSec = intent.getIntExtra(IntentKeys.ALARM_DURATION, 20);
-            alarmType = (AlarmType) intent.getSerializableExtra((IntentKeys.ALARM_TYPE));
+            alarm = (Alarm) intent.getSerializableExtra((IntentKeys.ALARM));
+            alarmDurationSec = alarm.getDuration();
+            alarmType = alarm.getType();
         }
+
         // we will use vibrator first
         Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
         vibrator.vibrate(8000);
 
         String toastText =
-                alarmType == AlarmType.MINCHA ? "Sun et is in 15 min! don't forget Mincha!!":"Wake up! Wake up!";
+                alarmType == AlarmType.MINCHA ? "Sun set is in 15 min! don't forget Mincha!!":"Wake up! Wake up! Wake up!";
         Toast.makeText(context, toastText, Toast.LENGTH_LONG).show();
         Uri alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
         if (alarmUri == null) {
@@ -57,9 +66,16 @@ public class AlarmReceiver extends BroadcastReceiver {
         }, alarmDurationSec * 1000);
 
         // go to the main activity
+        removeAlarmFromInternalStorage(alarm);
         Intent activityIntent = new Intent(context, MainActivity.class);
         activityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(activityIntent);
 
+    }
+
+    private void removeAlarmFromInternalStorage(Alarm alarmToRemove) {
+        Map<Integer, Alarm> allAlarms = alarmsPersistService.getAlarms();
+        allAlarms.remove(alarmToRemove.getId());
+        alarmsPersistService.saveAlarms(allAlarms);
     }
 }

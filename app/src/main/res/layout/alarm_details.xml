@@ -1,64 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:textAlignment="center"
-    android:gravity="center"
     android:background="@color/light_green"
-    android:orientation="vertical">
-
+    android:orientation="vertical"
+    android:id="@+id/alarmDetailsMain">
 
     <Button
-        android:id="@+id/editAlarmBtn"
+        android:id="@+id/addAdditionAlarmBtn"
+        android:layout_marginTop="16dp"
         android:layout_width="180dp"
-        android:layout_height="51dp"
+        android:layout_height="41dp"
         android:layout_centerInParent="true"
-        android:text="@string/edit"
+        android:text="@string/add"
+        android:textAllCaps="false"
+        android:hint="createBtn"
+        android:gravity="center"
         android:textStyle="bold"
-        android:gravity="center"
-        android:textAllCaps="false"
-        android:hint="createEditBtn"
         android:textSize="20sp"
-        android:visibility="invisible"
-        android:drawableEnd="@drawable/edit_icon"
-        android:textColor="#897" />
+        android:drawableEnd="@drawable/add_icon"
+        android:textColor="#897"
+        android:background="@color/blue"
+        android:layout_gravity="top|center_horizontal"/>
 
-    <TextView
-        android:id="@+id/dateTimeText"
-        android:layout_width="180dp"
-        android:layout_height="190dp"
-        android:layout_margin="45sp"
-        android:background="@color/light_blue"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+    <Button
+        android:id="@+id/editAlarmBtn"
+        android:layout_marginTop="16dp"
+        android:layout_width="85dp"
+        android:layout_height="51dp"
+        android:background="@color/grey"
+        android:layout_centerInParent="true"
+        android:drawableEnd="@drawable/edit_icon"
+        android:enabled="false"
         android:gravity="center"
-        android:hint="alarm"
-        android:inputType="none"
-        android:lineSpacingExtra="5dp"
-        android:padding="18dp"
-        android:textAllCaps="false"
-        android:textColor="@color/black"
-        android:textColorHint="@color/black"
-        android:textSize="16sp"
-        android:visibility="invisible" />
+        android:hint="createEditBtn"
+        android:text="@string/edit"
+        android:textColor="#897"
+        android:textSize="15sp"
+        android:visibility="invisible"
+        android:layout_marginEnd="16dp" />
 
     <Button
         android:id="@+id/deleteAlarmBtn"
-        android:layout_width="180dp"
-        android:layout_height="41dp"
-        android:textAllCaps="false"
-        android:gravity="center"
-        android:text="@string/delete"
-        android:textSize="20sp"
+        android:layout_marginTop="16dp"
+        android:layout_width="85dp"
+        android:layout_height="51dp"
         android:layout_centerInParent="true"
-        android:visibility="invisible"
         android:background="@color/light_red"
         android:drawableEnd="@drawable/delete_icon"
-        android:textStyle="bold"
-        android:textColor="@color/white">
-    </Button>
+        android:enabled="false"
+        android:gravity="center"
+        android:layout_marginStart="16dp"
+        android:text="@string/delete"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:visibility="invisible" />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"/>
+
+    <LinearLayout
+        android:id="@+id/alarmsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center">
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"/>
+
+    <ImageView
+        android:layout_marginTop="20dp"
+        android:id="@+id/timeIconImageView"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:gravity="bottom|center"
+        android:layout_gravity="bottom|center"
+        android:layout_centerInParent="true"
+        android:src="@drawable/time_icon"/>
+
+    <TextView
+        android:id="@+id/labelTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="bottom|center"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:textColor="#3434AD"
+        android:text="@string/todaysZmanim"/>
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="180dp"
-        android:layout_height="141dp" />
+        android:layout_width="1dp"
+        android:layout_height="1dp"
+        android:gravity="bottom|center" />
+
 </LinearLayout>

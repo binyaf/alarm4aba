@@ -10,10 +10,13 @@
     <color name="red">#e10000</color>
     <color name="light_red">#ff3d3d</color>
     <color name="light_blue">#92c9fd</color>
+    <color name="grey">#757677</color>
+    <color name="light_grey">#A9AEB3</color>
     <color name="white">#FFFFFFFF</color>
     <color name="colorPrimary">#0F9D58</color>
     <color name="colorPrimaryDark">#0F4C2E</color>
     <color name="colorAccent">#9D0F9B</color>
     <color name="light_green">#a3e8ca</color>
+    <color name="blue">#021B67</color>
     <color name="magenta"></color>
 </resources>
