@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -78,7 +79,8 @@ public class MainActivity extends AppCompatActivity {
 
         if (allAlarms.keySet().size() >= MAX_ALARMS) {
             addAlarmBtn.setEnabled(false);
-            addAlarmBtn.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.grey));
+            int backgroundColor = ContextCompat.getColor(this, R.color.grey); // Replace with your color resource
+            addAlarmBtn.setBackgroundTintList(ColorStateList.valueOf(backgroundColor));
         }
         // Create a LinearLayout.LayoutParams object with desired margins
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
@@ -98,8 +100,7 @@ public class MainActivity extends AppCompatActivity {
 
         addAlarmBtn.setOnClickListener(v -> {
             Intent intent = new Intent(this, SetAlarmActivity.class);
-            Calendar alarmDateAndTime = createCalendarWithDefaultValues();
-            intent.putExtra(IntentKeys.ALARM, new Alarm(AlarmType.REGULAR, 20, alarmDateAndTime));
+
             startActivity(intent);
         });
 
@@ -132,7 +133,6 @@ public class MainActivity extends AppCompatActivity {
                 int textLength = spannableString.length();
                 spannableString.setSpan(imageSpan, textLength -1, textLength, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
 
-
                 ClickableSpan clickableSpan = new ClickableSpan() {
                     @Override
                     public void onClick(View widget) {
@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
                         super.updateDrawState(ds);
                         // Optionally, customize the appearance of the clickable span
                         ds.setUnderlineText(false); // Remove underline
-                        ds.setColor(ContextCompat.getColor(getApplicationContext(), R.color.light_blue)); // Set text color
+                        ds.setColor(ContextCompat.getColor(getApplicationContext(), R.color.light_blue));
                     }
                 };
                 spannableString.setSpan(clickableSpan, textLength -1, textLength, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
                 textView.setText(spannableString);
 
             } else {
-                textView.setText(Html.fromHtml(html));
+                textView.setText(Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY));
             }
 
             textView.setVisibility(View.VISIBLE);
@@ -335,10 +335,14 @@ public class MainActivity extends AppCompatActivity {
         hdf.setHebrewFormat(true);
         String hebrewDate = hdf.format(jd);
 
-        String text = "<br><font color=" + Color.GRAY + "  size=3 >&nbsp;Alarm will start at: </font><br>" +
-                "<font size=30 color=" + Color.BLACK + ">&nbsp;<b> " + DateTimesFormats.dateFormat.format(alarmDate.getTime()) +
-                "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>" + hebrewDate + "</b>" +
-                "</b>\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>" + DateTimesFormats.timeFormat.format(alarmDate.getTime()) + "</b>" +
+        String date = DateTimesFormats.dateFormat.format(alarmDate.getTime());
+
+        String time = DateTimesFormats.timeFormat.format(alarmDate.getTime());
+
+        String text = "<br><font color=" + Color.GRAY + "  size=3 >&nbsp;&nbsp;&nbsp;Alarm will start at: </font><br>" +
+                "<font size=30 color=" + Color.BLACK + ">&nbsp;<b> " + date +
+                "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + hebrewDate + "</b>" +
+                "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + time +
                 "</font><br>";
 
         if (alarm.getType() == AlarmType.MINCHA) {
@@ -347,14 +351,7 @@ public class MainActivity extends AppCompatActivity {
         return text;
     }
 
-    private Calendar createCalendarWithDefaultValues() {
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.HOUR_OF_DAY, 6);
-        cal.set(Calendar.MINUTE, 10);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
-        return cal;
-    }
+
 
     private AlertDialog createTodayZmanimAlertDialog(String msg) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

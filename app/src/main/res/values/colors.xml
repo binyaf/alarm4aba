@@ -17,6 +17,7 @@
     <color name="colorPrimaryDark">#0F4C2E</color>
     <color name="colorAccent">#9D0F9B</color>
     <color name="light_green">#a3e8ca</color>
+    <color name="very_light_grey">#FFE2E9E6</color>
     <color name="blue">#021B67</color>
     <color name="magenta"></color>
 </resources>

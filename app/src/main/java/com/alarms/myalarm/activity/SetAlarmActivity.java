@@ -21,6 +21,7 @@ import com.alarms.myalarm.R;
 import com.alarms.myalarm.tools.AlarmsPersistService;
 import com.alarms.myalarm.tools.IntentCreator;
 import com.alarms.myalarm.types.Alarm;
+import com.alarms.myalarm.types.AlarmType;
 import com.alarms.myalarm.types.IntentKeys;
 
 import java.text.DateFormat;
@@ -50,26 +51,31 @@ public class SetAlarmActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_alarm_screen);
         alarmsPersistService = new AlarmsPersistService(getApplicationContext());
+        TextView title = findViewById(R.id.addEditAlarmTitle);
+        final Alarm alarm;
+      //  Bundle extras = getIntent().getExtras();
 
-        Alarm alarm;
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
+        if (getIntent() != null && getIntent().getSerializableExtra(IntentKeys.ALARM) != null) {
             alarm = (Alarm) getIntent().getSerializableExtra(IntentKeys.ALARM);
-        } else {
-            throw new RuntimeException("in this screen, intent must have 'extras'");
+            title.setText(R.string.edit_alarm);
+        }  else {
+            Calendar alarmDateAndTime = createCalendarWithDefaultValues();
+            alarm = new Alarm(AlarmType.REGULAR, 20,alarmDateAndTime);
+            title.setText(R.string.add_alarm);
         }
 
         Calendar alarmDateAndTime = alarm.getDateAndTime();
         int alarmDuration = alarm.getDuration();
 
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
         dateText = findViewById(R.id.selectDateText);
         dateText.setText(dateFormat.format(alarmDateAndTime.getTime()));
         timeText = findViewById(R.id.selectTimeText);
         timeText.setText(timeFormat.format(alarmDateAndTime.getTime()));
         numberPicker = findViewById(R.id.numberPicker);
-
         numberPicker.setTextColor(Color.BLACK);
+
         String[] alarmDurationValues = new String[]{"5", "10", "15","20"
                 ,"25","30","40","50","60","70","80","90","100","110","120"};
         numberPicker.setMinValue(0);
@@ -158,6 +164,15 @@ public class SetAlarmActivity extends AppCompatActivity {
         allAlarms.put(alarm.getId(), alarm);
         alarmsPersistService.saveAlarms(allAlarms);
 
+    }
+
+    private Calendar createCalendarWithDefaultValues() {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, 6);
+        cal.set(Calendar.MINUTE, 10);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
+        return cal;
     }
 
 }

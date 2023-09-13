@@ -5,8 +5,9 @@
     <string name="create">Create Alarm</string>
     <string name="createMincha">Mincha Reminder</string>
     <string name="delete">Delete</string>
+    <string name="edit_alarm">Edit Alarm</string>
     <string name="edit">Edit</string>
-    <string name="add">Add Alarm</string>
+    <string name="add_alarm">Add Alarm</string>
     <string name="alarm_duration_label">Alarm Duration (sec.)</string>
     <string name="alarm_time_label">Alarm Time</string>
     <string name="alarm_date_label">Alarm Date</string>

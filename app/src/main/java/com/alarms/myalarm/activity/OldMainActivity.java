@@ -46,15 +46,8 @@ public class OldMainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        Button createAlarmBtn = findViewById(R.id.createAlarmBtn);
-        View createMinchaAlarmBtn = findViewById(R.id.createMinchaAlarmBtn);
 
-        createAlarmBtn.setOnClickListener(v -> {
-            Intent intent = new Intent(this, SetAlarmActivity.class);
-            alarmDateAndTime = createCalendarWithDefaultValues();
-            intent.putExtra(IntentKeys.ALARM, new Alarm(AlarmType.REGULAR, 20, alarmDateAndTime));
-            startActivity(intent);
-        });
+        View createMinchaAlarmBtn = findViewById(R.id.createMinchaAlarmBtn);
 
         createMinchaAlarmBtn.setOnClickListener(v -> {
             Log.d("MainActivity", "createMinchaAlarmBtn");
@@ -134,15 +127,6 @@ public class OldMainActivity extends AppCompatActivity {
         cal.setTime(zcal.getSunset());
         cal.set(Calendar.MINUTE, cal.get(Calendar.MINUTE)  -15);
 
-        return cal;
-    }
-
-    private Calendar createCalendarWithDefaultValues() {
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.HOUR_OF_DAY, 6);
-        cal.set(Calendar.MINUTE, 10);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
         return cal;
     }
 
