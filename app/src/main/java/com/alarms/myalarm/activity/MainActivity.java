@@ -336,10 +336,9 @@ public class MainActivity extends AppCompatActivity {
         String hebrewDate = hdf.format(jd);
 
         String date = DateTimesFormats.dateFormat.format(alarmDate.getTime());
-
         String time = DateTimesFormats.timeFormat.format(alarmDate.getTime());
-
-        String text = "<br><font color=" + Color.GRAY + "  size=3 >&nbsp;&nbsp;&nbsp;Alarm will start at: </font><br>" +
+        String label = getString(R.string.alarm_will_start);
+        String text = "<br><font color=" + Color.GRAY + "  size=3 >&nbsp;&nbsp;&nbsp;" + label + " </font><br>" +
                 "<font size=30 color=" + Color.BLACK + ">&nbsp;<b> " + date +
                 "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + hebrewDate + "</b>" +
                 "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + time +

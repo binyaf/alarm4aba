@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">DosAlarm</string>
-    <string name="save">Save</string>
-    <string name="create">Create Alarm</string>
-    <string name="createMincha">Mincha Reminder</string>
-    <string name="delete">Delete</string>
-    <string name="edit_alarm">Edit Alarm</string>
-    <string name="edit">Edit</string>
-    <string name="add_alarm">Add Alarm</string>
-    <string name="alarm_duration_label">Alarm Duration (sec.)</string>
-    <string name="alarm_time_label">Alarm Time</string>
-    <string name="alarm_date_label">Alarm Date</string>
+    <string name="save">שמור</string>
+    <string name="create">הוסף התראה</string>
+    <string name="createMincha">תזכורת לתפילת מנחה</string>
+    <string name="delete">מחר</string>
+    <string name="edit_alarm">ערוך התראה</string>
+    <string name="edit">ערוך</string>
+    <string name="add_alarm">הוסף התראה</string>
+    <string name="alarm_duration_label">משך ההתראה (שניות)</string>
+    <string name="alarm_time_label">שעה</string>
+    <string name="alarm_date_label">תאריך</string>
     <string name="limit_data_usage">prefs_limit_data_usage</string>
     <string name="stream_video">Only stream HD video on Wi-Fi</string>
     <string name="limit_mobile_usage">Limit mobile data usage</string>
@@ -25,9 +25,10 @@
     <string name="restricted_mode_description">Restricted Mode</string>
     <string name="prefs_enable_stats">prefs_enable_stats</string>
     <string name="enable_stats">Enable stats for nerds</string>
-    <string name="todaysZmanim">Today\'s Zemanim</string>
-    <string name="alarm_will_start">Alarm will start at:</string>
-    \
+    <string name="todaysZmanim">זמני היום</string>
+    <string name="alarm_will_start">ההתראה תופעל ב:</string>
+
+
     <string-array name="pref_upload_quality_entries">
         <item>360p</item>
         <item>480p</item>
