@@ -128,7 +128,7 @@ public class SetAlarmActivity extends AppCompatActivity {
             } else {
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("Warning!")
+                builder.setTitle(getString(R.string.warning))
                         .setMessage(Html.fromHtml("alarm is in the past"))
                         .setIcon(R.drawable.warning_icon)
                         .setPositiveButton("OK", (dialog, which) -> dialog.dismiss()).create();

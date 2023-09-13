@@ -305,13 +305,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (lateForShma) {
-            html += "Your alarm is after Sof Zman Shma (MGA: "+ timeFormat.format(szMGA) + ", GRA " +
-                    timeFormat.format(szGRA) +")<br>";
+           html += getString(R.string.alarm_after_shma, timeFormat.format(szMGA), timeFormat.format(szGRA)) + "<br>";
         }
 
         if (lateForTfila) {
-            html += "Your alarm is after Sof Zman Tfila (MGA: "+ timeFormat.format(szTfilaMGA) + ", GRA " +
-                    timeFormat.format(szTfilaGRA) +")";
+            html += getString(R.string.alarm_after_tfilah, timeFormat.format(szTfilaMGA), timeFormat.format(szTfilaGRA));
         }
         html += "</font>";
         return html;
@@ -319,7 +317,7 @@ public class MainActivity extends AppCompatActivity {
 
     private AlertDialog createAlertDialog(String msg) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Warning!")
+        builder.setTitle(getString(R.string.warning))
                 .setMessage(Html.fromHtml(msg))
                 .setIcon(R.drawable.warning_icon)
                 .setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
@@ -354,7 +352,7 @@ public class MainActivity extends AppCompatActivity {
 
     private AlertDialog createTodayZmanimAlertDialog(String msg) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Today's Zmanim")
+        builder.setTitle(getString(R.string.todays_zmanim))
                 .setMessage(Html.fromHtml(msg))
                 .setIcon(R.drawable.time_icon)
                 .setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
@@ -369,7 +367,6 @@ public class MainActivity extends AppCompatActivity {
         zcal.setGeoLocation(locationService.getGeoLocation());
 
         long midDay  = zcal.getChatzos().getTime();
-
         long szGRA = zcal.getSofZmanShmaGRA().getTime();
         long szMGA = zcal.getSofZmanShmaMGA().getTime();
         long szTfilaGRA  = zcal.getSofZmanTfilaGRA().getTime();
@@ -378,12 +375,12 @@ public class MainActivity extends AppCompatActivity {
 
         DateFormat timeFormat = DateTimesFormats.timeFormat;
         return
-                "<br> Latest Shema MGA: " + timeFormat.format(szMGA) + "<br><br>" +
-                        " Latest Shema GRA: " + timeFormat.format(szGRA) + "<br><br>" +
-                        " Latest Shachris MGA: " + timeFormat.format(szTfilaMGA) + "<br><br>" +
-                        " Latest Shachris  GRA: " + timeFormat.format(szTfilaGRA) + "<br><br>" +
-                        " Midday: " + timeFormat.format(midDay) + "<br><br>" +
-                        " Sunset: " + timeFormat.format(sunset);
+                "<br>" +  getString(R.string.latest_shma_gra, timeFormat.format(szGRA))  + " <br><br>" +
+                          getString(R.string.latest_shma_gra, timeFormat.format(szMGA))  + " <br><br>" +
+                          getString(R.string.latest_shacharis_mga, timeFormat.format(szTfilaMGA)) + " <br><br>" +
+                          getString(R.string.latest_shacharis_gra, timeFormat.format(szTfilaGRA)) +  " <br><br>" +
+                          getString(R.string.midday, timeFormat.format(midDay)) +  " <br><br>" +
+                          getString(R.string.sunset, timeFormat.format(sunset));
     }
 
 }

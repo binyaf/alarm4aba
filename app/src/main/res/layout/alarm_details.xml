@@ -116,7 +116,7 @@
         android:layout_centerInParent="true"
         android:layout_gravity="center"
         android:gravity="bottom|center"
-        android:text="@string/todaysZmanim"
+        android:text="@string/todays_zmanim"
         android:textColor="#3434AD" />
 
     <ImageView

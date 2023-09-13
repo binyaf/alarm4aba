@@ -7,6 +7,7 @@
     <string name="delete">Delete</string>
     <string name="edit_alarm">Edit Alarm</string>
     <string name="edit">Edit</string>
+    <string name="warning">Warning</string>
     <string name="add_alarm">Add Alarm</string>
     <string name="alarm_duration_label">Alarm Duration (sec.)</string>
     <string name="alarm_time_label">Alarm Time</string>
@@ -25,9 +26,18 @@
     <string name="restricted_mode_description">Restricted Mode</string>
     <string name="prefs_enable_stats">prefs_enable_stats</string>
     <string name="enable_stats">Enable stats for nerds</string>
-    <string name="todaysZmanim">Today\'s Zemanim</string>
+    <string name="todays_zmanim">Today\'s Zemanim</string>
     <string name="alarm_will_start">Alarm will start at:</string>
-    \
+    <string name="alarm_after_shma">Your alarm is after Sof Zman Shma (MGA: "+ %1$s + ", GRA " + %2$s +")</string>
+    <string name="alarm_after_tfilah">Your alarm is after Sof Zman Tfila (MGA: "+ %1$s + ", GRA " + %2$s +")</string>
+    <string name="latest_shma_mga">Latest Shema MGA: %1$s</string>
+    <string name="latest_shma_gra">Latest Shema GRA: %1$s</string>
+    <string name="latest_shacharis_mga">Latest Shacharis MGA: %1$s</string>
+    <string name="latest_shacharis_gra">Latest Shachris GRA: %1$s</string>
+    <string name="midday">Midday: %1$s</string>
+    <string name="sunset">Sunset: %1$s</string>
+
+
     <string-array name="pref_upload_quality_entries">
         <item>360p</item>
         <item>480p</item>
