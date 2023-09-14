@@ -274,26 +274,28 @@ public class MainActivity extends AppCompatActivity {
 
         long midDay  = zcal.getChatzos().getTime();
 
-        long szGRA = zcal.getSofZmanShmaGRA().getTime();
         long szMGA = zcal.getSofZmanShmaMGA().getTime();
+        long szGRA = zcal.getSofZmanShmaGRA().getTime();
         long szTfilaGRA  = zcal.getSofZmanTfilaGRA().getTime();
         long szTfilaMGA  = zcal.getSofZmanTfilaMGA().getTime();
 
         DateFormat timeFormat = DateTimesFormats.timeFormat;
+        String szMGAStr = timeFormat.format(szMGA);
+        String szGRAStr = timeFormat.format(szGRA);
+        String szTfilaMgaStr = timeFormat.format(szTfilaMGA);
+        String szTfilaGRAStr = timeFormat.format(szTfilaGRA);
+
         Log.d("ALARM",
                 " type: " + alarm.getType() + " | " +
                 " now: " + timeFormat.format(Calendar.getInstance().getTime()) + " | " +
                 " alarm time: " + timeFormat.format(alarmDateAndTime) + " | " +
-                " sz Shma GRA: " + timeFormat.format(szGRA) + " | " +
-                " sz shma MGA: " + timeFormat.format(szMGA) + " | " +
-                " sz tfila GRA: " + timeFormat.format(szTfilaGRA) + " | " +
-                " sz tfila MGA: " + timeFormat.format(szTfilaMGA) + " | " +
+                " sz Shma MGa: " + szMGAStr + " | sz shma GRA: " + szGRAStr + " | " +
+                " sz tfila GRA: " + szTfilaMgaStr + " | sz tfila MGA: " + szTfilaGRAStr + " | " +
                 " sz Chazot: " + timeFormat.format(midDay));
 
         if (alarmTime > midDay) {
             return null;
         }
-        String html;
 
         boolean lateForShma = alarmTime > szGRA && alarmTime > szMGA;
         boolean lateForTfila = alarmTime > szTfilaGRA && alarmTime > szTfilaMGA;
@@ -301,18 +303,38 @@ public class MainActivity extends AppCompatActivity {
         if (!lateForShma && !lateForTfila) {
             return null;
         } else {
-            html = "<font size=25 color=" + Color.RED + ">";
+            return buildWarningMsgHtml(lateForShma, lateForTfila, szMGAStr, szGRAStr, szTfilaMgaStr, szTfilaGRAStr);
+
         }
+    }
+
+    private String buildWarningMsgHtml(boolean lateForShma, boolean lateForTfila, String szMGAStr, String szGRAStr,
+                                       String szTfilaMGAStr, String szTfilaGRAStr) {
+
+        StringBuilder sb = new StringBuilder();
 
         if (lateForShma) {
-           html += getString(R.string.alarm_after_shma, timeFormat.format(szMGA), timeFormat.format(szGRA)) + "<br>";
+            sb.append("<br>");
+            sb.append("<font size=25 color=" + Color.RED + ">");
+            sb.append(getString(R.string.alarm_after_shma)).append("<br>");
+            sb.append("</font>");
+            sb.append("<font size=25 color=" + Color.WHITE + ">");
+            sb.append(getString(R.string.latest_shma_mga, szMGAStr)).append("<br>");
+            sb.append(getString(R.string.latest_shma_gra, szGRAStr)).append("<br>");
+            sb.append("</font>");
         }
 
         if (lateForTfila) {
-            html += getString(R.string.alarm_after_tfilah, timeFormat.format(szTfilaMGA), timeFormat.format(szTfilaGRA));
+            sb.append("<br>");
+            sb.append("<font size=25 color=" + Color.RED + ">");
+            sb.append(getString(R.string.alarm_after_tfilah)).append("<br>");
+            sb.append("</font>");
+            sb.append("<font size=25 color=" + Color.WHITE + ">");
+            sb.append(getString(R.string.latest_shacharis_mga, szTfilaMGAStr)).append("<br>");
+            sb.append(getString(R.string.latest_shacharis_gra, szTfilaGRAStr)).append("<br>");
+            sb.append("</font>");
         }
-        html += "</font>";
-        return html;
+        return sb.toString();
     }
 
     private AlertDialog createAlertDialog(String msg) {
@@ -348,8 +370,6 @@ public class MainActivity extends AppCompatActivity {
         return text;
     }
 
-
-
     private AlertDialog createTodayZmanimAlertDialog(String msg) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.todays_zmanim))
@@ -375,8 +395,8 @@ public class MainActivity extends AppCompatActivity {
 
         DateFormat timeFormat = DateTimesFormats.timeFormat;
         return
-                "<br>" +  getString(R.string.latest_shma_gra, timeFormat.format(szGRA))  + " <br><br>" +
-                          getString(R.string.latest_shma_gra, timeFormat.format(szMGA))  + " <br><br>" +
+                "<br>" +  getString(R.string.latest_shma_gra, timeFormat.format(szMGA))  + " <br><br>" +
+                          getString(R.string.latest_shma_mga, timeFormat.format(szGRA))  + " <br><br>" +
                           getString(R.string.latest_shacharis_mga, timeFormat.format(szTfilaMGA)) + " <br><br>" +
                           getString(R.string.latest_shacharis_gra, timeFormat.format(szTfilaGRA)) +  " <br><br>" +
                           getString(R.string.midday, timeFormat.format(midDay)) +  " <br><br>" +

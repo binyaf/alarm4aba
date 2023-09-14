@@ -4,7 +4,7 @@
     <string name="save">שמור</string>
     <string name="create">הוסף התראה</string>
     <string name="createMincha">תזכורת לתפילת מנחה</string>
-    <string name="delete">מחר</string>
+    <string name="delete">מחק</string>
     <string name="edit_alarm">ערוך התראה</string>
     <string name="edit">ערוך</string>
     <string name="warning">אזהרה</string>
@@ -26,10 +26,10 @@
     <string name="restricted_mode_description">Restricted Mode</string>
     <string name="prefs_enable_stats">prefs_enable_stats</string>
     <string name="enable_stats">Enable stats for nerds</string>
-    <string name="todays_zmanim">זמני היום</string>
+    <string name="todays_zmanim">זמני היום (ירושלים)</string>
     <string name="alarm_will_start">ההתראה תופעל ב:</string>
-    <string name="alarm_after_shma">%2$s  :גרא     ( %1$s  :מגן אברהם) ההתראה שלך היא לאחר סוף זמן קריאת שמע</string>
-    <string name="alarm_after_tfilah">%2$s  :גרא     ( %1$s  :מגן אברהם) ההתראה שלך היא לאחר סוף זמן תפילה</string>
+    <string name="alarm_after_shma">ההתראה שלך היא לאחר סוף זמן קריאת שמע</string>
+    <string name="alarm_after_tfilah">ההתראה שלך היא לאחר סוף זמן תפילה</string>
     <string name="latest_shma_mga">סוף זמן קריאת שמע מגן אברהם: %1$s</string>
     <string name="latest_shma_gra">סוף זמן קריאת שמע גרא: %1$s</string>
     <string name="latest_shacharis_mga">סוף זמן תפילה מגן אברהם: %1$s</string>
