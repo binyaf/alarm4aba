@@ -7,10 +7,12 @@ import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
@@ -27,8 +29,10 @@ import com.alarms.myalarm.types.IntentKeys;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.UUID;
 
 public class SetAlarmActivity extends AppCompatActivity {
@@ -36,14 +40,14 @@ public class SetAlarmActivity extends AppCompatActivity {
     private AlarmManager alarmManager;
     private DatePickerDialog datePickerDialog;
     private TimePickerDialog timePickerDialog;
-
     private TextView dateText;
     private TextView timeText;
     private final DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyy", Locale.US);
     private final DateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.US);
-    private final DateFormat dateTimeFormat = new SimpleDateFormat("dd/MM/yy HH:mm:ss", Locale.US);
+
     private NumberPicker numberPicker;
 
+    private EditText alarmLabelEditText;
     private AlarmsPersistService alarmsPersistService;
 
     @Override
@@ -53,7 +57,6 @@ public class SetAlarmActivity extends AppCompatActivity {
         alarmsPersistService = new AlarmsPersistService(getApplicationContext());
         TextView title = findViewById(R.id.addEditAlarmTitle);
         final Alarm alarm;
-      //  Bundle extras = getIntent().getExtras();
 
         if (getIntent() != null && getIntent().getSerializableExtra(IntentKeys.ALARM) != null) {
             alarm = (Alarm) getIntent().getSerializableExtra(IntentKeys.ALARM);
@@ -65,7 +68,6 @@ public class SetAlarmActivity extends AppCompatActivity {
         }
 
         Calendar alarmDateAndTime = alarm.getDateAndTime();
-        int alarmDuration = alarm.getDuration();
 
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
@@ -74,14 +76,35 @@ public class SetAlarmActivity extends AppCompatActivity {
         timeText = findViewById(R.id.selectTimeText);
         timeText.setText(timeFormat.format(alarmDateAndTime.getTime()));
         numberPicker = findViewById(R.id.numberPicker);
-        numberPicker.setTextColor(Color.BLACK);
+        alarmLabelEditText = findViewById(R.id.alarmLabel);
 
-        String[] alarmDurationValues = new String[]{"5", "10", "15","20"
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            numberPicker.setTextColor(Color.BLACK);
+        }
+
+        Map<Integer, Integer> alarmDurationMap = new TreeMap<Integer, Integer>();
+        alarmDurationMap.put(5, 0);
+        alarmDurationMap.put(10,1);
+        alarmDurationMap.put(15, 2);
+        alarmDurationMap.put(20, 3);
+        alarmDurationMap.put(25, 4);;
+        alarmDurationMap.put(30, 5);
+        alarmDurationMap.put(40, 6);
+        alarmDurationMap.put(50, 7);
+        alarmDurationMap.put(60, 8);
+        alarmDurationMap.put(70, 9);
+        alarmDurationMap.put(80, 10);
+        alarmDurationMap.put(90, 11);
+        alarmDurationMap.put(100, 12);
+        alarmDurationMap.put(110, 13);
+        alarmDurationMap.put(120, 14);
+
+        String[] alarmDisplayedValues = new String[]{"5", "10", "15","20"
                 ,"25","30","40","50","60","70","80","90","100","110","120"};
         numberPicker.setMinValue(0);
-        numberPicker.setMaxValue(alarmDurationValues.length - 1);
-        numberPicker.setDisplayedValues(alarmDurationValues);
-        numberPicker.setValue((alarmDuration/10)-1);
+        numberPicker.setMaxValue(alarmDisplayedValues.length - 1);
+        numberPicker.setDisplayedValues(alarmDisplayedValues);
+        numberPicker.setValue(alarmDurationMap.get(alarm.getDuration()));
 
         timeText.setOnClickListener(v -> {
             timePickerDialog = new TimePickerDialog(this,
@@ -92,7 +115,7 @@ public class SetAlarmActivity extends AppCompatActivity {
                         timeText.setText(timeTxt);
                         Log.d("TAG", "Selected time: " + timeTxt);
                     }, alarmDateAndTime.get(Calendar.HOUR_OF_DAY),
-                    alarmDateAndTime.get(Calendar.MINUTE), false);
+                    alarmDateAndTime.get(Calendar.MINUTE), true);
             timePickerDialog.show();
         });
 
@@ -118,8 +141,10 @@ public class SetAlarmActivity extends AppCompatActivity {
 
             if (alarmDateAndTime.after(Calendar.getInstance())) {
                 int value = numberPicker.getValue();
-                alarm.setDuration(Integer.parseInt(alarmDurationValues[value]));
+                alarm.setDuration(Integer.valueOf(alarmDisplayedValues[value]));
 
+                String labelStr = alarmLabelEditText.getText().toString();
+                alarm.setLabel(labelStr);
                 saveAlarm(alarm);
 
                Intent i = new Intent(this, MainActivity.class);
@@ -145,9 +170,6 @@ public class SetAlarmActivity extends AppCompatActivity {
         }
 
         PendingIntent pendingIntent = IntentCreator.getAlarmPendingIntent(this, getApplication(), alarm);
-        Log.d("ALARM", "now: " + dateTimeFormat.format(Calendar.getInstance().getTime()) + " | " +
-                "alarm: " + dateTimeFormat.format(alarm.getDateAndTime().getTime())  + " | " +
-                "type: " + alarm.getType().toString());
 
         AlarmManager.AlarmClockInfo alarmClockInfo =
                 new AlarmManager.AlarmClockInfo(alarm.getDateAndTime().getTimeInMillis(), pendingIntent);

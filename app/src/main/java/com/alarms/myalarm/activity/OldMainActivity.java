@@ -10,7 +10,6 @@ import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,8 +31,6 @@ public class OldMainActivity extends AppCompatActivity {
 
     private AlarmManager alarmManager;
 
-    private int alarmDurationSec;
-
     private static final int minchaAlarmDuration = 10;
 
     private LocationService locationService;
@@ -43,11 +40,11 @@ public class OldMainActivity extends AppCompatActivity {
         Log.d("OldMainActivity", "onCreate");
         locationService = new LocationService();
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.old_activity_main);
 
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
-        View createMinchaAlarmBtn = findViewById(R.id.createMinchaAlarmBtn);
+        View createMinchaAlarmBtn = findViewById(R.id.location);
 
         createMinchaAlarmBtn.setOnClickListener(v -> {
             Log.d("MainActivity", "createMinchaAlarmBtn");

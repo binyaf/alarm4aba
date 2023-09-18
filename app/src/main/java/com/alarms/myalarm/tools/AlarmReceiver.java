@@ -21,10 +21,7 @@ import com.alarms.myalarm.types.IntentKeys;
 import java.util.Map;
 
 public class AlarmReceiver extends BroadcastReceiver {
-
-
     private AlarmsPersistService alarmsPersistService;
-
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     public void onReceive(Context context, Intent intent) {

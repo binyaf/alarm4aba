@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    <uses-permission android:name="android.permission.VIBRATE"/>
+
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
-    <uses-permission android:name="com.android.alarm.permission.SET_ALARM"/>
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -14,16 +16,34 @@
         android:theme="@style/Theme.DosAlarm"
         tools:targetApi="31">
         <activity
+            android:name=".activity.SettingsActivity"
+            android:exported="false"
+            android:label="@string/title_activity_settings" />
+        <activity
             android:name=".activity.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.AppCompat">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.SetAlarmActivity" android:theme="@style/Theme.AppCompat"> </activity>
-        <receiver android:name="com.alarms.myalarm.tools.AlarmReceiver" android:exported="true"></receiver>
+        <activity
+            android:name=".activity.SetAlarmActivity"
+            android:theme="@style/Theme.AppCompat"></activity>
+
+        <receiver
+            android:name=".tools.AlarmReceiver"
+            android:exported="true" />
+        <receiver
+            android:name=".tools.BootReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

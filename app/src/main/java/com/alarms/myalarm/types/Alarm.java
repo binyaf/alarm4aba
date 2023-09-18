@@ -13,8 +13,9 @@ public class Alarm implements Serializable {
 
     private AlarmType type;
     private Calendar dateAndTime;
-
     private int duration;
+
+    private String label;
 
     public Alarm(AlarmType alarmType, int alarmDurationSec, Calendar alarmDateAndTime) {
         this.id = UUID.randomUUID().hashCode();
@@ -55,5 +56,11 @@ public class Alarm implements Serializable {
         this.duration = duration;
     }
 
+    public String getLabel() {
+        return label;
+    }
 
+    public void setLabel(String label) {
+        this.label = label;
+    }
 }

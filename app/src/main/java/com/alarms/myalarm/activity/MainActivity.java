@@ -18,6 +18,8 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ImageSpan;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -41,8 +43,12 @@ import com.kosherjava.zmanim.hebrewcalendar.HebrewDateFormatter;
 import com.kosherjava.zmanim.hebrewcalendar.JewishDate;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 
@@ -50,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
 
     private Button editAlarmBtn;
     private Button deleteAlarmBtn;
-
 
     private AlarmManager alarmManager;
 
@@ -75,9 +80,9 @@ public class MainActivity extends AppCompatActivity {
         Button addAlarmBtn = findViewById(R.id.addAdditionAlarmBtn);
         linearLayout = findViewById(R.id.alarmsLayout);
 
-        Map<Integer, Alarm> allAlarms = alarmsPersistService.getAlarms();
+        List<Alarm> allAlarms = alarmsPersistService.getAlarmsList();
 
-        if (allAlarms.keySet().size() >= MAX_ALARMS) {
+        if (allAlarms.size() >= MAX_ALARMS) {
             addAlarmBtn.setEnabled(false);
             int backgroundColor = ContextCompat.getColor(this, R.color.grey); // Replace with your color resource
             addAlarmBtn.setBackgroundTintList(ColorStateList.valueOf(backgroundColor));
@@ -91,10 +96,11 @@ public class MainActivity extends AppCompatActivity {
         // Set margins (left, top, right, bottom) as needed
         layoutParams.setMargins(10, 50, 10, 10);
 
-        for (Integer alarmId : allAlarms.keySet()) {
-            Alarm alarm = allAlarms.get(alarmId);
-            if (alarm != null) {
-                createTextViewForAlarm(alarm, allAlarms, layoutParams);
+        for (Alarm alarm : allAlarms) {
+            if (alarm != null && alarm.getDateAndTime().after(Calendar.getInstance())) {
+                createTextViewForAlarm(alarm, layoutParams);
+            } else { //for some reason we have an alarm in the  past - let's remove it
+                alarmsPersistService.removeAlarm(alarm);
             }
         }
 
@@ -113,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void createTextViewForAlarm(Alarm alarm, Map<Integer, Alarm> allAlarms, LinearLayout.LayoutParams layoutParams) {
+    private void createTextViewForAlarm(Alarm alarm, LinearLayout.LayoutParams layoutParams) {
 
         TextView textView = new TextView(getApplicationContext());
         Calendar alarmDateAndTime = alarm.getDateAndTime();
@@ -124,13 +130,16 @@ public class MainActivity extends AppCompatActivity {
             String warning = buildWarningMsg(alarm);
 
             if (warning != null) {
-                String fullMsg = html + "<br>warning  ";
+                String warningStr = getString(R.string.warning);
+                String fullMsg = html + warningStr + "&nbsp;&nbsp;";
                 Spanned spanned = Html.fromHtml(fullMsg);
-                SpannableString spannableString = new SpannableString(spanned);
                 Drawable icon = getResources().getDrawable(R.drawable.warning_icon);
                 icon.setBounds(0, 0, icon.getIntrinsicWidth(), icon.getIntrinsicHeight());
                 ImageSpan imageSpan = new ImageSpan(icon, ImageSpan.ALIGN_BOTTOM);
+
+                SpannableString spannableString = new SpannableString(spanned);
                 int textLength = spannableString.length();
+
                 spannableString.setSpan(imageSpan, textLength -1, textLength, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
 
                 ClickableSpan clickableSpan = new ClickableSpan() {
@@ -148,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
                         ds.setColor(ContextCompat.getColor(getApplicationContext(), R.color.light_blue));
                     }
                 };
+
                 spannableString.setSpan(clickableSpan, textLength -1, textLength, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
                 textView.setMovementMethod(LinkMovementMethod.getInstance());
                 textView.setHighlightColor(Color.TRANSPARENT);
@@ -216,7 +226,7 @@ public class MainActivity extends AppCompatActivity {
                             alarmManager.cancel(pendingIntent);
                             Log.d("ALARM", "Alarm was canceled");
                         }
-                        removeAlarmFromInternalStorage(alarm, allAlarms);
+                        alarmsPersistService.removeAlarm(alarm);
                         startActivity(new Intent(this, MainActivity.class));
                     });
 
@@ -239,11 +249,6 @@ public class MainActivity extends AppCompatActivity {
         textView.setLayoutParams(layoutParams);
         linearLayout.addView(textView);
 
-    }
-
-    private void removeAlarmFromInternalStorage(Alarm alarmToRemove, Map<Integer, Alarm> allAlarms) {
-        allAlarms.remove(alarmToRemove.getId(), alarmToRemove);
-        alarmsPersistService.saveAlarms(allAlarms);
     }
 
     private void deselectAllTextViews() {
@@ -370,6 +375,22 @@ public class MainActivity extends AppCompatActivity {
         return text;
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_settings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private AlertDialog createTodayZmanimAlertDialog(String msg) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.todays_zmanim))
@@ -394,8 +415,7 @@ public class MainActivity extends AppCompatActivity {
         long sunset  = zcal.getSunset().getTime();
 
         DateFormat timeFormat = DateTimesFormats.timeFormat;
-        return
-                "<br>" +  getString(R.string.latest_shma_gra, timeFormat.format(szMGA))  + " <br><br>" +
+        return  "<br>" +  getString(R.string.latest_shma_gra, timeFormat.format(szMGA))  + " <br><br>" +
                           getString(R.string.latest_shma_mga, timeFormat.format(szGRA))  + " <br><br>" +
                           getString(R.string.latest_shacharis_mga, timeFormat.format(szTfilaMGA)) + " <br><br>" +
                           getString(R.string.latest_shacharis_gra, timeFormat.format(szTfilaGRA)) +  " <br><br>" +
