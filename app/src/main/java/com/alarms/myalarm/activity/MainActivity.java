@@ -116,7 +116,12 @@ public class MainActivity extends AppCompatActivity {
             AlertDialog dialog = createTodayZmanimAlertDialog(getTodaysZmanim());
             dialog.show();
         });
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.upper_bar, menu);
+        return true;
     }
 
     private void createTextViewForAlarm(Alarm alarm, LinearLayout.LayoutParams layoutParams) {
@@ -373,22 +378,6 @@ public class MainActivity extends AppCompatActivity {
             text += "<br><font color=" + Color.GRAY + "  size=3 >15 min. before sunset</font><br>";
         }
         return text;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_settings) {
-            Intent intent = new Intent(this, SettingsActivity.class);
-            startActivity(intent);
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     private AlertDialog createTodayZmanimAlertDialog(String msg) {
