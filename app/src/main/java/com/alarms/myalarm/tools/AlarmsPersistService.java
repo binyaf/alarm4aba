@@ -3,6 +3,7 @@ package com.alarms.myalarm.tools;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.util.Pair;
 
 import com.alarms.myalarm.types.Alarm;
 import com.google.gson.Gson;
@@ -21,15 +22,16 @@ public class AlarmsPersistService {
     private final Gson gson;
     private final Context context;
 
+    private SharedPreferences preferences;
+
     private static final String ALARMS_KEY = "alarms";
     public AlarmsPersistService(Context context) {
         this.context = context;
         this.gson = new Gson();
+        this.preferences = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
     }
 
     public Map<Integer, Alarm> getAlarms() {
-
-        SharedPreferences preferences = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
 
         String alarmsJson = preferences.getString(ALARMS_KEY, "");
         Map<Integer, Alarm> alarmsMap = new HashMap<>();
@@ -60,7 +62,6 @@ public class AlarmsPersistService {
     }
 
     public void saveAlarms(Map<Integer, Alarm> allAlarms) {
-        SharedPreferences preferences = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         String json = gson.toJson(allAlarms);
         editor.putString(ALARMS_KEY, json);
@@ -74,4 +75,15 @@ public class AlarmsPersistService {
         saveAlarms(alarms);
         Log.d("AlarmsPersistService", "removed alarm");
     }
+
+    public Pair<Long, Long> getLocation() {
+        long longitude = preferences.getLong("Longitude", 1l);
+        long latitude = preferences.getLong("latitude", 1l);
+        return new Pair<>(longitude, latitude);
+    }
+
+    public String getLocationName() {
+        return preferences.getString("location", "fasdfsdf");
+    }
+
 }

@@ -4,6 +4,7 @@
     <!-- Settings, should always be in the overflow -->
     <item android:id="@+id/action_settings"
         android:icon="@drawable/settings"
-        app:showAsAction="always"/>
+        app:showAsAction="always"
+        android:title="@string/settings" />
 
 </menu>

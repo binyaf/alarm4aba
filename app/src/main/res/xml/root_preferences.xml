@@ -1,0 +1,24 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory app:title="@string/messages_header">
+
+    <ListPreference
+        app:defaultValue="Jerusalem"
+        app:entries="@array/pref_location_entries"
+        app:entryValues="@array/pref_location_values"
+        app:key="location"
+        app:title="@string/pref_location_title"
+        app:useSimpleSummaryProvider="true" />
+
+    <ListPreference
+    app:defaultValue="90"
+    app:entries="@array/pref_alarm_duration_entries"
+    app:entryValues="@array/pref_alarm_duration_values"
+    app:key="alarm_duration"
+    app:title="@string/pref_alarm_duration_title"
+    app:useSimpleSummaryProvider="true" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

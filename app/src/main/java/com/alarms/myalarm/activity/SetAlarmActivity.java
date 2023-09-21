@@ -6,6 +6,7 @@ import android.app.DatePickerDialog;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 
 import com.alarms.myalarm.R;
 import com.alarms.myalarm.tools.AlarmsPersistService;
@@ -58,12 +60,14 @@ public class SetAlarmActivity extends AppCompatActivity {
         TextView title = findViewById(R.id.addEditAlarmTitle);
         final Alarm alarm;
 
+
         if (getIntent() != null && getIntent().getSerializableExtra(IntentKeys.ALARM) != null) {
             alarm = (Alarm) getIntent().getSerializableExtra(IntentKeys.ALARM);
             title.setText(R.string.edit_alarm);
         }  else {
             Calendar alarmDateAndTime = createCalendarWithDefaultValues();
-            alarm = new Alarm(AlarmType.REGULAR, 20,alarmDateAndTime);
+            int defaultDuration = getDefaultDuration();
+            alarm = new Alarm(AlarmType.REGULAR, defaultDuration,alarmDateAndTime);
             title.setText(R.string.add_alarm);
         }
 
@@ -161,6 +165,14 @@ public class SetAlarmActivity extends AppCompatActivity {
                 alertDialog.show();
             }
         });
+    }
+
+    private int getDefaultDuration() {
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        Map<String, ?> all = sharedPreferences.getAll();
+        return all.get("alarm_duration") != null ? Integer.valueOf((String)all.get("alarm_duration")) :20;
+
     }
 
     private void saveAlarm(Alarm alarm) {

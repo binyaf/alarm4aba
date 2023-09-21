@@ -44,7 +44,7 @@ public class OldMainActivity extends AppCompatActivity {
 
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
-        View createMinchaAlarmBtn = findViewById(R.id.location);
+        View createMinchaAlarmBtn = findViewById(R.id.tmp);
 
         createMinchaAlarmBtn.setOnClickListener(v -> {
             Log.d("MainActivity", "createMinchaAlarmBtn");

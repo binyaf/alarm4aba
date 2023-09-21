@@ -27,7 +27,8 @@
     <string name="restricted_mode_description">Restricted Mode</string>
     <string name="prefs_enable_stats">prefs_enable_stats</string>
     <string name="enable_stats">Enable stats for nerds</string>
-    <string name="todays_zmanim">זמני היום (ירושלים)</string>
+    <string name="todays_zmanim_short">זמני היום</string>
+    <string name="todays_zmanim">זמני היום - %1$s</string>
     <string name="alarm_will_start">ההתראה תופעל ב:</string>
     <string name="alarm_after_shma">ההתראה שלך היא לאחר סוף זמן קריאת שמע</string>
     <string name="alarm_after_tfilah">ההתראה שלך היא לאחר סוף זמן תפילה</string>
@@ -38,6 +39,8 @@
     <string name="midday">חצות: %1$s</string>
     <string name="sunset">שקיעה: %1$s</string>
     <string name="about">אודות</string>
+    <string name="settings">הגדרות</string>
+    <string name="title_activity_settings">הגדרות</string>
 
     <string-array name="pref_upload_quality_entries">
         <item>360p</item>
@@ -76,4 +79,31 @@
         <item>On any network</item>
     </string-array>
 
+    <!-- Preference Titles -->
+    <string name="pref_alarm_duration_title">ברירת המחדל למשך ההתראה (שניות)</string>
+    <string name="messages_header">ברירות מחדל</string>
+    <string name="sync_header">אודות</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+
+    <!-- Preference locations -->
+    <string name="pref_location_title">מיקום</string>
+    <string name="jerusalem">ירושלים</string>
+    <string name="tlv">תל אביב</string>
+    <string name="haifa">חיפה</string>
+    <string name="mitzpe_netofa">מצפה נטופה</string>
+    <string name="migdal_oz">מגדל עןז</string>
+    <string name="mazkeret_batia">מזכרת בתיה</string>
+    <string name="rosh_zurim" >ראש צורים</string>
+    <string name="new_york_us">ניו יורק</string>
+    <string name="nice_fr">ניס (צרפת)</string>
 </resources>

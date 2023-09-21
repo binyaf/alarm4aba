@@ -12,5 +12,6 @@ public class TopBarActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.upper_bar, menu);
         return true;
     }
+
 }
 

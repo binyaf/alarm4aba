@@ -10,15 +10,15 @@
     <!-- Base application theme. -->
     <style name="Theme.DosAlarm" parent="Theme.AppCompat.Light">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/purple_700</item>
+        <item name="colorPrimary">@color/design_default_color_primary</item>
+        <item name="colorPrimaryVariant">@color/teal_200</item>
+        <item name="colorOnPrimary">@color/light_red</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/purple_700</item>
-        <item name="colorSecondaryVariant">@color/purple_700</item>
+        <item name="colorSecondary">@color/raspberry_pink</item>
+        <item name="colorSecondaryVariant">@color/magenta</item>
         <item name="colorOnSecondary">@color/purple_700</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">@color/purple_700</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
         <!-- Customize your theme here. -->
     </style>
 </resources>

@@ -27,7 +27,8 @@
     <string name="restricted_mode_description">Restricted Mode</string>
     <string name="prefs_enable_stats">prefs_enable_stats</string>
     <string name="enable_stats">Enable stats for nerds</string>
-    <string name="todays_zmanim">Today\'s Zemanim (Jerusalem)</string>
+    <string name="todays_zmanim_short">Today\'s Zemanim</string>
+    <string name="todays_zmanim">Today\'s Zemanim - %1$s</string>
     <string name="alarm_will_start">Alarm will start at:</string>
     <string name="alarm_after_shma">Your alarm is after Sof Zman Shma</string>
     <string name="alarm_after_tfilah">Your alarm is after Sof Zman Tfila</string>
@@ -38,6 +39,7 @@
     <string name="midday">Midday: %1$s</string>
     <string name="sunset">Sunset: %1$s</string>
     <string name="about">About</string>
+    <string name="settings">settings</string>
 
 
     <string-array name="pref_upload_quality_entries">
@@ -71,10 +73,39 @@
         <item>3</item>
         <item>4</item>
     </string-array>
+    <string name="title_activity_settings">Settings</string>
 
     <string-array name="pref_uploads">
         <item>Only when on Wi-Fi</item>
         <item>On any network</item>
     </string-array>
+
+    <!-- Preference Titles -->
+    <string name="pref_alarm_duration_title">Default alarm duration (sec.)</string>
+    <string name="messages_header">Defaults</string>
+    <string name="sync_header">About</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+
+    <!-- Preference locations -->
+    <string name="pref_location_title">Default location</string>
+    <string name="jerusalem">Jerusalem</string>
+    <string name="tlv">Tel Aviv</string>
+    <string name="haifa">Haifah</string>
+    <string name="mitzpe_netofa">Mitzpe Netofa</string>
+    <string name="migdal_oz">Migdal Oz</string>
+    <string name="mazkeret_batia">Mazkeret Batya</string>
+    <string name="rosh_zurim" >Rosh Tzurim</string>
+    <string name="new_york_us">New York</string>
+    <string name="nice_fr">Nice (France)</string>
 
 </resources>

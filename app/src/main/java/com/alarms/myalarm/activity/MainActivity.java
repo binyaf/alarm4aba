@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -18,6 +19,7 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ImageSpan;
 import android.util.Log;
+import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,6 +30,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.preference.PreferenceManager;
 
 import com.alarms.myalarm.R;
 import com.alarms.myalarm.tools.AlarmsPersistService;
@@ -43,10 +46,7 @@ import com.kosherjava.zmanim.hebrewcalendar.HebrewDateFormatter;
 import com.kosherjava.zmanim.hebrewcalendar.JewishDate;
 
 import java.text.DateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -56,13 +56,9 @@ public class MainActivity extends AppCompatActivity {
 
     private Button editAlarmBtn;
     private Button deleteAlarmBtn;
-
     private AlarmManager alarmManager;
-
     private LocationService locationService;
-
     private LinearLayout linearLayout;
-
     private AlarmsPersistService alarmsPersistService;
     public static final int MAX_ALARMS = 4;
 
@@ -71,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
         locationService = new LocationService();
         alarmsPersistService = new AlarmsPersistService(getApplicationContext());
+        String locationKey = getDefaultLocationKey();
         Log.d("MainActivity", "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.alarm_details);
@@ -79,8 +76,10 @@ public class MainActivity extends AppCompatActivity {
         editAlarmBtn = findViewById(R.id.editAlarmBtn);
         Button addAlarmBtn = findViewById(R.id.addAdditionAlarmBtn);
         linearLayout = findViewById(R.id.alarmsLayout);
-
         List<Alarm> allAlarms = alarmsPersistService.getAlarmsList();
+
+        TextView textView = findViewById(R.id.labelTextView);
+        textView.setText(getString(R.string.todays_zmanim, locationKey));
 
         if (allAlarms.size() >= MAX_ALARMS) {
             addAlarmBtn.setEnabled(false);
@@ -122,6 +121,16 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.upper_bar, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_settings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void createTextViewForAlarm(Alarm alarm, LinearLayout.LayoutParams layoutParams) {
@@ -382,7 +391,9 @@ public class MainActivity extends AppCompatActivity {
 
     private AlertDialog createTodayZmanimAlertDialog(String msg) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(getString(R.string.todays_zmanim))
+        Pair<Long, Long> location = alarmsPersistService.getLocation();
+
+        builder.setTitle(getString(R.string.todays_zmanim, getDefaultLocationKey()))
                 .setMessage(Html.fromHtml(msg))
                 .setIcon(R.drawable.time_icon)
                 .setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
@@ -412,4 +423,15 @@ public class MainActivity extends AppCompatActivity {
                           getString(R.string.sunset, timeFormat.format(sunset));
     }
 
+    private String getDefaultLocationKey() {
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        Map<String, ?> all = sharedPreferences.getAll();
+
+        if (all.get("location") != null) {
+           return (String)all.get("location");
+        }
+        return "";
+
+    }
 }
