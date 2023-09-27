@@ -114,7 +114,8 @@
         android:layout_height="51dp"
         android:gravity="center"
         android:textColor="@color/black"
-        android:hint="label"      />
+        android:hint="label"
+        android:textColorHint="@color/grey"/>
 
     <Button
         android:id="@+id/addAlarmOk"

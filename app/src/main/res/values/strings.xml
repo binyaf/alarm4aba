@@ -30,6 +30,7 @@
     <string name="todays_zmanim_short">Today\'s Zemanim</string>
     <string name="todays_zmanim">Today\'s Zemanim - %1$s</string>
     <string name="alarm_will_start">Alarm will start at:</string>
+    <string name="alarm_will_start_with_label">Alarm (%1$s) will start at:</string>
     <string name="alarm_after_shma">Your alarm is after Sof Zman Shma</string>
     <string name="alarm_after_tfilah">Your alarm is after Sof Zman Tfila</string>
     <string name="latest_shma_mga">Latest Shema MGA: %1$s</string>
@@ -97,15 +98,11 @@
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
 
     <!-- Preference locations -->
-    <string name="pref_location_title">Default location</string>
-    <string name="jerusalem">Jerusalem</string>
-    <string name="tlv">Tel Aviv</string>
-    <string name="haifa">Haifah</string>
-    <string name="mitzpe_netofa">Mitzpe Netofa</string>
-    <string name="migdal_oz">Migdal Oz</string>
-    <string name="mazkeret_batia">Mazkeret Batya</string>
-    <string name="rosh_zurim" >Rosh Tzurim</string>
-    <string name="new_york_us">New York</string>
-    <string name="nice_fr">Nice (France)</string>
+    <string name="pref_location_title">Your location</string>
+    <string name="JLM_IL">Jerusalem</string>
+    <string name="TLV_IL">Tel Aviv</string>
+    <string name="HAF_IL">Haifah</string>
+    <string name="NYC_US">New York</string>
+    <string name="LON_UK">London</string>
 
 </resources>

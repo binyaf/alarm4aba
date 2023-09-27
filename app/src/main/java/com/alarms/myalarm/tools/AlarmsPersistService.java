@@ -17,6 +17,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import kotlin.Triple;
+
 public class AlarmsPersistService {
 
     private final Gson gson;
@@ -76,14 +78,6 @@ public class AlarmsPersistService {
         Log.d("AlarmsPersistService", "removed alarm");
     }
 
-    public Pair<Long, Long> getLocation() {
-        long longitude = preferences.getLong("Longitude", 1l);
-        long latitude = preferences.getLong("latitude", 1l);
-        return new Pair<>(longitude, latitude);
-    }
 
-    public String getLocationName() {
-        return preferences.getString("location", "fasdfsdf");
-    }
 
 }

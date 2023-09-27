@@ -30,6 +30,7 @@
     <string name="todays_zmanim_short">זמני היום</string>
     <string name="todays_zmanim">זמני היום - %1$s</string>
     <string name="alarm_will_start">ההתראה תופעל ב:</string>
+    <string name="alarm_will_start_with_label">ההתראה (%1$s) תופעל ב:</string>
     <string name="alarm_after_shma">ההתראה שלך היא לאחר סוף זמן קריאת שמע</string>
     <string name="alarm_after_tfilah">ההתראה שלך היא לאחר סוף זמן תפילה</string>
     <string name="latest_shma_mga">סוף זמן קריאת שמע מגן אברהם: %1$s</string>
@@ -96,14 +97,10 @@
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
 
     <!-- Preference locations -->
-    <string name="pref_location_title">מיקום</string>
-    <string name="jerusalem">ירושלים</string>
-    <string name="tlv">תל אביב</string>
-    <string name="haifa">חיפה</string>
-    <string name="mitzpe_netofa">מצפה נטופה</string>
-    <string name="migdal_oz">מגדל עןז</string>
-    <string name="mazkeret_batia">מזכרת בתיה</string>
-    <string name="rosh_zurim" >ראש צורים</string>
-    <string name="new_york_us">ניו יורק</string>
-    <string name="nice_fr">ניס (צרפת)</string>
+    <string name="pref_location_title">המיקום שלך</string>
+    <string name="JLM_IL">ירושלים</string>
+    <string name="TLV_IL">תל אביב</string>
+    <string name="HAF_IL">חיפה</string>
+    <string name="NYC_US">ניו יורק</string>
+    <string name="LON_UK">לונדון</string>
 </resources>

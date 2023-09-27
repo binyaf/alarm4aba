@@ -81,27 +81,13 @@ public class SetAlarmActivity extends AppCompatActivity {
         timeText.setText(timeFormat.format(alarmDateAndTime.getTime()));
         numberPicker = findViewById(R.id.numberPicker);
         alarmLabelEditText = findViewById(R.id.alarmLabel);
+        alarmLabelEditText.setText(alarm.getLabel());
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             numberPicker.setTextColor(Color.BLACK);
         }
 
-        Map<Integer, Integer> alarmDurationMap = new TreeMap<Integer, Integer>();
-        alarmDurationMap.put(5, 0);
-        alarmDurationMap.put(10,1);
-        alarmDurationMap.put(15, 2);
-        alarmDurationMap.put(20, 3);
-        alarmDurationMap.put(25, 4);;
-        alarmDurationMap.put(30, 5);
-        alarmDurationMap.put(40, 6);
-        alarmDurationMap.put(50, 7);
-        alarmDurationMap.put(60, 8);
-        alarmDurationMap.put(70, 9);
-        alarmDurationMap.put(80, 10);
-        alarmDurationMap.put(90, 11);
-        alarmDurationMap.put(100, 12);
-        alarmDurationMap.put(110, 13);
-        alarmDurationMap.put(120, 14);
+        Map<Integer, Integer> alarmDurationMap = greateAlarmDurationMap();
 
         String[] alarmDisplayedValues = new String[]{"5", "10", "15","20"
                 ,"25","30","40","50","60","70","80","90","100","110","120"};
@@ -165,6 +151,27 @@ public class SetAlarmActivity extends AppCompatActivity {
                 alertDialog.show();
             }
         });
+    }
+
+    private Map<Integer, Integer> greateAlarmDurationMap() {
+        Map<Integer, Integer> alarmDurationMap = new TreeMap<Integer, Integer>();
+        alarmDurationMap.put(5, 0);
+        alarmDurationMap.put(10,1);
+        alarmDurationMap.put(15, 2);
+        alarmDurationMap.put(20, 3);
+        alarmDurationMap.put(25, 4);;
+        alarmDurationMap.put(30, 5);
+        alarmDurationMap.put(40, 6);
+        alarmDurationMap.put(50, 7);
+        alarmDurationMap.put(60, 8);
+        alarmDurationMap.put(70, 9);
+        alarmDurationMap.put(80, 10);
+        alarmDurationMap.put(90, 11);
+        alarmDurationMap.put(100, 12);
+        alarmDurationMap.put(110, 13);
+        alarmDurationMap.put(120, 14);
+
+        return alarmDurationMap;
     }
 
     private int getDefaultDuration() {

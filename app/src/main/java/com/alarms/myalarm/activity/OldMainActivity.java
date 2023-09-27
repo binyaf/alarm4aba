@@ -16,7 +16,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.alarms.myalarm.R;
 import com.alarms.myalarm.tools.IntentCreator;
-import com.alarms.myalarm.tools.LocationService;
 import com.alarms.myalarm.types.Alarm;
 import com.alarms.myalarm.types.AlarmType;
 import com.alarms.myalarm.types.IntentKeys;
@@ -33,12 +32,10 @@ public class OldMainActivity extends AppCompatActivity {
 
     private static final int minchaAlarmDuration = 10;
 
-    private LocationService locationService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("OldMainActivity", "onCreate");
-        locationService = new LocationService();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.old_activity_main);
 
@@ -57,9 +54,6 @@ public class OldMainActivity extends AppCompatActivity {
                 alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 1000, pendingIntent);
             }
 
-            AlarmManager.AlarmClockInfo alarmClockInfo =
-                    new AlarmManager.AlarmClockInfo(alarmDateAndTime.getTimeInMillis(), pendingIntent);
-            alarmManager.setAlarmClock(alarmClockInfo, pendingIntent);
 
             Intent i = new Intent(this, MainActivity.class);
 
@@ -118,7 +112,7 @@ public class OldMainActivity extends AppCompatActivity {
 
         ZmanimCalendar zcal = new ZmanimCalendar();
         zcal.setCalendar(cal);
-        GeoLocation gl = locationService.getGeoLocation();
+        GeoLocation gl = new GeoLocation();
         zcal.setGeoLocation(gl);
 
         cal.setTime(zcal.getSunset());

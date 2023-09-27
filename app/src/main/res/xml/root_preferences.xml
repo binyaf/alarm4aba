@@ -4,9 +4,9 @@
     <PreferenceCategory app:title="@string/messages_header">
 
     <ListPreference
-        app:defaultValue="Jerusalem"
-        app:entries="@array/pref_location_entries"
+        app:defaultValue="JLM_IL"
         app:entryValues="@array/pref_location_values"
+        app:entries="@array/pref_location_entries"
         app:key="location"
         app:title="@string/pref_location_title"
         app:useSimpleSummaryProvider="true" />

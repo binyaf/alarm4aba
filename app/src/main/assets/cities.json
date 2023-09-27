@@ -1,0 +1,44 @@
+{
+  "NYC_US": {
+    "cityCode": "NYC_US",
+    "altitude": 10,
+    "longitude": -74.0059,
+    "latitude": 40.7127,
+    "timeZone": "America/New_York"
+  },
+  "LON_UK": {
+    "cityCode": "LON_UK",
+    "altitude": 11,
+    "longitude": -0.1278,
+    "latitude": 51.5074,
+    "timeZone": "Europe/London"
+  },
+  "TLV_IL": {
+    "cityCode": "TLV_IL",
+    "altitude": 5,
+    "longitude": 34.7818,
+    "latitude": 32.0853,
+    "timeZone": "Asia/Jerusalem"
+  },
+  "JLM_IL": {
+    "cityCode": "JLM_IL",
+    "altitude": 754,
+    "longitude": 35.2137,
+    "latitude": 31.7683,
+    "timeZone": "Asia/Jerusalem"
+  },
+  "LOD_IL": {
+    "cityCode": "LOD_IL",
+    "altitude": 31,
+    "longitude": 34.8918,
+    "latitude": 31.9514,
+    "timeZone": "Asia/Jerusalem"
+  },
+  "HAF_IL": {
+    "cityCode": "HAF_IL",
+    "altitude": 0,
+    "longitude": 34.9885,
+    "latitude": 32.7940,
+    "timeZone": "Asia/Jerusalem"
+  }
+}

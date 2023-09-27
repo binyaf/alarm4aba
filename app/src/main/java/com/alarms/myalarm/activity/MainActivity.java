@@ -5,9 +5,11 @@ import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.AssetManager;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Html;
@@ -19,7 +21,6 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ImageSpan;
 import android.util.Log;
-import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,20 +37,29 @@ import com.alarms.myalarm.R;
 import com.alarms.myalarm.tools.AlarmsPersistService;
 import com.alarms.myalarm.tools.DateTimesFormats;
 import com.alarms.myalarm.tools.IntentCreator;
-import com.alarms.myalarm.tools.LocationService;
 import com.alarms.myalarm.types.Alarm;
+import com.alarms.myalarm.types.AlarmLocation;
 import com.alarms.myalarm.types.AlarmType;
 import com.alarms.myalarm.types.IntentKeys;
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.kosherjava.zmanim.ZmanimCalendar;
 import com.kosherjava.zmanim.hebrewcalendar.HebrewDateFormatter;
 import com.kosherjava.zmanim.hebrewcalendar.JewishDate;
+import com.kosherjava.zmanim.util.GeoLocation;
 
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -57,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
     private Button editAlarmBtn;
     private Button deleteAlarmBtn;
     private AlarmManager alarmManager;
-    private LocationService locationService;
     private LinearLayout linearLayout;
     private AlarmsPersistService alarmsPersistService;
     public static final int MAX_ALARMS = 4;
@@ -65,9 +74,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        locationService = new LocationService();
         alarmsPersistService = new AlarmsPersistService(getApplicationContext());
-        String locationKey = getDefaultLocationKey();
+
         Log.d("MainActivity", "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.alarm_details);
@@ -78,8 +86,8 @@ public class MainActivity extends AppCompatActivity {
         linearLayout = findViewById(R.id.alarmsLayout);
         List<Alarm> allAlarms = alarmsPersistService.getAlarmsList();
 
-        TextView textView = findViewById(R.id.labelTextView);
-        textView.setText(getString(R.string.todays_zmanim, locationKey));
+        TextView todaysZmanimText = findViewById(R.id.labelTextView);
+        addTextForTodaysZmanimHeader(todaysZmanimText);
 
         if (allAlarms.size() >= MAX_ALARMS) {
             addAlarmBtn.setEnabled(false);
@@ -115,6 +123,14 @@ public class MainActivity extends AppCompatActivity {
             AlertDialog dialog = createTodayZmanimAlertDialog(getTodaysZmanim());
             dialog.show();
         });
+    }
+
+    private void addTextForTodaysZmanimHeader(TextView todaysZmanimText) {
+        AlarmLocation alarmLocation = getCityDetails();
+        int resourceId = getResources().
+                getIdentifier(alarmLocation.getCityCode(), "string", getPackageName());
+        String cityName = getResources().getString(resourceId);
+        todaysZmanimText.setText(getString(R.string.todays_zmanim, cityName));
     }
 
     @Override
@@ -287,7 +303,7 @@ public class MainActivity extends AppCompatActivity {
         ZmanimCalendar zcal = new ZmanimCalendar();
         zcal.setCalendar(alarmDateAndTimeCal);
 
-        zcal.setGeoLocation(locationService.getGeoLocation());
+        zcal.setGeoLocation(getGeoLocationFromCityDetails( getCityDetails()));
 
         long alarmTime = alarmDateAndTime.getTime();
 
@@ -376,7 +392,12 @@ public class MainActivity extends AppCompatActivity {
 
         String date = DateTimesFormats.dateFormat.format(alarmDate.getTime());
         String time = DateTimesFormats.timeFormat.format(alarmDate.getTime());
-        String label = getString(R.string.alarm_will_start);
+        String label = null;
+        if (alarm.getLabel() != null && !alarm.getLabel().isEmpty()) {
+            label = getString(R.string.alarm_will_start_with_label, "<b>" + alarm.getLabel() + "</b>");
+        } else {
+            label = getString(R.string.alarm_will_start);
+        }
         String text = "<br><font color=" + Color.GRAY + "  size=3 >&nbsp;&nbsp;&nbsp;" + label + " </font><br>" +
                 "<font size=30 color=" + Color.BLACK + ">&nbsp;<b> " + date +
                 "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + hebrewDate + "</b>" +
@@ -391,9 +412,8 @@ public class MainActivity extends AppCompatActivity {
 
     private AlertDialog createTodayZmanimAlertDialog(String msg) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        Pair<Long, Long> location = alarmsPersistService.getLocation();
 
-        builder.setTitle(getString(R.string.todays_zmanim, getDefaultLocationKey()))
+        builder.setTitle(getString(R.string.todays_zmanim, getGeoLocationFromCityDetails(getCityDetails())))
                 .setMessage(Html.fromHtml(msg))
                 .setIcon(R.drawable.time_icon)
                 .setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
@@ -404,8 +424,8 @@ public class MainActivity extends AppCompatActivity {
 
         ZmanimCalendar zcal = new ZmanimCalendar();
         zcal.setCalendar(Calendar.getInstance());
-
-        zcal.setGeoLocation(locationService.getGeoLocation());
+        AlarmLocation cityDetails = getCityDetails();
+        zcal.setGeoLocation(getGeoLocationFromCityDetails(cityDetails));
 
         long midDay  = zcal.getChatzos().getTime();
         long szGRA = zcal.getSofZmanShmaGRA().getTime();
@@ -423,15 +443,49 @@ public class MainActivity extends AppCompatActivity {
                           getString(R.string.sunset, timeFormat.format(sunset));
     }
 
-    private String getDefaultLocationKey() {
+    private GeoLocation getGeoLocationFromCityDetails(AlarmLocation cityDetails) {
+            return new GeoLocation(cityDetails.getCityCode(), cityDetails.getLatitude(),
+                    cityDetails.getLongitude(),
+                   TimeZone.getTimeZone(cityDetails.getTimeZone()));
+    }
+
+    private AlarmLocation getCityDetails() {
+        AssetManager assetManager = getAssets();
+        InputStream inputStream = null;
+        try {
+            inputStream = assetManager.open("cities.json");
+            byte[] bytes = new byte[inputStream.available()];
+            inputStream.read(bytes);
+            inputStream.close();
+            String jsonString = new String(bytes);
+            final Gson gson = new Gson();
+
+            Type listType = new TypeToken<Map<String, AlarmLocation>>() {}.getType();
+            Map<String, AlarmLocation> citiesMap = gson.fromJson(jsonString, listType);
+            String defaultCityCode = getDefaultCityCode();
+            return citiesMap.get(defaultCityCode);
+        } catch (IOException e) {
+            Log.e("failed reading cities", e.toString());
+            return null;
+        }
+    }
+
+    /*
+    get the default location, set one if there is no default location
+     */
+    private String getDefaultCityCode() {
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         Map<String, ?> all = sharedPreferences.getAll();
-
         if (all.get("location") != null) {
-           return (String)all.get("location");
+            return (String)all.get("location");
+        } else {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("location", "JLM_IL");
+            editor.apply();
+            return "JLM_IL";
         }
-        return "";
 
     }
+
 }
