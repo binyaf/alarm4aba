@@ -9,7 +9,6 @@ import android.content.res.AssetManager;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.location.Location;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Html;
@@ -49,8 +48,6 @@ import com.kosherjava.zmanim.hebrewcalendar.HebrewDateFormatter;
 import com.kosherjava.zmanim.hebrewcalendar.JewishDate;
 import com.kosherjava.zmanim.util.GeoLocation;
 
-import org.json.JSONObject;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
@@ -70,13 +67,17 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout linearLayout;
     private AlarmsPersistService alarmsPersistService;
     public static final int MAX_ALARMS = 4;
+    private AlarmLocation alarmLocation;
 
+    private String cityNameForPresentation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        Log.d("MainActivity", "onCreate");
         alarmsPersistService = new AlarmsPersistService(getApplicationContext());
 
-        Log.d("MainActivity", "onCreate");
+        alarmLocation = getCityDetails();
+        cityNameForPresentation = getCityNameByCityCode(alarmLocation.getCityCode());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.alarm_details);
 
@@ -87,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         List<Alarm> allAlarms = alarmsPersistService.getAlarmsList();
 
         TextView todaysZmanimText = findViewById(R.id.labelTextView);
-        addTextForTodaysZmanimHeader(todaysZmanimText);
+        todaysZmanimText.setText(getString(R.string.todays_zmanim, cityNameForPresentation));
 
         if (allAlarms.size() >= MAX_ALARMS) {
             addAlarmBtn.setEnabled(false);
@@ -106,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
         for (Alarm alarm : allAlarms) {
             if (alarm != null && alarm.getDateAndTime().after(Calendar.getInstance())) {
                 createTextViewForAlarm(alarm, layoutParams);
-            } else { //for some reason we have an alarm in the  past - let's remove it
+            } else  if (alarm != null) { //if for some reason we have an alarm in the past - let's remove it
                 alarmsPersistService.removeAlarm(alarm);
             }
         }
@@ -125,12 +126,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void addTextForTodaysZmanimHeader(TextView todaysZmanimText) {
-        AlarmLocation alarmLocation = getCityDetails();
+    private String getCityNameByCityCode(String cityCode) {
         int resourceId = getResources().
-                getIdentifier(alarmLocation.getCityCode(), "string", getPackageName());
-        String cityName = getResources().getString(resourceId);
-        todaysZmanimText.setText(getString(R.string.todays_zmanim, cityName));
+                getIdentifier(cityCode, "string", getPackageName());
+        return getResources().getString(resourceId);
     }
 
     @Override
@@ -303,7 +302,7 @@ public class MainActivity extends AppCompatActivity {
         ZmanimCalendar zcal = new ZmanimCalendar();
         zcal.setCalendar(alarmDateAndTimeCal);
 
-        zcal.setGeoLocation(getGeoLocationFromCityDetails( getCityDetails()));
+        zcal.setGeoLocation(getGeoLocationFromCityDetails());
 
         long alarmTime = alarmDateAndTime.getTime();
 
@@ -413,7 +412,7 @@ public class MainActivity extends AppCompatActivity {
     private AlertDialog createTodayZmanimAlertDialog(String msg) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        builder.setTitle(getString(R.string.todays_zmanim, getGeoLocationFromCityDetails(getCityDetails())))
+        builder.setTitle(getString(R.string.todays_zmanim, cityNameForPresentation))
                 .setMessage(Html.fromHtml(msg))
                 .setIcon(R.drawable.time_icon)
                 .setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
@@ -424,29 +423,33 @@ public class MainActivity extends AppCompatActivity {
 
         ZmanimCalendar zcal = new ZmanimCalendar();
         zcal.setCalendar(Calendar.getInstance());
-        AlarmLocation cityDetails = getCityDetails();
-        zcal.setGeoLocation(getGeoLocationFromCityDetails(cityDetails));
+        zcal.setGeoLocation(getGeoLocationFromCityDetails());
 
+        long sunrise  = zcal.getSunrise().getTime();
         long midDay  = zcal.getChatzos().getTime();
         long szGRA = zcal.getSofZmanShmaGRA().getTime();
         long szMGA = zcal.getSofZmanShmaMGA().getTime();
         long szTfilaGRA  = zcal.getSofZmanTfilaGRA().getTime();
         long szTfilaMGA  = zcal.getSofZmanTfilaMGA().getTime();
         long sunset  = zcal.getSunset().getTime();
+        long nightfall  = zcal.getTzais().getTime();
 
         DateFormat timeFormat = DateTimesFormats.timeFormat;
-        return  "<br>" +  getString(R.string.latest_shma_gra, timeFormat.format(szMGA))  + " <br><br>" +
+        return  "<br>" +  getString(R.string.sunrise, timeFormat.format(sunrise))  + " <br><br>" +
+                          getString(R.string.latest_shma_gra, timeFormat.format(szMGA))  + " <br><br>" +
                           getString(R.string.latest_shma_mga, timeFormat.format(szGRA))  + " <br><br>" +
                           getString(R.string.latest_shacharis_mga, timeFormat.format(szTfilaMGA)) + " <br><br>" +
                           getString(R.string.latest_shacharis_gra, timeFormat.format(szTfilaGRA)) +  " <br><br>" +
                           getString(R.string.midday, timeFormat.format(midDay)) +  " <br><br>" +
-                          getString(R.string.sunset, timeFormat.format(sunset));
+                          getString(R.string.sunset, timeFormat.format(sunset))  +  " <br><br>" +
+                          getString(R.string.nightfall, timeFormat.format(nightfall));
+
     }
 
-    private GeoLocation getGeoLocationFromCityDetails(AlarmLocation cityDetails) {
-            return new GeoLocation(cityDetails.getCityCode(), cityDetails.getLatitude(),
-                    cityDetails.getLongitude(),
-                   TimeZone.getTimeZone(cityDetails.getTimeZone()));
+    private GeoLocation getGeoLocationFromCityDetails() {
+            return new GeoLocation(alarmLocation.getCityCode(), alarmLocation.getLatitude(),
+                    alarmLocation.getLongitude(),
+                   TimeZone.getTimeZone(alarmLocation.getTimeZone()));
     }
 
     private AlarmLocation getCityDetails() {
@@ -477,14 +480,19 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         Map<String, ?> all = sharedPreferences.getAll();
-        if (all.get("location") != null) {
-            return (String)all.get("location");
-        } else {
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("location", "JLM_IL");
-            editor.apply();
-            return "JLM_IL";
+        Object location = all.get("location");
+        //want to check that the location is in the correct format
+        if (location != null) {
+            String locationStr = (String) all.get("location");
+            if (locationStr.endsWith("_IL") || locationStr.endsWith("_US") || locationStr.endsWith("_UK")) {
+                return locationStr;
+            }
         }
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("location", "JLM_IL");
+        editor.apply();
+        return "JLM_IL";
+
 
     }
 

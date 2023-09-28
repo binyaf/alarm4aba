@@ -2,14 +2,14 @@
   "NYC_US": {
     "cityCode": "NYC_US",
     "altitude": 10,
-    "longitude": -74.0059,
+    "longitude": 74.0059,
     "latitude": 40.7127,
     "timeZone": "America/New_York"
   },
   "LON_UK": {
     "cityCode": "LON_UK",
     "altitude": 11,
-    "longitude": -0.1278,
+    "longitude": 0.1278,
     "latitude": 51.5074,
     "timeZone": "Europe/London"
   },

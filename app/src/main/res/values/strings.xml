@@ -33,12 +33,14 @@
     <string name="alarm_will_start_with_label">Alarm (%1$s) will start at:</string>
     <string name="alarm_after_shma">Your alarm is after Sof Zman Shma</string>
     <string name="alarm_after_tfilah">Your alarm is after Sof Zman Tfila</string>
+    <string name="sunrise">Sunrise: %1$s</string>
     <string name="latest_shma_mga">Latest Shema MGA: %1$s</string>
     <string name="latest_shma_gra">Latest Shema GRA: %1$s</string>
     <string name="latest_shacharis_mga">Latest Shacharis MGA: %1$s</string>
     <string name="latest_shacharis_gra">Latest Shachris GRA: %1$s</string>
     <string name="midday">Midday: %1$s</string>
     <string name="sunset">Sunset: %1$s</string>
+    <string name="nightfall">Tzeit Hakochavim: %1$s</string>
     <string name="about">About</string>
     <string name="settings">settings</string>
 

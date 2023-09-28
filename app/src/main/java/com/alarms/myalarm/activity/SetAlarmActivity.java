@@ -134,7 +134,10 @@ public class SetAlarmActivity extends AppCompatActivity {
                 alarm.setDuration(Integer.valueOf(alarmDisplayedValues[value]));
 
                 String labelStr = alarmLabelEditText.getText().toString();
-                alarm.setLabel(labelStr);
+
+                if (labelStr != null && labelStr.length() < 25) {
+                    alarm.setLabel(labelStr);
+                }
                 saveAlarm(alarm);
 
                Intent i = new Intent(this, MainActivity.class);
