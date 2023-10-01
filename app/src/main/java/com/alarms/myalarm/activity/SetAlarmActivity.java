@@ -31,7 +31,6 @@ import com.alarms.myalarm.types.IntentKeys;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
@@ -59,7 +58,6 @@ public class SetAlarmActivity extends AppCompatActivity {
         alarmsPersistService = new AlarmsPersistService(getApplicationContext());
         TextView title = findViewById(R.id.addEditAlarmTitle);
         final Alarm alarm;
-
 
         if (getIntent() != null && getIntent().getSerializableExtra(IntentKeys.ALARM) != null) {
             alarm = (Alarm) getIntent().getSerializableExtra(IntentKeys.ALARM);
@@ -134,10 +132,15 @@ public class SetAlarmActivity extends AppCompatActivity {
                 alarm.setDuration(Integer.valueOf(alarmDisplayedValues[value]));
 
                 String labelStr = alarmLabelEditText.getText().toString();
-
-                if (labelStr != null && labelStr.length() < 25) {
-                    alarm.setLabel(labelStr);
+                if (labelStr != null) {
+                    if (labelStr.length() < 25) {
+                        alarm.setLabel(labelStr);
+                    } else {
+                        labelStr.substring(0, 24);
+                        alarm.setLabel(labelStr);
+                    }
                 }
+
                 saveAlarm(alarm);
 
                Intent i = new Intent(this, MainActivity.class);

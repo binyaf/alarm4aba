@@ -21,6 +21,7 @@ public class BootReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        Log.d("BootReceiver", "onReceive");
         if (intent.getAction() != null && intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
             alarmsPersistService = new AlarmsPersistService(context);
             Map<Integer, Alarm> alarms = alarmsPersistService.getAlarms();

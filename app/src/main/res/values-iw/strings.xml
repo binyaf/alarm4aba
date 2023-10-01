@@ -33,14 +33,14 @@
     <string name="alarm_will_start_with_label">ההתראה (%1$s) תופעל ב:</string>
     <string name="alarm_after_shma">ההתראה שלך היא לאחר סוף זמן קריאת שמע</string>
     <string name="alarm_after_tfilah">ההתראה שלך היא לאחר סוף זמן תפילה</string>
-    <string name="sunrise">%1$s :זריחה</string>
+    <string name="sunrise">זריחה: %1$s</string>
     <string name="latest_shma_mga">סוף זמן קריאת שמע מגן אברהם: %1$s</string>
     <string name="latest_shma_gra">סוף זמן קריאת שמע גרא: %1$s</string>
     <string name="latest_shacharis_mga">סוף זמן תפילה מגן אברהם: %1$s</string>
     <string name="latest_shacharis_gra">סוף זמן תפילה גרא: %1$s</string>
     <string name="midday">חצות: %1$s</string>
     <string name="sunset">שקיעה: %1$s</string>
-    <string name="nightfall">%1$s :צאת הכוכבים</string>
+    <string name="nightfall">צאת הכוכבים: %1$s</string>
     <string name="about">אודות</string>
     <string name="settings">הגדרות</string>
     <string name="title_activity_settings">הגדרות</string>

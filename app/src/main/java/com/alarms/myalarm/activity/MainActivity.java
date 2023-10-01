@@ -436,13 +436,13 @@ public class MainActivity extends AppCompatActivity {
 
         DateFormat timeFormat = DateTimesFormats.timeFormat;
         return  "<br>" +  getString(R.string.sunrise, timeFormat.format(sunrise))  + " <br><br>" +
-                          getString(R.string.latest_shma_gra, timeFormat.format(szMGA))  + " <br><br>" +
-                          getString(R.string.latest_shma_mga, timeFormat.format(szGRA))  + " <br><br>" +
-                          getString(R.string.latest_shacharis_mga, timeFormat.format(szTfilaMGA)) + " <br><br>" +
-                          getString(R.string.latest_shacharis_gra, timeFormat.format(szTfilaGRA)) +  " <br><br>" +
-                          getString(R.string.midday, timeFormat.format(midDay)) +  " <br><br>" +
-                          getString(R.string.sunset, timeFormat.format(sunset))  +  " <br><br>" +
-                          getString(R.string.nightfall, timeFormat.format(nightfall));
+                getString(R.string.latest_shma_mga, timeFormat.format(szMGA))  + " <br><br>" +
+                getString(R.string.latest_shma_gra, timeFormat.format(szGRA))  + " <br><br>" +
+                getString(R.string.latest_shacharis_mga, timeFormat.format(szTfilaMGA)) + " <br><br>" +
+                getString(R.string.latest_shacharis_gra, timeFormat.format(szTfilaGRA)) +  " <br><br>" +
+                getString(R.string.midday, timeFormat.format(midDay)) +  " <br><br>" +
+                getString(R.string.sunset, timeFormat.format(sunset))  +  " <br><br>" +
+                getString(R.string.nightfall, timeFormat.format(nightfall));
 
     }
 
