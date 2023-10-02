@@ -3,14 +3,14 @@ plugins {
 }
 
 android {
-    namespace 'com.alarms.myalarm'
+    namespace 'com.banjos.dosalarm'
     compileSdk 33
 
     defaultConfig {
         applicationId "com.alarms.myalarm"
         minSdk 28
         targetSdk 33
-        versionCode 15
+        versionCode 24
         versionName "0.0.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
