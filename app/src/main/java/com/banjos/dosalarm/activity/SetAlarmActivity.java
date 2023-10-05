@@ -194,14 +194,19 @@ public class SetAlarmActivity extends AppCompatActivity {
             alarm.setId(UUID.randomUUID().hashCode());
         }
 
-        PendingIntent pendingIntent = IntentCreator.getAlarmPendingIntent(this, getApplication(), alarm);
+        createActualAlarm(alarm);
+
+        // save alarm on local file
+        saveAlarmToSharePreferences(alarm);
+
+    }
+
+    private void createActualAlarm(Alarm alarm) {
+        PendingIntent pendingIntent = IntentCreator.getAlarmPendingIntent(getApplicationContext(), alarm);
 
         AlarmManager.AlarmClockInfo alarmClockInfo =
                 new AlarmManager.AlarmClockInfo(alarm.getDateAndTime().getTimeInMillis(), pendingIntent);
         alarmManager.setAlarmClock(alarmClockInfo, pendingIntent);
-
-        // save alarm on local file
-        saveAlarmToSharePreferences(alarm);
 
     }
 

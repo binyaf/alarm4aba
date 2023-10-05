@@ -248,8 +248,8 @@ public class MainActivity extends AppCompatActivity {
                     deleteAlarmBtn.setOnClickListener(y -> {
                         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
-                        PendingIntent pendingIntent = IntentCreator.getAlarmPendingIntent(this,
-                                getApplication(), alarm);
+                        PendingIntent pendingIntent = IntentCreator.getAlarmPendingIntent(
+                                getApplicationContext(), alarm);
 
                         if (pendingIntent != null) {
                             alarmManager.cancel(pendingIntent);
@@ -312,6 +312,7 @@ public class MainActivity extends AppCompatActivity {
         long szGRA = zcal.getSofZmanShmaGRA().getTime();
         long szTfilaGRA  = zcal.getSofZmanTfilaGRA().getTime();
         long szTfilaMGA  = zcal.getSofZmanTfilaMGA().getTime();
+        zcal.getCandleLighting();
 
         DateFormat timeFormat = DateTimesFormats.timeFormat;
         String szMGAStr = timeFormat.format(szMGA);
@@ -322,10 +323,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d("ALARM",
                 " type: " + alarm.getType() + " | " +
                 " now: " + timeFormat.format(Calendar.getInstance().getTime()) + " | " +
-                " alarm time: " + timeFormat.format(alarmDateAndTime) + " | " +
-                " sz Shma MGa: " + szMGAStr + " | sz shma GRA: " + szGRAStr + " | " +
-                " sz tfila GRA: " + szTfilaMgaStr + " | sz tfila MGA: " + szTfilaGRAStr + " | " +
-                " sz Chazot: " + timeFormat.format(midDay));
+                " alarm time: " + timeFormat.format(alarmDateAndTime) );
 
         if (alarmTime > midDay) {
             return null;

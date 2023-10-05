@@ -1,5 +1,7 @@
 package com.banjos.dosalarm.tools;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -23,12 +25,25 @@ public class BootReceiver extends BroadcastReceiver {
 
             for (int alarmId:alarms.keySet()) {
                 Alarm alarm = alarms.get(alarmId);
-                alarm.setLabel("after reboot");
+                createActualAlarm(alarm, context);
             }
             alarmsPersistService.saveAlarms(alarms);
 
             Log.d("BootReceiver", "device restarted, all alarms are back in place");
         }
+    }
+
+    private void createActualAlarm(Alarm alarm, Context context) {
+
+        PendingIntent pendingIntent = IntentCreator.getAlarmPendingIntent(context, alarm);
+
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
+        AlarmManager.AlarmClockInfo alarmClockInfo =
+                new AlarmManager.AlarmClockInfo(alarm.getDateAndTime().getTimeInMillis(), pendingIntent);
+
+        alarmManager.setAlarmClock(alarmClockInfo, pendingIntent);
+
     }
 
 }

@@ -103,7 +103,7 @@ public class OldMainActivity extends AppCompatActivity {
 
 
     private PendingIntent getPendingIntentForMincha(Calendar alarmDateAndTime) {
-        return IntentCreator.getAlarmPendingIntent(this, getApplication(),
+        return IntentCreator.getAlarmPendingIntent(getApplicationContext(),
                 new Alarm(AlarmType.MINCHA, minchaAlarmDuration, alarmDateAndTime));
     }
 

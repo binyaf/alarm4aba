@@ -65,7 +65,7 @@ public class AlarmsPersistService {
         String json = gson.toJson(allAlarms);
         editor.putString(ALARMS_KEY, json);
         editor.apply();
-        Log.d("AlarmsPersistService", "saved all alarms | " + allAlarms.size() + " 0 alarms");
+        Log.d("AlarmsPersistService", "saved all alarms | " + allAlarms.size());
     }
 
     public void removeAlarm(Alarm alarmToRemove) {
