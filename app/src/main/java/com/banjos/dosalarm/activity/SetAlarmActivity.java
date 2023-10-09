@@ -78,7 +78,7 @@ public class SetAlarmActivity extends AppCompatActivity {
         timeText = findViewById(R.id.selectTimeText);
         timeText.setText(timeFormat.format(alarmDateAndTime.getTime()));
         numberPicker = findViewById(R.id.numberPicker);
-        alarmLabelEditText = findViewById(R.id.alarmLabel);
+        alarmLabelEditText = findViewById(R.id.alarmLabelTextView);
         alarmLabelEditText.setText(alarm.getLabel());
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -122,7 +122,6 @@ public class SetAlarmActivity extends AppCompatActivity {
             datePickerDialog.getDatePicker().setMinDate(Calendar.getInstance().getTimeInMillis());
             datePickerDialog.show();
         });
-
 
         Button saveAlarm = findViewById(R.id.addAlarmOk);
         saveAlarm.setOnClickListener(v -> {

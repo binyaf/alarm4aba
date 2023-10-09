@@ -103,18 +103,21 @@
         android:layout_height="20dp"
         android:layout_margin="1sp"
         android:gravity="bottom|center"
-        android:hint="Alarm Duration"
+        android:hint="@string/alarm_label_label"
         android:text="@string/alarm_label_label"
         android:textColor="@color/black"
         android:textSize="12sp"
         android:textStyle="normal" />
+
     <EditText
-        android:id="@+id/alarmLabel"
+        android:id="@+id/alarmLabelTextView"
         android:layout_width="180dp"
         android:layout_height="51dp"
         android:gravity="center"
         android:textColor="@color/black"
+        android:inputType="text"
         android:hint="label"
+        android:imeOptions="actionDone"
         android:textColorHint="@color/grey"/>
 
     <Button

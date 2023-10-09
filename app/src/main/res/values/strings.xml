@@ -2,6 +2,7 @@
 <resources>
     <string name="app_name">DosAlarm</string>
     <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
     <string name="create">Create Alarm</string>
     <string name="createMincha">Mincha Reminder</string>
     <string name="delete">Delete</string>
@@ -106,5 +107,6 @@
     <string name="HAF_IL">Haifah</string>
     <string name="NYC_US">New York</string>
     <string name="LON_UK">London</string>
+
 
 </resources>

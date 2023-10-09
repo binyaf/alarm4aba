@@ -2,6 +2,7 @@
 <resources>
     <string name="app_name">DosAlarm</string>
     <string name="save">שמור</string>
+    <string name="cancel">בטל</string>
     <string name="create">הוסף התראה</string>
     <string name="createMincha">תזכורת לתפילת מנחה</string>
     <string name="delete">מחק</string>
