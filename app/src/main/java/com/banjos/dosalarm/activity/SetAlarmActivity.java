@@ -45,9 +45,7 @@ public class SetAlarmActivity extends AppCompatActivity {
     private TextView timeText;
     private final DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyy", Locale.US);
     private final DateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.US);
-
     private NumberPicker numberPicker;
-
     private EditText alarmLabelEditText;
     private AlarmsPersistService alarmsPersistService;
 

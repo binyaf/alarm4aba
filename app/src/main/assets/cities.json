@@ -47,5 +47,12 @@
     "longitude": 34.840785,
     "latitude": 31.853828,
     "timeZone": "Asia/Jerusalem"
+  },
+  "SDR_IL": {
+    "cityCode": "SDR_IL",
+    "altitude": 89,
+    "longitude": 34.5945,
+    "latitude": 31.52777,
+    "timeZone": "Asia/Jerusalem"
   }
 }

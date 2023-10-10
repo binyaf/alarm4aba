@@ -42,6 +42,7 @@
         <item>HAF_IL</item>
         <item>GVZ_IL</item>
         <item>MBA_IL</item>
+        <item>SDR_IL</item>
         <item>NYC_US</item>
         <item>LON_UK</item>
     </string-array>
@@ -52,6 +53,7 @@
         <item>@string/HAF_IL</item>
         <item>@string/GVZ_IL</item>
         <item>@string/MBA_IL</item>
+        <item>@string/SDR_IL</item>
         <item>@string/NYC_US</item>
         <item>@string/LON_UK</item>
     </string-array>
