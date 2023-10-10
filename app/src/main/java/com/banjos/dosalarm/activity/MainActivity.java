@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
         ImageView todaysZemanimIcon = findViewById(R.id.timeIconImageView);
         todaysZemanimIcon.setOnClickListener(v -> {
             Log.d("MainActivity", "today's zmanim clicked");
-            AlertDialog dialog = createTodayZmanimAlertDialog(getTodaysZmanim());
+            AlertDialog dialog = createTodayZmanimAlertDialog(getTodaysZmanim(alarmLocation.getTimeZone()));
             dialog.show();
         });
     }
@@ -302,7 +302,7 @@ public class MainActivity extends AppCompatActivity {
         ZmanimCalendar zcal = new ZmanimCalendar();
         zcal.setCalendar(alarmDateAndTimeCal);
 
-        zcal.setGeoLocation(getGeoLocationFromCityDetails());
+        zcal.setGeoLocation(getGeoLocationFromCityDetails(alarmLocation));
 
         long alarmTime = alarmDateAndTime.getTime();
 
@@ -336,7 +336,6 @@ public class MainActivity extends AppCompatActivity {
             return null;
         } else {
             return buildWarningMsgHtml(lateForShma, lateForTfila, szMGAStr, szGRAStr, szTfilaMgaStr, szTfilaGRAStr);
-
         }
     }
 
@@ -417,34 +416,28 @@ public class MainActivity extends AppCompatActivity {
         return builder.create();
     }
 
-    private String getTodaysZmanim() {
-
-        ZmanimCalendar zcal = new ZmanimCalendar();
-        zcal.setCalendar(Calendar.getInstance());
-        zcal.setGeoLocation(getGeoLocationFromCityDetails());
-
-        long sunrise  = zcal.getSunrise().getTime();
-        long midDay  = zcal.getChatzos().getTime();
-        long szGRA = zcal.getSofZmanShmaGRA().getTime();
-        long szMGA = zcal.getSofZmanShmaMGA().getTime();
-        long szTfilaGRA  = zcal.getSofZmanTfilaGRA().getTime();
-        long szTfilaMGA  = zcal.getSofZmanTfilaMGA().getTime();
-        long sunset  = zcal.getSunset().getTime();
-        long nightfall  = zcal.getTzais().getTime();
-
+    private String getTodaysZmanim(String timezone) {
+        GeoLocation gl = getGeoLocationFromCityDetails(alarmLocation);
         DateFormat timeFormat = DateTimesFormats.timeFormat;
-        return  "<br>" +  getString(R.string.sunrise, timeFormat.format(sunrise))  + " <br><br>" +
-                getString(R.string.latest_shma_mga, timeFormat.format(szMGA))  + " <br><br>" +
-                getString(R.string.latest_shma_gra, timeFormat.format(szGRA))  + " <br><br>" +
-                getString(R.string.latest_shacharis_mga, timeFormat.format(szTfilaMGA)) + " <br><br>" +
-                getString(R.string.latest_shacharis_gra, timeFormat.format(szTfilaGRA)) +  " <br><br>" +
-                getString(R.string.midday, timeFormat.format(midDay)) +  " <br><br>" +
-                getString(R.string.sunset, timeFormat.format(sunset))  +  " <br><br>" +
-                getString(R.string.nightfall, timeFormat.format(nightfall));
+        timeFormat.setTimeZone(gl.getTimeZone());
+
+        ZmanimCalendar zcal = new ZmanimCalendar(gl);
+
+        StringBuilder sb = new StringBuilder("<br>");
+        sb.append(getString(R.string.sunrise, timeFormat.format(zcal.getSunrise()))).append(" <br><br>")
+                .append(getString(R.string.latest_shma_mga, timeFormat.format(zcal.getSofZmanShmaMGA()))).append(" <br><br>")
+                .append(getString(R.string.latest_shma_gra, timeFormat.format(zcal.getSofZmanShmaGRA()))).append(" <br><br>")
+                .append(getString(R.string.latest_shacharis_mga, timeFormat.format(zcal.getSofZmanTfilaMGA()))).append(" <br><br>")
+                .append(getString(R.string.latest_shacharis_gra, timeFormat.format(zcal.getSofZmanTfilaGRA()))).append(" <br><br>")
+                .append(getString(R.string.midday, timeFormat.format(zcal.getChatzos()))).append(" <br><br>")
+                .append( getString(R.string.sunset, timeFormat.format(zcal.getSunset()))).append(" <br><br>")
+                .append(getString(R.string.nightfall, timeFormat.format(zcal.getTzais()))).append(" <br><br>")
+                .append(" <br><br>");
+        return sb.toString();
 
     }
 
-    private GeoLocation getGeoLocationFromCityDetails() {
+    private GeoLocation getGeoLocationFromCityDetails(AlarmLocation alarmLocation) {
             return new GeoLocation(alarmLocation.getCityCode(), alarmLocation.getLatitude(),
                     alarmLocation.getLongitude(),
                    TimeZone.getTimeZone(alarmLocation.getTimeZone()));

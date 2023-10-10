@@ -104,6 +104,8 @@
     <string name="JLM_IL">ירושלים</string>
     <string name="TLV_IL">תל אביב</string>
     <string name="HAF_IL">חיפה</string>
+    <string name="GVZ_IL">גבעת זאב</string>
+    <string name="MBA_IL">מזכרת בתיה</string>
     <string name="NYC_US">ניו יורק</string>
     <string name="LON_UK">לונדון</string>
 </resources>

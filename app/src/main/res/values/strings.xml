@@ -105,6 +105,8 @@
     <string name="JLM_IL">Jerusalem</string>
     <string name="TLV_IL">Tel Aviv</string>
     <string name="HAF_IL">Haifah</string>
+    <string name="GVZ_IL">Givaat Zeev</string>
+    <string name="MBA_IL">Mazkeret Batya</string>
     <string name="NYC_US">New York</string>
     <string name="LON_UK">London</string>
 
