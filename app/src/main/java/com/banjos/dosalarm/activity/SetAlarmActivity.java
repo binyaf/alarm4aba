@@ -154,6 +154,12 @@ public class SetAlarmActivity extends AppCompatActivity {
                 alertDialog.show();
             }
         });
+
+        Button cancelAlarmAlarm = findViewById(R.id.addAlarmCancel);
+        cancelAlarmAlarm.setOnClickListener(v -> {
+            Intent i = new Intent(this, MainActivity.class);
+            startActivity(i);
+        });
     }
 
     private Map<Integer, Integer> greateAlarmDurationMap() {
