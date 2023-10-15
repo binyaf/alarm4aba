@@ -44,61 +44,15 @@
     <string name="nightfall">Tzeit Hakochavim: %1$s</string>
     <string name="about">About</string>
     <string name="settings">settings</string>
-
-
-    <string-array name="pref_upload_quality_entries">
-        <item>360p</item>
-        <item>480p</item>
-        <item>720p</item>
-        <item>1080p</item>
-        <item>Original</item>
-    </string-array>
-
-    <string-array name="pref_remind_me_to_take_a_break">
-        <item>1 hours</item>
-        <item>2 hours</item>
-        <item>3 hours</item>
-        <item>5 hours</item>
-        <item>10 hours</item>
-    </string-array>
-
-    <string-array name="pref_seek_values">
-        <item>5</item>
-        <item>10</item>
-        <item>15</item>
-        <item>20</item>
-        <item>30</item>
-    </string-array>
-
-    <string-array name="pref_duration">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-    </string-array>
     <string name="title_activity_settings">Settings</string>
-
-    <string-array name="pref_uploads">
-        <item>Only when on Wi-Fi</item>
-        <item>On any network</item>
-    </string-array>
 
     <!-- Preference Titles -->
     <string name="pref_alarm_duration_title">Default alarm duration (sec.)</string>
-    <string name="messages_header">Defaults</string>
-    <string name="sync_header">About</string>
-
+    <string name="pref_enable_notifications_title">Notifications enabled</string>
+    <string name="defaults_header">Defaults</string>
+    <string name="pref_shabbat_checklist_notifications_header">Shabbat Checklist Notifications</string>
     <!-- Messages Preferences -->
     <string name="signature_title">Your signature</string>
-
-
-    <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
-    </string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
 
     <!-- Preference locations -->
     <string name="pref_location_title">Your location</string>
@@ -110,6 +64,41 @@
     <string name="SDR_IL">Sderot</string>
     <string name="NYC_US">New York</string>
     <string name="LON_UK">London</string>
+
+    <!-- notification -->
+    <string name="time_beforeShabbat_notification">Time before Shabbat to receive the notification</string>
+    <string name="notification_candle_lighting_title">Shabbat Candle-Lighting is in %1$s minutes</string>
+    <string name="notification_body">Don\'t forget to finish preparations on time</string>
+    <string name="ok">OK</string>
+
+   <string name="min_15">15 min.</string>
+   <string name="min_30">30 min.</string>
+   <string name="min_45">45 min.</string>
+   <string name="min_60">1 hour</string>
+   <string name="min_75">1:15 hours</string>
+   <string name="min_90">1.5 hours</string>
+   <string name="min_105">1:45 hours</string>
+   <string name="min_120">2 hours</string>
+   <string name="min_150">2.5 hours</string>
+   <string name="min_180">3 hours</string>
+   <string name="min_210">3.5 hours</string>
+   <string name="min_240">4 hours</string>
+
+   <string name="notification_checklist_refrigerator">Set the refrigerator light</string>
+   <string name="notification_checklist_dishwasher">Set the dishwasher</string>
+   <string name="notification_checklist_electricity">Set the electricity</string>
+   <string name="notification_checklist_air_conditioner">Set the air conditioner timer</string>
+   <string name="notification_checklist_shower">Take a shower</string>
+   <string name="notification_checklist_candles">Prepare the candles</string>
+   <string name="notification_checklist_phone">Call family to wish shabbat Shalom</string>
+
+    <string name="pref_checklist_refrigerator">Refrigerator light</string>
+    <string name="pref_checklist_dishwasher">Dishwasher timer</string>
+    <string name="pref_checklist_electricity">Shabbat clock for electricity</string>
+    <string name="pref_checklist_air_conditioner">Air conditioner timer</string>
+    <string name="pref_checklist_shower">Take a shower</string>
+    <string name="pref_checklist_candles">Prepare the candles</string>
+    <string name="pref_checklist_phone">Phone your family</string>
 
 
 </resources>

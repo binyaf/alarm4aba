@@ -21,15 +21,31 @@ public class IntentCreator {
         intent.putExtra("number",770);
         intent.putExtra(IntentKeys.ALARM, alarm);
 
+        int flags = 0;
+
         // we call broadcast using pendingIntent 33 >= 31
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            return PendingIntent.getBroadcast(
-                    context, requestCode,
-                    intent,PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+            flags = PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE;
         } else {
-            return PendingIntent.getBroadcast(context, requestCode,
-                    intent, PendingIntent.FLAG_IMMUTABLE);
+           flags = PendingIntent.FLAG_IMMUTABLE;
         }
+        return PendingIntent.getBroadcast(context, requestCode, intent,flags);
     }
 
+    public static PendingIntent getNotificationPendingIntent(Context context) {
+
+        int requestCode =  17;
+        Intent intent = new Intent(context, NotificationReceiver.class);
+        intent.putExtra("number",770);
+
+        int flags = 0;
+
+        // we call broadcast using pendingIntent 33 >= 31
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            flags = PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE;
+        } else {
+            flags = PendingIntent.FLAG_IMMUTABLE;
+        }
+        return PendingIntent.getBroadcast(context, requestCode, intent, flags);
+    }
 }

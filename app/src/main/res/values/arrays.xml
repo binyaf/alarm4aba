@@ -1,4 +1,32 @@
 <resources>
+    <string-array name="pref_notification_time_before_shabbat_entries">
+        <item>@string/min_15</item>
+        <item>@string/min_30</item>
+        <item>@string/min_45</item>
+        <item>@string/min_60</item>
+        <item>@string/min_75</item>
+        <item>@string/min_90</item>
+        <item>@string/min_105</item>
+        <item>@string/min_120</item>
+        <item>@string/min_150</item>
+        <item>@string/min_180</item>
+        <item>@string/min_240</item>
+    </string-array>
+
+    <string-array name="pref_notification_time_before_shabbat_values">
+        <item>15</item>
+        <item>30</item>
+        <item>45</item>
+        <item>60</item>
+        <item>75</item>
+        <item>90</item>
+        <item>105</item>
+        <item>120</item>
+        <item>150</item>
+        <item>210</item>
+        <item>240</item>
+    </string-array>
+
     <!-- Reply Preference -->
     <string-array name="pref_alarm_duration_entries">
         <item>5</item>

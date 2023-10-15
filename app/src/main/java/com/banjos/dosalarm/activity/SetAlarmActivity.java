@@ -210,7 +210,6 @@ public class SetAlarmActivity extends AppCompatActivity {
         AlarmManager.AlarmClockInfo alarmClockInfo =
                 new AlarmManager.AlarmClockInfo(alarm.getDateAndTime().getTimeInMillis(), pendingIntent);
         alarmManager.setAlarmClock(alarmClockInfo, pendingIntent);
-
     }
 
     private void saveAlarmToSharePreferences(Alarm alarm) {

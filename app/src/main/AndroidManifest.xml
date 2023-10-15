@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -36,6 +37,10 @@
         <receiver
             android:name=".tools.AlarmReceiver"
             android:exported="true" />
+        <receiver
+            android:name=".tools.NotificationReceiver"
+            android:enabled="true"
+            android:exported="false" />
         <receiver
             android:name=".tools.BootReceiver"
             android:enabled="true"

@@ -1,7 +1,7 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory app:title="@string/messages_header">
+    <PreferenceCategory app:title="@string/defaults_header">
 
     <ListPreference
         app:defaultValue="JLM_IL"
@@ -20,5 +20,28 @@
     app:useSimpleSummaryProvider="true" />
 
     </PreferenceCategory>
+
+
+    <PreferenceCategory app:key="pref_shabbat_checklist_notifications_category" app:title="@string/pref_shabbat_checklist_notifications_header">
+        <SwitchPreference
+            app:key="enable_pre_shabbat_checklist_notifications"
+            app:title="@string/pref_enable_notifications_title"
+            app:defaultValue="true">
+        </SwitchPreference>
+        <ListPreference
+            android:key="pref_notification_time_before_shabbat"
+            android:title="@string/time_beforeShabbat_notification"
+            android:entries="@array/pref_notification_time_before_shabbat_entries"
+            android:entryValues="@array/pref_notification_time_before_shabbat_values"
+            android:defaultValue="60"
+            app:useSimpleSummaryProvider="true"/>
+        <CheckBoxPreference app:key="notification_checklist_refrigerator" app:title="@string/pref_checklist_refrigerator"  app:defaultValue="true" />
+        <CheckBoxPreference app:key="notification_checklist_dishwasher" app:title="@string/pref_checklist_dishwasher"  app:defaultValue="true" />
+        <CheckBoxPreference app:key="notification_checklist_electricity" app:title="@string/pref_checklist_electricity" app:defaultValue="true" />
+        <CheckBoxPreference app:key="notification_checklist_air_conditioner" app:title="@string/pref_checklist_air_conditioner" app:defaultValue="true" />
+        <CheckBoxPreference app:key="notification_checklist_shower" app:title="@string/pref_checklist_shower" app:defaultValue="true" />
+        <CheckBoxPreference app:key="notification_checklist_candles" app:title="@string/pref_checklist_candles" app:defaultValue="true" />
+        <CheckBoxPreference app:key="notification_checklist_phone" app:title="@string/pref_checklist_phone" app:defaultValue="true" />
+        </PreferenceCategory>
 
 </PreferenceScreen>

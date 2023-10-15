@@ -2,13 +2,16 @@ package com.banjos.dosalarm.activity;
 
 import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.AssetManager;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Html;
@@ -31,36 +34,35 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 import com.banjos.dosalarm.R;
 import com.banjos.dosalarm.tools.AlarmsPersistService;
 import com.banjos.dosalarm.tools.DateTimesFormats;
 import com.banjos.dosalarm.tools.IntentCreator;
+import com.banjos.dosalarm.tools.LocationService;
 import com.banjos.dosalarm.types.Alarm;
 import com.banjos.dosalarm.types.AlarmLocation;
 import com.banjos.dosalarm.types.AlarmType;
 import com.banjos.dosalarm.types.IntentKeys;
+import com.banjos.dosalarm.worker.NotificationWorker;
 import com.bumptech.glide.Glide;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.kosherjava.zmanim.ZmanimCalendar;
 import com.kosherjava.zmanim.hebrewcalendar.HebrewDateFormatter;
 import com.kosherjava.zmanim.hebrewcalendar.JewishDate;
 import com.kosherjava.zmanim.util.GeoLocation;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.TimeZone;
-
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String NOTIFICATIONS_WORK_SCHEDULED_KEY = "notificationsWorkScheduled";
     private Button editAlarmBtn;
     private Button deleteAlarmBtn;
     private AlarmManager alarmManager;
@@ -68,15 +70,27 @@ public class MainActivity extends AppCompatActivity {
     private AlarmsPersistService alarmsPersistService;
     public static final int MAX_ALARMS = 4;
     private AlarmLocation alarmLocation;
-
     private String cityNameForPresentation;
+
+    private LocationService locationService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         Log.d("MainActivity", "onCreate");
+        locationService = new LocationService();
+
+
+        SharedPreferences myPrefs = getApplicationContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        myPrefs.edit().putBoolean(NOTIFICATIONS_WORK_SCHEDULED_KEY, false).apply();
+        if (! isNotificationsWorkScheduled(myPrefs)) {
+            if (isUserWAntsNotifications()) {
+                scheduleDailyNotificationsJob();
+                markNotificationsWorkAsScheduled(myPrefs);
+            }
+        }
         alarmsPersistService = new AlarmsPersistService(getApplicationContext());
 
-        alarmLocation = getCityDetails();
+        alarmLocation = locationService.getAlarmLocationDetails(getApplicationContext());
         cityNameForPresentation = getCityNameByCityCode(alarmLocation.getCityCode());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.alarm_details);
@@ -121,9 +135,23 @@ public class MainActivity extends AppCompatActivity {
         ImageView todaysZemanimIcon = findViewById(R.id.timeIconImageView);
         todaysZemanimIcon.setOnClickListener(v -> {
             Log.d("MainActivity", "today's zmanim clicked");
-            AlertDialog dialog = createTodayZmanimAlertDialog(getTodaysZmanim(alarmLocation.getTimeZone()));
+            AlertDialog dialog = createTodayZmanimAlertDialog();
             dialog.show();
         });
+    }
+
+    private void scheduleDailyNotificationsJob() {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel("channel_id", "Channel Name", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationManager manager = getApplicationContext().getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel);
+        }
+        PeriodicWorkRequest notificationWorkRequest =
+                new PeriodicWorkRequest.Builder(NotificationWorker.class, 3l, TimeUnit.MINUTES)
+                        .build();
+        WorkManager.getInstance(getApplicationContext()).enqueue(notificationWorkRequest);
+
     }
 
     private String getCityNameByCityCode(String cityCode) {
@@ -302,7 +330,7 @@ public class MainActivity extends AppCompatActivity {
         ZmanimCalendar zcal = new ZmanimCalendar();
         zcal.setCalendar(alarmDateAndTimeCal);
 
-        zcal.setGeoLocation(getGeoLocationFromCityDetails(alarmLocation));
+        zcal.setGeoLocation(locationService.getGeoLocationFromAlarmLocation(alarmLocation));
 
         long alarmTime = alarmDateAndTime.getTime();
 
@@ -406,18 +434,19 @@ public class MainActivity extends AppCompatActivity {
         return text;
     }
 
-    private AlertDialog createTodayZmanimAlertDialog(String msg) {
+    private AlertDialog createTodayZmanimAlertDialog() {
+        String msg = getTodaysZmanim();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setTitle(getString(R.string.todays_zmanim, cityNameForPresentation))
                 .setMessage(Html.fromHtml(msg))
                 .setIcon(R.drawable.time_icon)
-                .setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
+                .setPositiveButton(R.string.ok, (dialog, which) -> dialog.dismiss());
         return builder.create();
     }
 
-    private String getTodaysZmanim(String timezone) {
-        GeoLocation gl = getGeoLocationFromCityDetails(alarmLocation);
+    private String getTodaysZmanim() {
+        GeoLocation gl = locationService.getGeoLocationFromAlarmLocation(alarmLocation);
         DateFormat timeFormat = DateTimesFormats.timeFormat;
         timeFormat.setTimeZone(gl.getTimeZone());
 
@@ -437,53 +466,17 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private GeoLocation getGeoLocationFromCityDetails(AlarmLocation alarmLocation) {
-            return new GeoLocation(alarmLocation.getCityCode(), alarmLocation.getLatitude(),
-                    alarmLocation.getLongitude(),
-                   TimeZone.getTimeZone(alarmLocation.getTimeZone()));
+    private boolean isNotificationsWorkScheduled(SharedPreferences myPrefs) {
+        return myPrefs.getBoolean(NOTIFICATIONS_WORK_SCHEDULED_KEY, false);
     }
 
-    private AlarmLocation getCityDetails() {
-        AssetManager assetManager = getAssets();
-        InputStream inputStream = null;
-        try {
-            inputStream = assetManager.open("cities.json");
-            byte[] bytes = new byte[inputStream.available()];
-            inputStream.read(bytes);
-            inputStream.close();
-            String jsonString = new String(bytes);
-            final Gson gson = new Gson();
-
-            Type listType = new TypeToken<Map<String, AlarmLocation>>() {}.getType();
-            Map<String, AlarmLocation> citiesMap = gson.fromJson(jsonString, listType);
-            String defaultCityCode = getDefaultCityCode();
-            return citiesMap.get(defaultCityCode);
-        } catch (IOException e) {
-            Log.e("failed reading cities", e.toString());
-            return null;
-        }
+    private void markNotificationsWorkAsScheduled(SharedPreferences myPrefs) {
+        myPrefs.edit().putBoolean(NOTIFICATIONS_WORK_SCHEDULED_KEY, true).apply();
     }
 
-    /*
-    get the default location, set one if there is no default location
-     */
-    private String getDefaultCityCode() {
-
+    private boolean isUserWAntsNotifications() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        Map<String, ?> all = sharedPreferences.getAll();
-        Object location = all.get("location");
-        //want to check that the location is in the correct format
-        if (location != null) {
-            String locationStr = (String) all.get("location");
-            if (locationStr.endsWith("_IL") || locationStr.endsWith("_US") || locationStr.endsWith("_UK")) {
-                return locationStr;
-            }
-        }
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("location", "JLM_IL");
-        editor.apply();
-        return "JLM_IL";
-
+        return sharedPreferences.getBoolean("enable_pre_shabbat_checklist_notifications", true);
 
     }
 

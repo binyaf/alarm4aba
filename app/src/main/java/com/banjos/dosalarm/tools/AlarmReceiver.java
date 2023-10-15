@@ -12,7 +12,6 @@ import android.os.Vibrator;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
-
 import com.banjos.dosalarm.activity.MainActivity;
 import com.banjos.dosalarm.types.Alarm;
 import com.banjos.dosalarm.types.AlarmType;
@@ -25,7 +24,6 @@ public class AlarmReceiver extends BroadcastReceiver {
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     public void onReceive(Context context, Intent intent) {
-
 
         alarmsPersistService = new AlarmsPersistService(context);
 
@@ -43,9 +41,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
         vibrator.vibrate(8000);
 
-        String toastText =
-                alarmType == AlarmType.MINCHA ? "Sun set is in 15 min! don't forget Mincha!!":"Wake up! Wake up! Wake up!";
-        Toast.makeText(context, toastText, Toast.LENGTH_LONG).show();
+        Toast.makeText(context, "", Toast.LENGTH_LONG).show();
         Uri alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
         if (alarmUri == null) {
             alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
