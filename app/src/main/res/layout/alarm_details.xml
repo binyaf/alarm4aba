@@ -108,8 +108,7 @@
         android:layout_gravity="bottom|center"
         android:layout_marginTop="20dp"
         android:gravity="bottom|center"
-        android:src="@drawable/time_icon"
-        />
+        android:src="@drawable/time_icon" />
 
     <TextView
         android:id="@+id/labelTextView"

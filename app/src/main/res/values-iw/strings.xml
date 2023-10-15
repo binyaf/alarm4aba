@@ -45,6 +45,7 @@
     <string name="about">אודות</string>
     <string name="settings">הגדרות</string>
     <string name="title_activity_settings">הגדרות</string>
+    <string name="shabbat_shalom">שבת שלום</string>
 
     <!-- Preference Titles -->
     <string name="pref_alarm_duration_title">ברירת המחדל למשך ההתראה (שניות)</string>

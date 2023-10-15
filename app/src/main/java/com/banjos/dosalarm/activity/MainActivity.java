@@ -47,7 +47,6 @@ import com.banjos.dosalarm.types.AlarmLocation;
 import com.banjos.dosalarm.types.AlarmType;
 import com.banjos.dosalarm.types.IntentKeys;
 import com.banjos.dosalarm.worker.NotificationWorker;
-import com.bumptech.glide.Glide;
 import com.kosherjava.zmanim.ZmanimCalendar;
 import com.kosherjava.zmanim.hebrewcalendar.HebrewDateFormatter;
 import com.kosherjava.zmanim.hebrewcalendar.JewishDate;
@@ -57,7 +56,6 @@ import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
@@ -138,6 +136,38 @@ public class MainActivity extends AppCompatActivity {
             AlertDialog dialog = createTodayZmanimAlertDialog();
             dialog.show();
         });
+
+        TextView todaysZemanimText = findViewById(R.id.labelTextView);
+
+        todaysZemanimText.setOnClickListener(new View.OnClickListener() {
+            int clicksOnEmptyTextView = 0;
+            @Override
+            public void onClick(View v) {
+                clicksOnEmptyTextView++;
+
+                if (clicksOnEmptyTextView == 7) {
+                    AlertDialog dialog = createSevenClicksDialog();
+                    dialog.show();
+                    clicksOnEmptyTextView = 0;
+                } else {
+                    Log.d("AnimationClick", "number of clicks = " + clicksOnEmptyTextView);
+                }
+            }
+        });
+    }
+
+    private AlertDialog createSevenClicksDialog() {
+
+        ImageView imageView = new ImageView(this);
+        imageView.setImageResource(R.drawable.sha_shalom);
+        imageView.setVisibility(View.VISIBLE);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(imageView);
+        builder.setTitle(getString(R.string.shabbat_shalom))
+                .setIcon(R.drawable.candles)
+                .setPositiveButton(R.string.ok, (dialog, which) -> dialog.dismiss());
+        return builder.create();
     }
 
     private void scheduleDailyNotificationsJob() {
@@ -225,33 +255,6 @@ public class MainActivity extends AppCompatActivity {
             }
 
             textView.setVisibility(View.VISIBLE);
-
-            textView.setOnClickListener(new View.OnClickListener() {
-                int clicksOnEmptyTextView = 0;
-                @Override
-                public void onClick(View v) {
-                    clicksOnEmptyTextView++;
-
-                    if (clicksOnEmptyTextView == 7) {
-                        ImageView imageView = findViewById(R.id.imageView);
-                        Glide.with(v.getContext()).asGif().load(R.raw.sha_shalom).into(imageView);
-                        imageView.setVisibility(View.VISIBLE);
-                        Log.d("AnimationClick", "Show animation");
-                        clicksOnEmptyTextView = 0;
-                        new CountDownTimer(15000, 1000) {
-                            public void onTick(long millisUntilFinished) {
-                                // Do nothing
-                            }
-                            public void onFinish() {
-                                imageView.setVisibility(View.GONE);
-                                clicksOnEmptyTextView = 0;
-                            }
-                        }.start();
-                    } else {
-                        Log.d("AnimationClick", "number of clicks = " + clicksOnEmptyTextView);
-                    }
-                }
-            });
 
             textView.setOnLongClickListener(v -> {
                 //this alarm is not selected
