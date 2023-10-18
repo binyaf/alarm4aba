@@ -35,10 +35,10 @@
         </activity>
 
         <receiver
-            android:name=".tools.AlarmReceiver"
+            android:name=".receiver.AlarmReceiver"
             android:exported="true" />
         <receiver
-            android:name=".tools.NotificationReceiver"
+            android:name=".receiver.NotificationReceiver"
             android:enabled="true"
             android:exported="false" />
         <receiver
@@ -47,6 +47,11 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".receiver.UpgradeReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_REPLACED" />
             </intent-filter>
         </receiver>
     </application>

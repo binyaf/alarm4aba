@@ -1,4 +1,4 @@
-package com.banjos.dosalarm.tools;
+package com.banjos.dosalarm.receiver;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import com.banjos.dosalarm.activity.MainActivity;
+import com.banjos.dosalarm.tools.AlarmsPersistService;
 import com.banjos.dosalarm.types.Alarm;
 import com.banjos.dosalarm.types.AlarmType;
 import com.banjos.dosalarm.types.IntentKeys;

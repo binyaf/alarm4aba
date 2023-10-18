@@ -1,6 +1,5 @@
 package com.banjos.dosalarm.tools;
 
-import android.app.Service;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
@@ -13,7 +12,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.kosherjava.zmanim.util.GeoLocation;
 
-import android.content.res.AssetManager;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
@@ -24,7 +22,7 @@ public class LocationService {
 
     public static final String LOCATION_KEY = "location";
 
-    public AlarmLocation getAlarmLocationDetails(Context context) {
+    public AlarmLocation getClaientLocationDetails(Context context) {
         AssetManager assetManager = context.getAssets();
         InputStream inputStream = null;
         try {

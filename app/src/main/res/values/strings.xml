@@ -86,8 +86,8 @@
    <string name="min_240">4 hours</string>
 
    <string name="notification_checklist_refrigerator">Set the refrigerator light</string>
-   <string name="notification_checklist_dishwasher">Set the dishwasher</string>
-   <string name="notification_checklist_electricity">Set the electricity</string>
+   <string name="notification_checklist_dishwasher">Set the dishwasher timer</string>
+   <string name="notification_checklist_electricity">Set the electricity timer</string>
    <string name="notification_checklist_air_conditioner">Set the air conditioner timer</string>
    <string name="notification_checklist_shower">Take a shower</string>
    <string name="notification_checklist_candles">Prepare the candles</string>
@@ -95,12 +95,10 @@
 
     <string name="pref_checklist_refrigerator">Refrigerator light</string>
     <string name="pref_checklist_dishwasher">Dishwasher timer</string>
-    <string name="pref_checklist_electricity">Shabbat clock for electricity</string>
+    <string name="pref_checklist_electricity">Shabbat clock</string>
     <string name="pref_checklist_air_conditioner">Air conditioner timer</string>
     <string name="pref_checklist_shower">Take a shower</string>
     <string name="pref_checklist_candles">Prepare the candles</string>
     <string name="pref_checklist_phone">Phone your family</string>
-
-
 
 </resources>

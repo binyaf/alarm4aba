@@ -75,8 +75,8 @@
     <string name="min_15">15 דקות</string>
     <string name="min_30">30 דקןת</string>
     <string name="min_45">45 דקות</string>
-    <string name="min_60">שעה</string>
-    <string name="min_75">שעה ו 45 דקות</string>
+    <string name="min_60">60 דקות</string>
+    <string name="min_75">שעה ורבע</string>
     <string name="min_90">שעה וחצי</string>
     <string name="min_105">שעה וארבעים וחמש דקות</string>
     <string name="min_120">שעתיים</string>
@@ -86,7 +86,7 @@
     <string name="min_240">ארבע שעות</string>
 
     <string name="notification_checklist_refrigerator">לכבות את האור במקרר</string>
-    <string name="notification_checklist_dishwasher">לכוון שעון שבת למדיח כלים</string>
+    <string name="notification_checklist_dishwasher">לכוון טיימר למדיח כלים</string>
     <string name="notification_checklist_electricity">לכוון שעון שבת</string>
     <string name="notification_checklist_air_conditioner">לכוון שעון שבת למזגן</string>
     <string name="notification_checklist_shower">להתקלח</string>

@@ -13,7 +13,6 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -34,6 +33,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
+import androidx.work.Constraints;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
@@ -42,6 +42,7 @@ import com.banjos.dosalarm.tools.AlarmsPersistService;
 import com.banjos.dosalarm.tools.DateTimesFormats;
 import com.banjos.dosalarm.tools.IntentCreator;
 import com.banjos.dosalarm.tools.LocationService;
+import com.banjos.dosalarm.tools.NotificationJobScheduler;
 import com.banjos.dosalarm.types.Alarm;
 import com.banjos.dosalarm.types.AlarmLocation;
 import com.banjos.dosalarm.types.AlarmType;
@@ -77,18 +78,17 @@ public class MainActivity extends AppCompatActivity {
         Log.d("MainActivity", "onCreate");
         locationService = new LocationService();
 
-
         SharedPreferences myPrefs = getApplicationContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-        myPrefs.edit().putBoolean(NOTIFICATIONS_WORK_SCHEDULED_KEY, false).apply();
+
         if (! isNotificationsWorkScheduled(myPrefs)) {
             if (isUserWAntsNotifications()) {
-                scheduleDailyNotificationsJob();
+                NotificationJobScheduler.scheduleDailyNotificationsJob(getApplicationContext());
                 markNotificationsWorkAsScheduled(myPrefs);
             }
         }
         alarmsPersistService = new AlarmsPersistService(getApplicationContext());
 
-        alarmLocation = locationService.getAlarmLocationDetails(getApplicationContext());
+        alarmLocation = locationService.getClaientLocationDetails(getApplicationContext());
         cityNameForPresentation = getCityNameByCityCode(alarmLocation.getCityCode());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.alarm_details);
@@ -168,20 +168,6 @@ public class MainActivity extends AppCompatActivity {
                 .setIcon(R.drawable.candles)
                 .setPositiveButton(R.string.ok, (dialog, which) -> dialog.dismiss());
         return builder.create();
-    }
-
-    private void scheduleDailyNotificationsJob() {
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel("channel_id", "Channel Name", NotificationManager.IMPORTANCE_DEFAULT);
-            NotificationManager manager = getApplicationContext().getSystemService(NotificationManager.class);
-            manager.createNotificationChannel(channel);
-        }
-        PeriodicWorkRequest notificationWorkRequest =
-                new PeriodicWorkRequest.Builder(NotificationWorker.class, 3l, TimeUnit.MINUTES)
-                        .build();
-        WorkManager.getInstance(getApplicationContext()).enqueue(notificationWorkRequest);
-
     }
 
     private String getCityNameByCityCode(String cityCode) {
@@ -480,7 +466,6 @@ public class MainActivity extends AppCompatActivity {
     private boolean isUserWAntsNotifications() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         return sharedPreferences.getBoolean("enable_pre_shabbat_checklist_notifications", true);
-
     }
 
 }

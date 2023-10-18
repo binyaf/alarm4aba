@@ -1,4 +1,4 @@
-package com.banjos.dosalarm.tools;
+package com.banjos.dosalarm.receiver;
 
 
 import android.Manifest;

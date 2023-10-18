@@ -1,13 +1,12 @@
 package com.banjos.dosalarm.tools;
 
-import android.app.Application;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import com.banjos.dosalarm.receiver.AlarmReceiver;
+import com.banjos.dosalarm.receiver.NotificationReceiver;
 import com.banjos.dosalarm.types.Alarm;
 import com.banjos.dosalarm.types.IntentKeys;
 
