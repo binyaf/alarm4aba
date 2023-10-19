@@ -80,11 +80,11 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences myPrefs = getApplicationContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
 
+        //this is supposed to be called once in the applications life... when client upgrades his app
+        //we call the UpgradeReceiver and the job will be updated
         if (! isNotificationsWorkScheduled(myPrefs)) {
-            if (isUserWAntsNotifications()) {
-                NotificationJobScheduler.scheduleDailyNotificationsJob(getApplicationContext());
-                markNotificationsWorkAsScheduled(myPrefs);
-            }
+            NotificationJobScheduler.scheduleDailyNotificationsJob(getApplicationContext());
+            markNotificationsWorkAsScheduled(myPrefs);
         }
         alarmsPersistService = new AlarmsPersistService(getApplicationContext());
 

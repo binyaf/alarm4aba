@@ -54,9 +54,6 @@ public class NotificationReceiver extends BroadcastReceiver {
                 .setCategory(NotificationCompat.CATEGORY_MESSAGE);
         builder.setStyle(new NotificationCompat.BigTextStyle().bigText(context.getString(R.string.notification_body)+ ": " + sb.toString()));
 
-        // Add an image to the notification.
-       // builder.setStyle(new NotificationCompat.BigPictureStyle().bigPicture(bitmap));
-
         // Show the notification
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {

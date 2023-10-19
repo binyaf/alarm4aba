@@ -12,12 +12,12 @@
         app:useSimpleSummaryProvider="true" />
 
     <ListPreference
-    app:defaultValue="90"
-    app:entries="@array/pref_alarm_duration_entries"
-    app:entryValues="@array/pref_alarm_duration_values"
-    app:key="alarm_duration"
-    app:title="@string/pref_alarm_duration_title"
-    app:useSimpleSummaryProvider="true" />
+        app:defaultValue="90"
+        app:entries="@array/pref_alarm_duration_entries"
+        app:entryValues="@array/pref_alarm_duration_values"
+        app:key="alarm_duration"
+        app:title="@string/pref_alarm_duration_title"
+        app:useSimpleSummaryProvider="true" />
 
     </PreferenceCategory>
 

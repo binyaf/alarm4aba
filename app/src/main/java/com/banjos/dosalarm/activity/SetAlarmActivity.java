@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -12,6 +13,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.NumberPicker;
@@ -78,6 +82,16 @@ public class SetAlarmActivity extends AppCompatActivity {
         numberPicker = findViewById(R.id.numberPicker);
         alarmLabelEditText = findViewById(R.id.alarmLabelTextView);
         alarmLabelEditText.setText(alarm.getLabel());
+
+        alarmLabelEditText.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE ||
+                    (event != null && event.getAction() == KeyEvent.ACTION_DOWN &&
+                            event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+                // Clear focus when "Done" key is pressed
+                alarmLabelEditText.clearFocus();
+            }
+            return false;
+        });
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             numberPicker.setTextColor(Color.BLACK);

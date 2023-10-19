@@ -26,16 +26,14 @@ public class IntentCreator {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             flags = PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE;
         } else {
-           flags = PendingIntent.FLAG_IMMUTABLE;
+           flags = PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE;
         }
         return PendingIntent.getBroadcast(context, requestCode, intent,flags);
     }
 
-    public static PendingIntent getNotificationPendingIntent(Context context) {
+    public static PendingIntent getNotificationPendingIntent(Context context, int requestCode) {
 
-        int requestCode =  17;
         Intent intent = new Intent(context, NotificationReceiver.class);
-        intent.putExtra("number",770);
 
         int flags = 0;
 

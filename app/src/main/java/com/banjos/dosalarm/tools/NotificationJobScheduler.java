@@ -18,7 +18,7 @@ public class NotificationJobScheduler {
     public static final String WORKER_TAG = "notifications_job";
     public static void scheduleDailyNotificationsJob(Context context) {
 
-        Log.d("Main Activity", "Scheduling NotificationWorker job (is supposed to be called once)");
+        Log.d("NotificationJobScheduler", "Scheduling NotificationWorker job (is supposed to be called once)");
 
         String channelId = "dosAlarmDailyNotificationsId";
         CharSequence channelName = "DosAlarmNotificationsChannel";
@@ -30,8 +30,8 @@ public class NotificationJobScheduler {
         }
 
         PeriodicWorkRequest notificationWorkRequest =
-                new PeriodicWorkRequest.Builder(NotificationWorker.class, 1, TimeUnit.HOURS,
-                        1, TimeUnit.HOURS).addTag("notifications_job").build();
+                new PeriodicWorkRequest.Builder(NotificationWorker.class, 20, TimeUnit.MINUTES,
+                        20, TimeUnit.MINUTES).addTag("notifications_job").build();
 
         WorkManager.getInstance(context).enqueue(notificationWorkRequest);
 
