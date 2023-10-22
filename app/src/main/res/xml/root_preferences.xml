@@ -35,6 +35,7 @@
             android:entryValues="@array/pref_notification_time_before_shabbat_values"
             android:defaultValue="60"
             app:useSimpleSummaryProvider="true"/>
+        <CheckBoxPreference app:key="notification_checklist_dosalarm" app:title="@string/pref_checklist_dosalarm"  app:defaultValue="true" />
         <CheckBoxPreference app:key="notification_checklist_refrigerator" app:title="@string/pref_checklist_refrigerator"  app:defaultValue="true" />
         <CheckBoxPreference app:key="notification_checklist_dishwasher" app:title="@string/pref_checklist_dishwasher"  app:defaultValue="true" />
         <CheckBoxPreference app:key="notification_checklist_electricity" app:title="@string/pref_checklist_electricity" app:defaultValue="true" />
@@ -42,6 +43,6 @@
         <CheckBoxPreference app:key="notification_checklist_shower" app:title="@string/pref_checklist_shower" app:defaultValue="true" />
         <CheckBoxPreference app:key="notification_checklist_candles" app:title="@string/pref_checklist_candles" app:defaultValue="true" />
         <CheckBoxPreference app:key="notification_checklist_phone" app:title="@string/pref_checklist_phone" app:defaultValue="true" />
-        </PreferenceCategory>
+    </PreferenceCategory>
 
 </PreferenceScreen>

@@ -85,6 +85,7 @@
     <string name="min_210">שלוש וחצי שעות</string>
     <string name="min_240">ארבע שעות</string>
 
+    <string name="notification_checklist_dosalarm">לכוון שעון מעורר לשחרית מחר בבוקר (DosAlarm)</string>
     <string name="notification_checklist_refrigerator">לכבות את האור במקרר</string>
     <string name="notification_checklist_dishwasher">לכוון טיימר למדיח כלים</string>
     <string name="notification_checklist_electricity">לכוון שעון שבת</string>
@@ -93,11 +94,12 @@
     <string name="notification_checklist_candles">להכין נרות</string>
     <string name="notification_checklist_phone">להתקשר למשפחה לאחל שבת שלום</string>
 
+    <string name="pref_checklist_dosalarm">לכוון שעון מעורר לשחרית מחר בבוקר (DosAlarm)</string>
     <string name="pref_checklist_refrigerator">אור במקרר</string>
     <string name="pref_checklist_dishwasher">טיימר למדיח כלים</string>
     <string name="pref_checklist_electricity">שעון שבת</string>
     <string name="pref_checklist_air_conditioner">טיימר למזגן</string>
-    <string name="pref_checklist_shower">מקלחת</string>
-    <string name="pref_checklist_candles">להכין נרות שבת</string>
-    <string name="pref_checklist_phone">להתקשר למשפחה</string>
+    <string name="pref_checklist_shower">מקלחת לשבת</string>
+    <string name="pref_checklist_candles"> נרות שבת</string>
+    <string name="pref_checklist_phone">להתקשר למשפחה לאחל שבת שלום</string>
 </resources>

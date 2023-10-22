@@ -15,23 +15,29 @@ import java.util.concurrent.TimeUnit;
 
 public class NotificationJobScheduler {
 
-    public static final String WORKER_TAG = "notifications_job";
+    public static final String WORKER_TAG = "dosAlarmDailyNotificationsChannelId";
+    public static final String CHANNEL_ID = "dosAlarmDailyNotificationsChannelId";
+    private static final String CHANNEL_NAME = "dosAlarmDailyNotificationsChannelName";
     public static void scheduleDailyNotificationsJob(Context context) {
 
         Log.d("NotificationJobScheduler", "Scheduling NotificationWorker job (is supposed to be called once)");
 
-        String channelId = "dosAlarmDailyNotificationsId";
-        CharSequence channelName = "DosAlarmNotificationsChannel";
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_DEFAULT);
+
             NotificationManager manager = context.getSystemService(NotificationManager.class);
-            manager.createNotificationChannel(channel);
+
+            // Check if the channel already exists
+            if (manager.getNotificationChannel(CHANNEL_ID) == null) {
+                NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME,
+                                NotificationManager.IMPORTANCE_DEFAULT
+                );
+                manager.createNotificationChannel(channel);
+            }
         }
 
         PeriodicWorkRequest notificationWorkRequest =
-                new PeriodicWorkRequest.Builder(NotificationWorker.class, 20, TimeUnit.MINUTES,
-                        20, TimeUnit.MINUTES).addTag("notifications_job").build();
+                new PeriodicWorkRequest.Builder(NotificationWorker.class, 15, TimeUnit.MINUTES,
+                        15, TimeUnit.MINUTES).addTag("notifications_job").build();
 
         WorkManager.getInstance(context).enqueue(notificationWorkRequest);
 

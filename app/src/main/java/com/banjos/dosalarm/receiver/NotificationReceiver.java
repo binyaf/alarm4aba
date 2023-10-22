@@ -17,6 +17,7 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.preference.PreferenceManager;
 
 import com.banjos.dosalarm.R;
+import com.banjos.dosalarm.tools.NotificationJobScheduler;
 
 import java.util.Arrays;
 import java.util.List;
@@ -32,9 +33,10 @@ public class NotificationReceiver extends BroadcastReceiver {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
         if (!isUserWAntsNotifications(sharedPreferences)) {
-            Log.d("NotificationWorker", "user doesn't want to receive notifications");
+            Log.d("NotificationReceiver", "user doesn't want to receive notifications");
             return;
         }
+        Log.d("NotificationReceiver", "about to send user a notification");
 
         List<String> checkList = gtChecklist(sharedPreferences, context);
 
@@ -46,7 +48,7 @@ public class NotificationReceiver extends BroadcastReceiver {
         }
         Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.app_icon);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "channel_id")
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context,  NotificationJobScheduler.CHANNEL_ID)
                 .setSmallIcon(R.drawable.candles)
                 .setLargeIcon(bitmap)
                 .setContentTitle(context.getString(R.string.notification_candle_lighting_title, "15"))
@@ -74,6 +76,7 @@ public class NotificationReceiver extends BroadcastReceiver {
     }
     
     private List<String> gtChecklist(SharedPreferences sharedPreferences, Context context) {
+        String dosAlarm = sharedPreferences.getBoolean("notification_checklist_dosalarm", true)? context.getString(R.string.notification_checklist_dishwasher) :"";
         String refrigerator = sharedPreferences.getBoolean("notification_checklist_refrigerator", true)? context.getString(R.string.notification_checklist_refrigerator) :"";
         String dishwasher = sharedPreferences.getBoolean("notification_checklist_dishwasher", true)? context.getString(R.string.notification_checklist_dishwasher) :"";
         String clock = sharedPreferences.getBoolean("notification_checklist_electricity", true)? context.getString(R.string.notification_checklist_electricity) :"";
@@ -82,7 +85,7 @@ public class NotificationReceiver extends BroadcastReceiver {
         String candles = sharedPreferences.getBoolean("notification_checklist_candles", true)?context.getString(R.string.notification_checklist_candles) :"";
         String phone = sharedPreferences.getBoolean("notification_checklist_phone", true)? context.getString(R.string.notification_checklist_phone) :"";
 
-        return Arrays.asList(refrigerator, dishwasher, clock, airConditioner, shower, candles, phone);
+        return Arrays.asList(dosAlarm, refrigerator, dishwasher, clock, airConditioner, shower, candles, phone);
 
     }
 }

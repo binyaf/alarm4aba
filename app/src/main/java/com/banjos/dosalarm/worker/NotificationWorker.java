@@ -15,6 +15,7 @@ import com.banjos.dosalarm.tools.IntentCreator;
 import com.banjos.dosalarm.tools.LocationService;
 import com.banjos.dosalarm.types.AlarmLocation;
 import com.kosherjava.zmanim.ZmanimCalendar;
+import com.kosherjava.zmanim.hebrewcalendar.JewishCalendar;
 import com.kosherjava.zmanim.util.GeoLocation;
 
 import java.time.LocalDate;
@@ -39,96 +40,103 @@ public class NotificationWorker extends Worker {
     @Override
     public Result doWork() {
         Log.d("NotificationWorker", "NotificationWorker was called");
-        scheduleNotificationForCandleLighting();
+        scheduleNotificationForCandleLighting(true);
         Log.d("NotificationWorker", "NotificationWorker finished");
         return Result.success();
     }
 
-    private void scheduleNotificationTest() {
-        Context context = getApplicationContext();
-        PendingIntent pendingIntent = IntentCreator.getNotificationPendingIntent(context,
-                123);
+    private void scheduleNotificationForCandleLighting(boolean isTest) {
 
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        ZmanimCalendar zcalToday = getTodaysZmanimCalendar();
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 11);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTime().getTime(), pendingIntent);
-    }
+        if (scheduleNotificationForCandleLightingToday(zcalToday) || isTest) {
 
-    private void scheduleNotificationForCandleLighting() {
-
-        ZmanimCalendar zcalToday = new ZmanimCalendar();
-        Calendar today = Calendar.getInstance();
-        zcalToday.setCalendar(today);
-
-        if (scheduleNotificationForCandleLightingToday(zcalToday)) {
             Context context = getApplicationContext();
 
-            Date notificationTime = getNotificationTime(zcalToday, context);
+            Date notificationTime = null;
+
+            if (isTest) {
+                notificationTime = getNotificationTimeTest(zcalToday, context);
+            } else {
+                notificationTime = getNotificationTime(zcalToday, context);
+            }
+            Date now = Calendar.getInstance().getTime();
 
             PendingIntent pendingIntent =
                     IntentCreator.getNotificationPendingIntent(context, CANDLE_LIGHTING_REQUEST_CODE);
 
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-            //in case the is already a notification for candle lighting, we want to cancel it
             alarmManager.cancel(pendingIntent);
-            alarmManager.set(AlarmManager.RTC_WAKEUP, notificationTime.getTime(), pendingIntent);
+
+            if (notificationTime.after(now)) {
+                Log.d("NotificationWorker", "Scheduling notification | time: " +
+                        notificationTime + " | now: " + now );
+                alarmManager.set(AlarmManager.RTC_WAKEUP, notificationTime.getTime(), pendingIntent);
+            } else {
+                Log.d("NotificationWorker", "Notification time: | " +
+                        notificationTime + " | now: " + now + " | in the past not Scheduling");
+            }
         }
+    }
+
+    private ZmanimCalendar getTodaysZmanimCalendar() {
+
+        ZmanimCalendar zcalToday = new ZmanimCalendar();
+
+        AlarmLocation clientsLocation = locationService.getClaientLocationDetails(getApplicationContext());
+
+        if (clientsLocation.getCityCode().equals("JLM_IL")) {
+            zcalToday.setCandleLightingOffset(CANDLE_LIGHTING_OFFSET_JERUSALEM);
+        } else {
+            zcalToday.setCandleLightingOffset(CANDLE_LIGHTING_OFFSET);
+        }
+        GeoLocation gl = locationService.getGeoLocationFromAlarmLocation(clientsLocation);
+        zcalToday.setGeoLocation(gl);
+
+        return zcalToday;
+
     }
 
     private boolean scheduleNotificationForCandleLightingToday(ZmanimCalendar zcalToday) {
         boolean inIsrael = true;
 
-        ZmanimCalendar zcalTomorrow = new ZmanimCalendar();
-        Calendar tomorrow = Calendar.getInstance();
-        tomorrow.add(Calendar.DAY_OF_MONTH, 1);
-        zcalTomorrow.setCalendar(tomorrow);
+        JewishCalendar jc = new JewishCalendar();
+        jc.setInIsrael(inIsrael);
+        boolean hasCandleLighting = jc.hasCandleLighting();
 
-
-        //I pass the sunrise (and not the sunset) since I'm interested in the day in general, not in a specific time on the day.
-        boolean tomorrowIsAssurBemlacha = zcalTomorrow.isAssurBemlacha(tomorrow.getTime(), zcalTomorrow.getSunrise(), inIsrael);
-        boolean todayIsAssurBemlacha = zcalToday.isAssurBemlacha(Calendar.getInstance().getTime(), zcalToday.getSunrise(), inIsrael);
-        boolean isBeforeCandleLightingTime =  zcalToday.getCandleLighting().before(Calendar.getInstance().getTime());
-        boolean isAfterMorning = LocalTime.now().isAfter(LocalTime.of(11, 0));
-
-        return !todayIsAssurBemlacha && tomorrowIsAssurBemlacha
-                && isBeforeCandleLightingTime && isAfterMorning ;
+        if (hasCandleLighting) {
+            boolean isBeforeCandleLightingTime =  zcalToday.getCandleLighting().before(Calendar.getInstance().getTime());
+            boolean isAfterMorning = LocalTime.now().isAfter(LocalTime.of(11, 0));
+            return isBeforeCandleLightingTime && isAfterMorning ;
+        }
+        return false;
 
     }
 
-
     private Date getNotificationTime(ZmanimCalendar today, Context context) {
+
         int timeBeforeShabbat = timeBeforeShabbatToSendNotificationInMinutes(context);
-        Calendar  candleLightingTime = getCandleLightingTime(today, context);
+
+        Calendar candleLightingTime = Calendar.getInstance();
+        candleLightingTime.setTime(today.getCandleLighting());
         candleLightingTime.add(Calendar.MINUTE, -timeBeforeShabbat);
-        Log.d("NotificationWorker", "timeBeforeShabbat (minutes) to send notification = " + timeBeforeShabbat);
-        Log.d("NotificationWorker", "candleLightingTime = " + timeBeforeShabbat);
+
         return candleLightingTime.getTime();
     }
 
+    private Date getNotificationTimeTest(ZmanimCalendar today, Context context) {
+
+        int timeBeforeShabbat = timeBeforeShabbatToSendNotificationInMinutes(context);
+
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR, cal.get(Calendar.HOUR) + 1);
+        cal.set(Calendar.MINUTE, 41);
+        return cal.getTime();
+    }
     private int timeBeforeShabbatToSendNotificationInMinutes(Context context) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return sharedPreferences.getInt("pref_notification_time_before_shabbat", 60);
+        String time = sharedPreferences.getString("pref_notification_time_before_shabbat", "60");
+        return Integer.valueOf(time);
     }
 
-    private Calendar getCandleLightingTime(ZmanimCalendar today, Context context) {
-
-        AlarmLocation clientsLocation = locationService.getClaientLocationDetails(context);
-        GeoLocation gl = locationService.getGeoLocationFromAlarmLocation(clientsLocation);
-        today.setGeoLocation(gl);
-
-        if (clientsLocation.getCityCode().equals("JLM_IL")) {
-            today.setCandleLightingOffset(CANDLE_LIGHTING_OFFSET_JERUSALEM);
-        } else {
-            today.setCandleLightingOffset(CANDLE_LIGHTING_OFFSET);
-        }
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(today.getCandleLighting());
-        return calendar;
-    }
 }
