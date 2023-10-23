@@ -63,7 +63,10 @@
     <string name="GVZ_IL">גבעת זאב</string>
     <string name="MBA_IL">מזכרת בתיה</string>
     <string name="SDR_IL">שדרות</string>
+    <string name="EIL_IL">אילת</string>
     <string name="NYC_US">ניו יורק</string>
+    <string name="LAX_US">לוס אנג\'לס</string>
+    <string name="MIA_US">מיאמי</string>
     <string name="LON_UK">לונדון</string>
 
     <!-- notification -->

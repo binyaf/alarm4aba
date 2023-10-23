@@ -63,7 +63,10 @@
     <string name="GVZ_IL">Givaat Zeev</string>
     <string name="MBA_IL">Mazkeret Batya</string>
     <string name="SDR_IL">Sderot</string>
+    <string name="EIL_IL">Eilat</string>
     <string name="NYC_US">New York</string>
+    <string name="LAX_US">Los Angeles</string>
+    <string name="MIA_US">Miami</string>
     <string name="LON_UK">London</string>
 
     <!-- notification -->

@@ -22,7 +22,7 @@ public class LocationService {
 
     public static final String LOCATION_KEY = "location";
 
-    public AlarmLocation getClaientLocationDetails(Context context) {
+    public static AlarmLocation getClientLocationDetails(Context context) {
         AssetManager assetManager = context.getAssets();
         InputStream inputStream = null;
         try {
@@ -46,7 +46,7 @@ public class LocationService {
     /*
  get the default location, set one if there is no default location
   */
-    private String getDefaultCityCode(Context context) {
+    private static String getDefaultCityCode(Context context) {
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         Map<String, ?> all = sharedPreferences.getAll();
@@ -62,7 +62,7 @@ public class LocationService {
         return "JLM_IL";
     }
 
-    public GeoLocation getGeoLocationFromAlarmLocation(AlarmLocation alarmLocation) {
+    public static GeoLocation getGeoLocationFromAlarmLocation(AlarmLocation alarmLocation) {
         return new GeoLocation(alarmLocation.getCityCode(), alarmLocation.getLatitude(),
                 alarmLocation.getLongitude(),
                 TimeZone.getTimeZone(alarmLocation.getTimeZone()));

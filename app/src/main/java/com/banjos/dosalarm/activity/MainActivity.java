@@ -2,8 +2,6 @@ package com.banjos.dosalarm.activity;
 
 import android.app.AlarmManager;
 import android.app.AlertDialog;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -11,7 +9,6 @@ import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Spannable;
@@ -33,9 +30,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
-import androidx.work.Constraints;
-import androidx.work.PeriodicWorkRequest;
-import androidx.work.WorkManager;
 
 import com.banjos.dosalarm.R;
 import com.banjos.dosalarm.tools.AlarmsPersistService;
@@ -47,7 +41,6 @@ import com.banjos.dosalarm.types.Alarm;
 import com.banjos.dosalarm.types.AlarmLocation;
 import com.banjos.dosalarm.types.AlarmType;
 import com.banjos.dosalarm.types.IntentKeys;
-import com.banjos.dosalarm.worker.NotificationWorker;
 import com.kosherjava.zmanim.ZmanimCalendar;
 import com.kosherjava.zmanim.hebrewcalendar.HebrewDateFormatter;
 import com.kosherjava.zmanim.hebrewcalendar.JewishDate;
@@ -57,7 +50,6 @@ import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -76,19 +68,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         Log.d("MainActivity", "onCreate");
+        Context context = getApplicationContext();
         locationService = new LocationService();
 
-        SharedPreferences myPrefs = getApplicationContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        SharedPreferences myPrefs = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
 
         //this is supposed to be called once in the applications life... when client upgrades his app
         //we call the UpgradeReceiver and the job will be updated
         if (! isNotificationsWorkScheduled(myPrefs)) {
-            NotificationJobScheduler.scheduleDailyNotificationsJob(getApplicationContext());
+            NotificationJobScheduler.scheduleDailyNotificationsJob(context);
             markNotificationsWorkAsScheduled(myPrefs);
         }
-        alarmsPersistService = new AlarmsPersistService(getApplicationContext());
+        alarmsPersistService = new AlarmsPersistService(context);
 
-        alarmLocation = locationService.getClaientLocationDetails(getApplicationContext());
+        alarmLocation = locationService.getClientLocationDetails(context);
         cityNameForPresentation = getCityNameByCityCode(alarmLocation.getCityCode());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.alarm_details);

@@ -13,8 +13,9 @@ public class UpgradeReceiver extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
+                Log.d("UpgradeReceiver", "UpgradeReceiver was called");
                 String packageName = intent.getData().getSchemeSpecificPart();
-                //we want it to be called only when this app is been upgraded
+                //we want it to be called only when this app (dosalarm)  is been upgraded
                 if (packageName.equals(context.getPackageName())) {
                         Log.d("UpgradeReceiver", "app was upgraded");
                         //we don't want the job to run twice

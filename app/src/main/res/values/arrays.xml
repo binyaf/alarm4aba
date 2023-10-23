@@ -71,7 +71,10 @@
         <item>GVZ_IL</item>
         <item>MBA_IL</item>
         <item>SDR_IL</item>
+        <item>EIL_IL</item>
         <item>NYC_US</item>
+        <item>MIA_US</item>
+        <item>LAX_US</item>
         <item>LON_UK</item>
     </string-array>
 
@@ -82,7 +85,10 @@
         <item>@string/GVZ_IL</item>
         <item>@string/MBA_IL</item>
         <item>@string/SDR_IL</item>
+        <item>@string/EIL_IL</item>
         <item>@string/NYC_US</item>
+        <item>@string/MIA_US</item>
+        <item>@string/LAX_US</item>
         <item>@string/LON_UK</item>
     </string-array>
 

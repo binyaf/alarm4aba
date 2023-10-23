@@ -7,8 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import java.util.Date;
 import android.util.Log;
 
 import androidx.core.app.ActivityCompat;
@@ -17,7 +16,10 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.preference.PreferenceManager;
 
 import com.banjos.dosalarm.R;
+import com.banjos.dosalarm.tools.LocationService;
 import com.banjos.dosalarm.tools.NotificationJobScheduler;
+import com.banjos.dosalarm.tools.ZmanimService;
+import com.banjos.dosalarm.types.AlarmLocation;
 
 import java.util.Arrays;
 import java.util.List;
@@ -33,28 +35,25 @@ public class NotificationReceiver extends BroadcastReceiver {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
         if (!isUserWAntsNotifications(sharedPreferences)) {
-            Log.d("NotificationReceiver", "user doesn't want to receive notifications");
+            Log.d("NotificationReceiver", "Not sending notification | user doesn't want to receive notifications");
             return;
         }
-        Log.d("NotificationReceiver", "about to send user a notification");
 
-        List<String> checkList = gtChecklist(sharedPreferences, context);
+        String notificationTitle = prepareNotificationTitle(context);
 
-        StringBuilder sb = new StringBuilder();
-        for (String str:checkList) {
-            if (str != null && !str.equals("")) {
-                sb.append("\n* " + str);
-            }
+        if (notificationTitle == null) {
+            Log.d("NotificationReceiver", "Not sending notification | Today has no candle lighting");
+            return;
         }
-        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.app_icon);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context,  NotificationJobScheduler.CHANNEL_ID)
+        String notificationText = prepareNotificationText(sharedPreferences, context);
+
+        NotificationCompat.Builder builder =
+                new NotificationCompat.Builder(context,  NotificationJobScheduler.CHANNEL_ID)
                 .setSmallIcon(R.drawable.candles)
-                .setLargeIcon(bitmap)
-                .setContentTitle(context.getString(R.string.notification_candle_lighting_title, "15"))
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setCategory(NotificationCompat.CATEGORY_MESSAGE);
-        builder.setStyle(new NotificationCompat.BigTextStyle().bigText(context.getString(R.string.notification_body)+ ": " + sb.toString()));
+                .setContentTitle(notificationTitle)
+                .setPriority(NotificationCompat.PRIORITY_HIGH).setCategory(NotificationCompat.CATEGORY_MESSAGE);
+        builder.setStyle(new NotificationCompat.BigTextStyle().bigText(notificationText));
 
         // Show the notification
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
@@ -69,6 +68,39 @@ public class NotificationReceiver extends BroadcastReceiver {
             return;
         }
         notificationManager.notify(1, builder.build());
+    }
+
+    private String prepareNotificationTitle(Context context) {
+        AlarmLocation clientsLocation = LocationService.getClientLocationDetails(context);
+        Date candleLightingTimeToday = ZmanimService.getCandleLightingTimeToday(clientsLocation);
+
+        if (candleLightingTimeToday == null) {
+            return null;
+        }
+
+        // Calculate the difference in minutes
+        long timeDifferenceMillis = candleLightingTimeToday.getTime() - System.currentTimeMillis();
+        long minutesDifference = timeDifferenceMillis / (60 * 1000);
+
+        // Present the difference in a human-readable format
+        String formattedDifference = formatTimeDifference(minutesDifference);
+
+        System.out.println("Time difference: " + formattedDifference);
+        return context.getString(R.string.notification_candle_lighting_title, formattedDifference);
+    }
+
+    private String prepareNotificationText(SharedPreferences sharedPreferences, Context context) {
+
+        List<String> checkList = gtChecklist(sharedPreferences, context);
+
+        StringBuilder sb = new StringBuilder();
+        for (String str:checkList) {
+            if (str != null && !str.equals("")) {
+                sb.append("\n* " + str);
+            }
+        }
+
+        return context.getString(R.string.notification_body)+ ": " + sb.toString();
     }
 
     private boolean isUserWAntsNotifications(SharedPreferences sharedPreferences) {
@@ -87,5 +119,24 @@ public class NotificationReceiver extends BroadcastReceiver {
 
         return Arrays.asList(dosAlarm, refrigerator, dishwasher, clock, airConditioner, shower, candles, phone);
 
+    }
+
+    private static String formatTimeDifference(long minutesDifference) {
+        if (minutesDifference < 1) {
+            return "less than a minute";
+        } else if (minutesDifference == 1) {
+            return "1 minute";
+        } else if (minutesDifference < 60) {
+            return minutesDifference + " minutes";
+        } else {
+            long hours = minutesDifference / 60;
+            long remainingMinutes = minutesDifference % 60;
+
+            if (remainingMinutes == 0) {
+                return hours == 1 ? "1 hour" : hours + " hours";
+            } else {
+                return String.format("%d hours and %d minutes", hours, remainingMinutes);
+            }
+        }
     }
 }

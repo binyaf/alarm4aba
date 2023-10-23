@@ -29,8 +29,7 @@ public class NotificationJobScheduler {
             // Check if the channel already exists
             if (manager.getNotificationChannel(CHANNEL_ID) == null) {
                 NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME,
-                                NotificationManager.IMPORTANCE_DEFAULT
-                );
+                                NotificationManager.IMPORTANCE_DEFAULT);
                 manager.createNotificationChannel(channel);
             }
         }
