@@ -7,8 +7,7 @@
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-   <!-- <uses-permission android:name="android.permission.BROADCAST_PACKAGE_REPLACED" />
-    <uses-permission android:name="android.permission.PACKAGE_REPLACED" />-->
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -55,8 +54,8 @@
             android:enabled="true"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_REPLACED"
-                    package="com.alarms.myalarm" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED"
+                    package="com.banjos.dosalarm" />
             </intent-filter>
         </receiver>
     </application>
