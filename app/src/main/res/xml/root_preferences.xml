@@ -40,7 +40,8 @@
         <CheckBoxPreference app:key="notification_checklist_dishwasher" app:title="@string/pref_checklist_dishwasher"  app:defaultValue="true" />
         <CheckBoxPreference app:key="notification_checklist_electricity" app:title="@string/pref_checklist_electricity" app:defaultValue="true" />
         <CheckBoxPreference app:key="notification_checklist_air_conditioner" app:title="@string/pref_checklist_air_conditioner" app:defaultValue="true" />
-        <CheckBoxPreference app:key="notification_checklist_shower" app:title="@string/pref_checklist_shower" app:defaultValue="true" />
+        <CheckBoxPreference app:key="notification_checklist_kettle" app:title="@string/pref_checklist_kettle" app:defaultValue="true" />
+        <CheckBoxPreference app:key="notification_checklist_hot_plate" app:title="@string/pref_checklist_hot_plate" app:defaultValue="true" />
         <CheckBoxPreference app:key="notification_checklist_candles" app:title="@string/pref_checklist_candles" app:defaultValue="true" />
         <CheckBoxPreference app:key="notification_checklist_phone" app:title="@string/pref_checklist_phone" app:defaultValue="true" />
     </PreferenceCategory>

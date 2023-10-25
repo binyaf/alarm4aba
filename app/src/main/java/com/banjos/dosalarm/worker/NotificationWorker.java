@@ -36,22 +36,24 @@ public class NotificationWorker extends Worker {
     @Override
     public Result doWork() {
         Log.d("NotificationWorker", "NotificationWorker was called");
-        scheduleNotificationForCandleLighting(true);
+        scheduleNotificationForCandleLighting();
         Log.d("NotificationWorker", "NotificationWorker finished");
         return Result.success();
     }
 
-    private void scheduleNotificationForCandleLighting(boolean isTest) {
+    private void scheduleNotificationForCandleLighting() {
 
         Context context = getApplicationContext();
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+
         AlarmLocation clientsLocation = locationService.getClientLocationDetails(context);
 
         ZmanimCalendar zcalToday = ZmanimService.getTodaysZmanimCalendar(clientsLocation);
 
-        if (scheduleNotificationForCandleLightingToday(zcalToday, clientsLocation) || isTest) {
+        if (scheduleNotificationForCandleLightingToday(zcalToday, clientsLocation) ||
+                isTestMode(sharedPreferences)) {
 
-
-            Date notificationTime = getNotificationTime(zcalToday, context, isTest);
+            Date notificationTime = getNotificationTime(zcalToday, sharedPreferences);
 
             Date now = Calendar.getInstance().getTime();
 
@@ -84,15 +86,15 @@ public class NotificationWorker extends Worker {
 
     }
 
-    private Date getNotificationTime(ZmanimCalendar today, Context context, boolean isTest) {
+    private Date getNotificationTime(ZmanimCalendar today, SharedPreferences sharedPreferences) {
 
-        int timeBeforeShabbat = timeBeforeShabbatToSendNotificationInMinutes(context);
+        int timeBeforeShabbat = timeBeforeShabbatToSendNotificationInMinutes(sharedPreferences);
 
         Calendar notificationTime = Calendar.getInstance();
 
-        if (isTest) {
-            notificationTime.set(Calendar.HOUR, notificationTime.get(Calendar.HOUR));
-            notificationTime.set(Calendar.MINUTE, 45);
+        if (isTestMode(sharedPreferences)) {
+          //  notificationTime.set(Calendar.HOUR, notificationTime.get(Calendar.HOUR));
+            notificationTime.set(Calendar.MINUTE, notificationTime.get(Calendar.MINUTE) + 1);
         } else {
             notificationTime.setTime(today.getCandleLighting());
             notificationTime.add(Calendar.MINUTE, -timeBeforeShabbat);
@@ -100,10 +102,13 @@ public class NotificationWorker extends Worker {
         return notificationTime.getTime();
     }
 
-    private int timeBeforeShabbatToSendNotificationInMinutes(Context context) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+    private int timeBeforeShabbatToSendNotificationInMinutes(SharedPreferences sharedPreferences) {
         String time = sharedPreferences.getString("pref_notification_time_before_shabbat", "60");
         return Integer.valueOf(time);
+    }
+
+    private boolean isTestMode(SharedPreferences myPrefs) {
+        return myPrefs.getBoolean("testMode", false);
     }
 
 }

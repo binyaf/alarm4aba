@@ -14,20 +14,6 @@
     <string name="alarm_time_label">Alarm Time</string>
     <string name="alarm_date_label">Alarm Date</string>
     <string name="alarm_label_label">Alarm Label</string>
-    <string name="limit_data_usage">prefs_limit_data_usage</string>
-    <string name="stream_video">Only stream HD video on Wi-Fi</string>
-    <string name="limit_mobile_usage">Limit mobile data usage</string>
-    <string name="double_tap_to_seek">Double-tap to seek</string>
-    <string name="pref_seek_val">pref_seek_val</string>
-    <string name="seconds">seconds</string>
-    <string name="uploads">Uploads</string>
-    <string name="pref_uploads">pref_uploads</string>
-    <string name="specify_network_prefs">Specify network preferences for uploads</string>
-    <string name="prefs_restricted_mode">prefs_restricted_mode</string>
-    <string name="restricted_mode">Restricted Mode can help to hide videos with potentially mature content.No filter is 100% accurate, but it should help you to avoid most of this type of content.</string>
-    <string name="restricted_mode_description">Restricted Mode</string>
-    <string name="prefs_enable_stats">prefs_enable_stats</string>
-    <string name="enable_stats">Enable stats for nerds</string>
     <string name="todays_zmanim_short">Today\'s Zemanim</string>
     <string name="todays_zmanim">Today\'s Zemanim - %1$s</string>
     <string name="alarm_will_start">Alarm will start at:</string>
@@ -46,14 +32,18 @@
     <string name="settings">settings</string>
     <string name="title_activity_settings">Settings</string>
     <string name="shabbat_shalom">Shabbat Shalom</string>
+    <string name="less_than_a_minute">less than a minute</string>
+    <string name="one_minute">1 minute</string>
+    <string name="minutes">%d minutes</string>
+    <string name="one_hour">1 hour</string>
+    <string name="hours">%d hours</string>
+    <string name="and_minutes">and %1$d minutes</string>
 
     <!-- Preference Titles -->
     <string name="pref_alarm_duration_title">Default alarm duration (sec.)</string>
     <string name="pref_enable_notifications_title">Notifications enabled</string>
     <string name="defaults_header">Defaults</string>
     <string name="pref_shabbat_checklist_notifications_header">Shabbat Checklist Notifications</string>
-    <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
 
     <!-- Preference locations -->
     <string name="pref_location_title">Your location</string>
@@ -67,11 +57,12 @@
     <string name="NYC_US">New York</string>
     <string name="LAX_US">Los Angeles</string>
     <string name="MIA_US">Miami</string>
+    <string name="TOR_CA">Toronto</string>
     <string name="LON_UK">London</string>
 
     <!-- notification -->
     <string name="time_beforeShabbat_notification">Time before Shabbat to receive the notification</string>
-    <string name="notification_candle_lighting_title">Shabbat Candle-Lighting is in %1$s minutes</string>
+    <string name="notification_candle_lighting_title">Shabbat Candle-Lighting is in %1$s</string>
     <string name="notification_body">Don\'t forget to finish preparations on time</string>
     <string name="ok">OK</string>
 
@@ -93,7 +84,8 @@
    <string name="notification_checklist_dishwasher">Set the dishwasher timer</string>
    <string name="notification_checklist_electricity">Set the electricity timer</string>
    <string name="notification_checklist_air_conditioner">Set the air conditioner timer</string>
-   <string name="notification_checklist_shower">Take a shower</string>
+   <string name="notification_checklist_kettle">Prepare Shabbat Kettle</string>
+   <string name="notification_checklist_hot_plate">Prepare Shabbat hot plate</string>
    <string name="notification_checklist_candles">Prepare the candles</string>
    <string name="notification_checklist_phone">Call family to wish shabbat Shalom</string>
 
@@ -102,8 +94,8 @@
     <string name="pref_checklist_dishwasher">Dishwasher timer</string>
     <string name="pref_checklist_electricity">Shabbat clock</string>
     <string name="pref_checklist_air_conditioner">Air conditioner timer</string>
-    <string name="pref_checklist_shower">Take a shower</string>
+    <string name="pref_checklist_kettle">Prepare the Shabbat kettle</string>
+    <string name="pref_checklist_hot_plate">Prepare the Hot Plate</string>
     <string name="pref_checklist_candles">Prepare the candles</string>
     <string name="pref_checklist_phone">Phone your family</string>
-
 </resources>

@@ -77,24 +77,6 @@ public class SettingsActivity extends AppCompatActivity  {
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey);
         }
-
-        private Map<Integer, Integer> getNotificationTimeMap() {
-            Map<Integer, Integer> alarmDurationMap = new TreeMap<Integer, Integer>();
-            alarmDurationMap.put(15, 0);
-            alarmDurationMap.put(30,1);
-            alarmDurationMap.put(45, 2);
-            alarmDurationMap.put(60, 3);
-            alarmDurationMap.put(75, 4);;
-            alarmDurationMap.put(90, 5);
-            alarmDurationMap.put(105, 6);
-            alarmDurationMap.put(120, 7);
-            alarmDurationMap.put(150, 8);
-            alarmDurationMap.put(180, 9);
-            alarmDurationMap.put(210, 10);
-            alarmDurationMap.put(240, 11);
-            return alarmDurationMap;
-        }
-
     }
 }
 

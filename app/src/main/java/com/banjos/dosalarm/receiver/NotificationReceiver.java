@@ -32,6 +32,7 @@ public class NotificationReceiver extends BroadcastReceiver {
     }
 
     private void showNotification(Context context) {
+
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
         if (!isUserWAntsNotifications(sharedPreferences)) {
@@ -39,7 +40,7 @@ public class NotificationReceiver extends BroadcastReceiver {
             return;
         }
 
-        String notificationTitle = prepareNotificationTitle(context);
+        String notificationTitle = prepareNotificationTitle(context, sharedPreferences);
 
         if (notificationTitle == null) {
             Log.d("NotificationReceiver", "Not sending notification | Today has no candle lighting");
@@ -70,9 +71,11 @@ public class NotificationReceiver extends BroadcastReceiver {
         notificationManager.notify(1, builder.build());
     }
 
-    private String prepareNotificationTitle(Context context) {
+    private String prepareNotificationTitle(Context context,  SharedPreferences sharedPreferences) {
         AlarmLocation clientsLocation = LocationService.getClientLocationDetails(context);
-        Date candleLightingTimeToday = ZmanimService.getCandleLightingTimeToday(clientsLocation);
+        Date candleLightingTimeToday =
+                !isTestMode(sharedPreferences) ? ZmanimService.getCandleLightingTimeToday(clientsLocation) :
+                new Date((new Date().getTime()) + (1000 * 60 * 127));
 
         if (candleLightingTimeToday == null) {
             return null;
@@ -83,10 +86,12 @@ public class NotificationReceiver extends BroadcastReceiver {
         long minutesDifference = timeDifferenceMillis / (60 * 1000);
 
         // Present the difference in a human-readable format
-        String formattedDifference = formatTimeDifference(minutesDifference);
+        String formattedDifference = formatTimeDifference(minutesDifference, context);
 
-        System.out.println("Time difference: " + formattedDifference);
-        return context.getString(R.string.notification_candle_lighting_title, formattedDifference);
+        Log.d("NotificationReceiver", "minutes until shabbat:" + minutesDifference);
+        String title = context.getString(R.string.notification_candle_lighting_title, formattedDifference);
+        Log.d("NotificationReceiver", "notification title:" + title);
+        return title;
     }
 
     private String prepareNotificationText(SharedPreferences sharedPreferences, Context context) {
@@ -108,35 +113,41 @@ public class NotificationReceiver extends BroadcastReceiver {
     }
     
     private List<String> gtChecklist(SharedPreferences sharedPreferences, Context context) {
-        String dosAlarm = sharedPreferences.getBoolean("notification_checklist_dosalarm", true)? context.getString(R.string.notification_checklist_dishwasher) :"";
+        String dosAlarm = sharedPreferences.getBoolean("notification_checklist_dosalarm", true)? context.getString(R.string.notification_checklist_dosalarm) :"";
         String refrigerator = sharedPreferences.getBoolean("notification_checklist_refrigerator", true)? context.getString(R.string.notification_checklist_refrigerator) :"";
         String dishwasher = sharedPreferences.getBoolean("notification_checklist_dishwasher", true)? context.getString(R.string.notification_checklist_dishwasher) :"";
         String clock = sharedPreferences.getBoolean("notification_checklist_electricity", true)? context.getString(R.string.notification_checklist_electricity) :"";
         String airConditioner = sharedPreferences.getBoolean("notification_checklist_air_conditioner", true)? context.getString(R.string.notification_checklist_air_conditioner) :"";
-        String shower = sharedPreferences.getBoolean("notification_checklist_shower", true)? context.getString(R.string.notification_checklist_shower) :"";
+        String kettle = sharedPreferences.getBoolean("notification_checklist_kettle", true)? context.getString(R.string.notification_checklist_kettle) :"";
+        String hotPlate = sharedPreferences.getBoolean("notification_checklist_hot_plate", true)? context.getString(R.string.notification_checklist_hot_plate) :"";
         String candles = sharedPreferences.getBoolean("notification_checklist_candles", true)?context.getString(R.string.notification_checklist_candles) :"";
         String phone = sharedPreferences.getBoolean("notification_checklist_phone", true)? context.getString(R.string.notification_checklist_phone) :"";
 
-        return Arrays.asList(dosAlarm, refrigerator, dishwasher, clock, airConditioner, shower, candles, phone);
+        return Arrays.asList(dosAlarm, refrigerator, dishwasher, clock, airConditioner, kettle, hotPlate, candles, phone);
 
     }
 
-    private static String formatTimeDifference(long minutesDifference) {
+    private static String formatTimeDifference(long minutesDifference, Context context) {
         if (minutesDifference < 1) {
-            return "less than a minute";
+            return context.getString(R.string.less_than_a_minute);
         } else if (minutesDifference == 1) {
-            return "1 minute";
+            return context.getString(R.string.one_minute);
         } else if (minutesDifference < 60) {
-            return minutesDifference + " minutes";
+            return context.getString(R.string.minutes, minutesDifference);
         } else {
             long hours = minutesDifference / 60;
             long remainingMinutes = minutesDifference % 60;
 
             if (remainingMinutes == 0) {
-                return hours == 1 ? "1 hour" : hours + " hours";
+                return hours == 1 ? context.getString(R.string.one_hour) : context.getString(R.string.hours, hours);
             } else {
-                return String.format("%d hours and %d minutes", hours, remainingMinutes);
+             //   return context.getString(R.string.hours_and_minutes, hours, remainingMinutes);
+                return context.getString(R.string.hours, hours) + " " + context.getString(R.string.and_minutes, remainingMinutes);
             }
         }
+    }
+
+    private boolean isTestMode(SharedPreferences myPrefs) {
+        return myPrefs.getBoolean("testMode", false);
     }
 }

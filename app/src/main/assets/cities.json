@@ -20,6 +20,13 @@
     "latitude": 25.7617,
     "timeZone": "America/New_York"
   },
+    "TOR_CA": {
+    "cityCode": "TOR_CA",
+    "altitude": 76,
+    "longitude": -79.372,
+    "latitude": 43.666,
+    "timeZone": "America/Toronto"
+  },
   "LON_UK": {
     "cityCode": "LON_UK",
     "altitude": 11,

@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -70,6 +71,26 @@ public class SetAlarmActivity extends AppCompatActivity {
             alarm = new Alarm(AlarmType.REGULAR, defaultDuration,alarmDateAndTime);
             title.setText(R.string.add_alarm);
         }
+
+        title.setOnClickListener(new View.OnClickListener() {
+            int clicksOnEmptyTextView = 0;
+            @Override
+            public void onClick(View v) {
+                clicksOnEmptyTextView++;
+
+                if (clicksOnEmptyTextView == 13) {
+                    SharedPreferences myPrefs
+                            = getApplicationContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+                    boolean currentValue = myPrefs.getBoolean("testMode", false);
+                    boolean newValue  = currentValue? false : true;
+                    myPrefs.edit().putBoolean("testMode", newValue).apply();
+                    Log.d("TestModeClicks", "Test mode changed value to " + newValue);
+                    clicksOnEmptyTextView = 0;
+                } else {
+                    Log.d("TestModeClicks", "number of clicks = " + clicksOnEmptyTextView);
+                }
+            }
+        });
 
         Calendar alarmDateAndTime = alarm.getDateAndTime();
 

@@ -54,7 +54,8 @@ public class LocationService {
         //want to check that the location is in the correct format
         if (location != null) {
             String locationStr = (String) all.get("location");
-            if (locationStr.endsWith("_IL") || locationStr.endsWith("_US") || locationStr.endsWith("_UK")) {
+            if (locationStr.endsWith("_IL") || locationStr.endsWith("_US")
+                    || locationStr.endsWith("_UK") || locationStr.endsWith("_CA")) {
                 return locationStr;
             }
         }
