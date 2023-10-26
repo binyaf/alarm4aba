@@ -18,6 +18,7 @@ import androidx.preference.PreferenceManager;
 import com.banjos.dosalarm.R;
 import com.banjos.dosalarm.tools.LocationService;
 import com.banjos.dosalarm.tools.NotificationJobScheduler;
+import com.banjos.dosalarm.tools.PreferencesService;
 import com.banjos.dosalarm.tools.ZmanimService;
 import com.banjos.dosalarm.types.AlarmLocation;
 
@@ -33,7 +34,7 @@ public class NotificationReceiver extends BroadcastReceiver {
 
     private void showNotification(Context context) {
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences sharedPreferences = PreferencesService.getMyPreferences(context);
 
         if (!isUserWAntsNotifications(sharedPreferences)) {
             Log.d("NotificationReceiver", "Not sending notification | user doesn't want to receive notifications");
@@ -73,9 +74,11 @@ public class NotificationReceiver extends BroadcastReceiver {
 
     private String prepareNotificationTitle(Context context,  SharedPreferences sharedPreferences) {
         AlarmLocation clientsLocation = LocationService.getClientLocationDetails(context);
-        Date candleLightingTimeToday =
-                !isTestMode(sharedPreferences) ? ZmanimService.getCandleLightingTimeToday(clientsLocation) :
-                new Date((new Date().getTime()) + (1000 * 60 * 127));
+
+        boolean testMode = isTestMode(sharedPreferences);
+
+        Date candleLightingTimeToday = testMode ? new Date((new Date().getTime()) + (1000 * 60 * 127)) :
+               ZmanimService.getCandleLightingTimeToday(clientsLocation);
 
         if (candleLightingTimeToday == null) {
             return null;
