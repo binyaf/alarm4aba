@@ -16,7 +16,6 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.NumberPicker;
@@ -24,10 +23,11 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
 
 import com.banjos.dosalarm.R;
-import com.banjos.dosalarm.tools.AlarmsPersistService;
+import com.banjos.dosalarm.tools.PreferencesService;
 import com.banjos.dosalarm.tools.IntentCreator;
 import com.banjos.dosalarm.types.Alarm;
 import com.banjos.dosalarm.types.AlarmType;
@@ -52,13 +52,13 @@ public class SetAlarmActivity extends AppCompatActivity {
     private final DateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.US);
     private NumberPicker numberPicker;
     private EditText alarmLabelEditText;
-    private AlarmsPersistService alarmsPersistService;
+    private PreferencesService preferencesService;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_alarm_screen);
-        alarmsPersistService = new AlarmsPersistService(getApplicationContext());
+        preferencesService = new PreferencesService(getApplicationContext());
         TextView title = findViewById(R.id.addEditAlarmTitle);
         final Alarm alarm;
 
@@ -71,7 +71,12 @@ public class SetAlarmActivity extends AppCompatActivity {
             alarm = new Alarm(AlarmType.REGULAR, defaultDuration,alarmDateAndTime);
             title.setText(R.string.add_alarm);
         }
+        SharedPreferences myPrefs = PreferencesService.getMyPreferences(getApplicationContext());
 
+        boolean isTestMode = myPrefs.getBoolean("testMode", false);
+        if (isTestMode) {
+            title.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.red));
+        }
         title.setOnClickListener(new View.OnClickListener() {
             int clicksOnEmptyTextView = 0;
             @Override
@@ -79,12 +84,10 @@ public class SetAlarmActivity extends AppCompatActivity {
                 clicksOnEmptyTextView++;
 
                 if (clicksOnEmptyTextView == 13) {
-                    SharedPreferences myPrefs
-                            = getApplicationContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-                    boolean currentValue = myPrefs.getBoolean("testMode", false);
-                    boolean newValue  = currentValue? false : true;
-                    myPrefs.edit().putBoolean("testMode", newValue).apply();
-                    Log.d("TestModeClicks", "Test mode changed value to " + newValue);
+                    boolean newValueForTestMode  = isTestMode? false : true;
+                    myPrefs.edit().putBoolean("testMode", newValueForTestMode).apply();
+
+                    Log.d("TestModeClicks", "Test mode changed value to " + newValueForTestMode);
                     clicksOnEmptyTextView = 0;
                 } else {
                     Log.d("TestModeClicks", "number of clicks = " + clicksOnEmptyTextView);
@@ -244,14 +247,15 @@ public class SetAlarmActivity extends AppCompatActivity {
 
         AlarmManager.AlarmClockInfo alarmClockInfo =
                 new AlarmManager.AlarmClockInfo(alarm.getDateAndTime().getTimeInMillis(), pendingIntent);
+
         alarmManager.setAlarmClock(alarmClockInfo, pendingIntent);
     }
 
     private void saveAlarmToSharePreferences(Alarm alarm) {
 
-        Map<Integer, Alarm> allAlarms = alarmsPersistService.getAlarms();
+        Map<Integer, Alarm> allAlarms = preferencesService.getAlarms();
         allAlarms.put(alarm.getId(), alarm);
-        alarmsPersistService.saveAlarms(allAlarms);
+        preferencesService.saveAlarms(allAlarms);
 
     }
 

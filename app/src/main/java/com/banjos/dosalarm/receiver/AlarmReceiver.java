@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import com.banjos.dosalarm.activity.MainActivity;
-import com.banjos.dosalarm.tools.AlarmsPersistService;
+import com.banjos.dosalarm.tools.PreferencesService;
 import com.banjos.dosalarm.types.Alarm;
 import com.banjos.dosalarm.types.AlarmType;
 import com.banjos.dosalarm.types.IntentKeys;
@@ -21,12 +21,12 @@ import com.banjos.dosalarm.types.IntentKeys;
 import java.util.Map;
 
 public class AlarmReceiver extends BroadcastReceiver {
-    private AlarmsPersistService alarmsPersistService;
+    private PreferencesService preferencesService;
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        alarmsPersistService = new AlarmsPersistService(context);
+        preferencesService = new PreferencesService(context);
 
         int alarmDurationSec = 10;
         AlarmType alarmType = AlarmType.REGULAR;
@@ -68,8 +68,8 @@ public class AlarmReceiver extends BroadcastReceiver {
     }
 
     private void removeAlarmFromInternalStorage(Alarm alarmToRemove) {
-        Map<Integer, Alarm> allAlarms = alarmsPersistService.getAlarms();
+        Map<Integer, Alarm> allAlarms = preferencesService.getAlarms();
         allAlarms.remove(alarmToRemove.getId());
-        alarmsPersistService.saveAlarms(allAlarms);
+        preferencesService.saveAlarms(allAlarms);
     }
 }

@@ -7,16 +7,15 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.preference.PreferenceManager;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 import com.banjos.dosalarm.tools.IntentCreator;
 import com.banjos.dosalarm.tools.LocationService;
+import com.banjos.dosalarm.tools.PreferencesService;
 import com.banjos.dosalarm.tools.ZmanimService;
 import com.banjos.dosalarm.types.AlarmLocation;
 import com.kosherjava.zmanim.ZmanimCalendar;
-import com.kosherjava.zmanim.hebrewcalendar.JewishCalendar;
 
 import java.time.LocalTime;
 import java.util.Calendar;
@@ -37,21 +36,22 @@ public class NotificationWorker extends Worker {
     public Result doWork() {
         Log.d("NotificationWorker", "NotificationWorker was called");
         scheduleNotificationForCandleLighting();
-        Log.d("NotificationWorker", "NotificationWorker finished");
         return Result.success();
     }
 
     private void scheduleNotificationForCandleLighting() {
 
         Context context = getApplicationContext();
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
         AlarmLocation clientsLocation = locationService.getClientLocationDetails(context);
 
         ZmanimCalendar zcalToday = ZmanimService.getTodaysZmanimCalendar(clientsLocation);
 
+        SharedPreferences sharedPreferences = PreferencesService.getMyPreferences(context);
+        boolean isTestMode = isTestMode(sharedPreferences);
+
         if (scheduleNotificationForCandleLightingToday(zcalToday, clientsLocation) ||
-                isTestMode(sharedPreferences)) {
+                isTestMode) {
 
             Date notificationTime = getNotificationTime(zcalToday, sharedPreferences);
 
@@ -65,12 +65,14 @@ public class NotificationWorker extends Worker {
 
             if (notificationTime.after(now)) {
                 Log.d("NotificationWorker", "Scheduling notification | time: " +
-                        notificationTime + " | now: " + now );
+                        notificationTime + " | now: " + now + " | test mode: " + isTestMode);
                 alarmManager.set(AlarmManager.RTC_WAKEUP, notificationTime.getTime(), pendingIntent);
             } else {
                 Log.d("NotificationWorker", "NOT Scheduling notification:  " +
-                        notificationTime + " | now: " + now + " | in the past not Scheduling");
+                        notificationTime + " | now: " + now + " | in the past not Scheduling | test mode: " + isTestMode);
             }
+        } else {
+            Log.d("NotificationWorker", "no notification to schedule | test mode: false");
         }
     }
 

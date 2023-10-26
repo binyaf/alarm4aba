@@ -14,20 +14,20 @@ import java.util.Map;
 
 public class BootReceiver extends BroadcastReceiver {
 
-    private AlarmsPersistService alarmsPersistService;
+    private PreferencesService preferencesService;
 
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.d("BootReceiver", "onReceive");
         if (intent.getAction() != null && intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
-            alarmsPersistService = new AlarmsPersistService(context);
-            Map<Integer, Alarm> alarms = alarmsPersistService.getAlarms();
+            preferencesService = new PreferencesService(context);
+            Map<Integer, Alarm> alarms = preferencesService.getAlarms();
 
             for (int alarmId:alarms.keySet()) {
                 Alarm alarm = alarms.get(alarmId);
                 createActualAlarm(alarm, context);
             }
-            alarmsPersistService.saveAlarms(alarms);
+            preferencesService.saveAlarms(alarms);
 
             Log.d("BootReceiver", "device restarted, all alarms are back in place");
         }

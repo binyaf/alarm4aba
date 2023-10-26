@@ -23,16 +23,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ShareCompat;
 import androidx.core.content.ContextCompat;
-import androidx.preference.PreferenceManager;
 
 import com.banjos.dosalarm.R;
-import com.banjos.dosalarm.tools.AlarmsPersistService;
+import com.banjos.dosalarm.tools.PreferencesService;
 import com.banjos.dosalarm.tools.DateTimesFormats;
 import com.banjos.dosalarm.tools.IntentCreator;
 import com.banjos.dosalarm.tools.LocationService;
@@ -54,11 +55,10 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private static final String NOTIFICATIONS_WORK_SCHEDULED_KEY = "notificationsWorkScheduled";
-    private Button editAlarmBtn;
-    private Button deleteAlarmBtn;
+
     private AlarmManager alarmManager;
     private LinearLayout linearLayout;
-    private AlarmsPersistService alarmsPersistService;
+    private PreferencesService preferencesService;
     public static final int MAX_ALARMS = 4;
     private AlarmLocation alarmLocation;
     private String cityNameForPresentation;
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         Context context = getApplicationContext();
         locationService = new LocationService();
 
-        SharedPreferences myPrefs = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        SharedPreferences myPrefs = PreferencesService.getMyPreferences(context);
 
         //this is supposed to be called once in the applications life... when client upgrades his app
         //we call the UpgradeReceiver and the job will be updated
@@ -79,18 +79,16 @@ public class MainActivity extends AppCompatActivity {
             NotificationJobScheduler.scheduleDailyNotificationsJob(context);
             markNotificationsWorkAsScheduled(myPrefs);
         }
-        alarmsPersistService = new AlarmsPersistService(context);
+        preferencesService = new PreferencesService(context);
 
         alarmLocation = locationService.getClientLocationDetails(context);
         cityNameForPresentation = getCityNameByCityCode(alarmLocation.getCityCode());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.alarm_details);
 
-        deleteAlarmBtn = findViewById(R.id.deleteAlarmBtn);
-        editAlarmBtn = findViewById(R.id.editAlarmBtn);
         Button addAlarmBtn = findViewById(R.id.addAdditionAlarmBtn);
         linearLayout = findViewById(R.id.alarmsLayout);
-        List<Alarm> allAlarms = alarmsPersistService.getAlarmsList();
+        List<Alarm> allAlarms = preferencesService.getAlarmsList();
 
         TextView todaysZmanimText = findViewById(R.id.labelTextView);
         todaysZmanimText.setText(getString(R.string.todays_zmanim, cityNameForPresentation));
@@ -113,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
             if (alarm != null && alarm.getDateAndTime().after(Calendar.getInstance())) {
                 createTextViewForAlarm(alarm, layoutParams);
             } else  if (alarm != null) { //if for some reason we have an alarm in the past - let's remove it
-                alarmsPersistService.removeAlarm(alarm);
+                preferencesService.removeAlarm(alarm);
             }
         }
 
@@ -236,6 +234,11 @@ public class MainActivity extends AppCompatActivity {
             textView.setVisibility(View.VISIBLE);
 
             textView.setOnLongClickListener(v -> {
+
+                Button deleteAlarmBtn = findViewById(R.id.deleteAlarmBtn);
+                Button editAlarmBtn = findViewById(R.id.editAlarmBtn);
+                Button shareAlarmBtn = findViewById(R.id.shareAlarmButton);
+
                 //this alarm is not selected
                 if (!textView.isSelected()) {
 
@@ -247,6 +250,9 @@ public class MainActivity extends AppCompatActivity {
                     editAlarmBtn.setVisibility(View.VISIBLE);
                     deleteAlarmBtn.setEnabled(true);
                     deleteAlarmBtn.setVisibility(View.VISIBLE);
+                    shareAlarmBtn.setEnabled(true);
+                    shareAlarmBtn.setVisibility(View.VISIBLE);
+
                     textView.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.light_grey));
 
                     editAlarmBtn.setOnClickListener(z -> {
@@ -265,9 +271,11 @@ public class MainActivity extends AppCompatActivity {
                             alarmManager.cancel(pendingIntent);
                             Log.d("ALARM", "Alarm was canceled");
                         }
-                        alarmsPersistService.removeAlarm(alarm);
+                        preferencesService.removeAlarm(alarm);
                         startActivity(new Intent(this, MainActivity.class));
                     });
+                    shareAlarmBtn.setOnClickListener(view ->
+                            shareContent());
 
                 } else {
                     deselectTextView(textView);
@@ -275,6 +283,8 @@ public class MainActivity extends AppCompatActivity {
                     editAlarmBtn.setVisibility(View.INVISIBLE);
                     deleteAlarmBtn.setEnabled(false);
                     deleteAlarmBtn.setVisibility(View.INVISIBLE);
+                    shareAlarmBtn.setEnabled(false);
+                    shareAlarmBtn.setVisibility(View.INVISIBLE);
                 }
                 return true;
             });
@@ -288,6 +298,17 @@ public class MainActivity extends AppCompatActivity {
         textView.setLayoutParams(layoutParams);
         linearLayout.addView(textView);
 
+    }
+
+    private void shareContent() {
+        String shareText = "I'm waking up at 10/10/23 with DosAlarm!!";
+        String mimeType = "text/plain";
+
+        ShareCompat.IntentBuilder
+                .from(this)
+                .setType(mimeType)
+                .setText(shareText)
+                .startChooser();
     }
 
     private void deselectAllTextViews() {
@@ -454,11 +475,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void markNotificationsWorkAsScheduled(SharedPreferences myPrefs) {
         myPrefs.edit().putBoolean(NOTIFICATIONS_WORK_SCHEDULED_KEY, true).apply();
-    }
-
-    private boolean isUserWAntsNotifications() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        return sharedPreferences.getBoolean("enable_pre_shabbat_checklist_notifications", true);
     }
 
 }

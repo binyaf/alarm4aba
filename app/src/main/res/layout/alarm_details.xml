@@ -77,6 +77,31 @@
             android:textColor="@color/white"
             android:textSize="15sp"
             android:visibility="invisible" />
+
+        <Button
+            android:id="@+id/shareAlarmButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:contentDescription="@string/share"
+            android:enabled="false"
+            android:gravity="center"
+            android:paddingLeft="8dp"
+            android:paddingTop="1dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="1dp"
+            android:drawableStart="@android:drawable/ic_menu_share"
+            android:visibility="invisible"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginStart="33dp"
+            android:background="@drawable/rounded_corner"
+            android:backgroundTint="@color/light_green"
+            android:text="@string/share"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
     </LinearLayout>
 
     <View

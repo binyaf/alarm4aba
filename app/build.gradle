@@ -10,7 +10,7 @@ android {
         applicationId "com.alarms.myalarm"
         minSdk 28
         targetSdk 33
-        versionCode 32
+        versionCode 61
         versionName "0.0.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -26,7 +26,6 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
 }
 
 dependencies {
@@ -42,8 +41,10 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.16.0'
     implementation group: 'com.kosherjava', name: 'zmanim', version: '2.5.0'
     implementation 'com.google.code.gson:gson:2.10.1'
+    implementation "androidx.work:work-runtime:2.8.1"
     annotationProcessor 'com.github.bumptech.glide:compiler:4.16.0'
     testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.mockito:mockito-core:5.5.0'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 }

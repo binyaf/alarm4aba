@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AlarmsPersistService {
+public class PreferencesService {
 
     private final Gson gson;
     private final Context context;
@@ -24,10 +24,15 @@ public class AlarmsPersistService {
     private SharedPreferences preferences;
 
     private static final String ALARMS_KEY = "alarms";
-    public AlarmsPersistService(Context context) {
+    private static final String MY_PREFERENCES_KEY = "MyPrefs";
+    public PreferencesService(Context context) {
         this.context = context;
         this.gson = new Gson();
-        this.preferences = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        this.preferences = getMyPreferences(context);
+    }
+
+    public static SharedPreferences getMyPreferences(Context context) {
+        return context.getSharedPreferences(MY_PREFERENCES_KEY, Context.MODE_PRIVATE);
     }
 
     public Map<Integer, Alarm> getAlarms() {

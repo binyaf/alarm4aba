@@ -11,10 +11,10 @@
     <TextView
         android:id="@+id/addEditAlarmTitle"
         android:layout_width="192dp"
-        android:layout_height="100dp"
+        android:layout_height="70dp"
         android:layout_margin="1sp"
-        android:gravity="center"
-        android:hint="@string/alarm_date_label"
+        android:gravity="top|center"
+        android:hint="@string/edit_alarm"
         android:text="@string/edit_alarm"
         android:textColor="@color/blue"
         android:textSize="32sp"

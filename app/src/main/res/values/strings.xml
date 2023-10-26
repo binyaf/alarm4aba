@@ -8,6 +8,7 @@
     <string name="delete">Delete</string>
     <string name="edit_alarm">Edit Alarm</string>
     <string name="edit">Edit</string>
+    <string name="share">Share</string>
     <string name="warning">Warning</string>
     <string name="add_alarm">Add Alarm</string>
     <string name="alarm_duration_label">Alarm Duration (sec.)</string>
@@ -98,4 +99,5 @@
     <string name="pref_checklist_hot_plate">Prepare the Hot Plate</string>
     <string name="pref_checklist_candles">Prepare the candles</string>
     <string name="pref_checklist_phone">Phone your family</string>
+
 </resources>

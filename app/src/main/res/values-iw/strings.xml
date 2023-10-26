@@ -8,6 +8,7 @@
     <string name="delete">מחק</string>
     <string name="edit_alarm">ערוך התראה</string>
     <string name="edit">ערוך</string>
+    <string name="share">שתף</string>
     <string name="warning">אזהרה</string>
     <string name="add_alarm">הוסף התראה</string>
     <string name="alarm_duration_label">משך ההתראה (שניות)</string>
