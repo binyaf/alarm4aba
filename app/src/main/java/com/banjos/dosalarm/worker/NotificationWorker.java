@@ -47,13 +47,14 @@ public class NotificationWorker extends Worker {
 
         ZmanimCalendar zcalToday = ZmanimService.getTodaysZmanimCalendar(clientsLocation);
 
-        SharedPreferences sharedPreferences = PreferencesService.getMyPreferences(context);
-        boolean isTestMode = isTestMode(sharedPreferences);
+        SharedPreferences myPreferences = PreferencesService.getMyPreferences(context);
+
+        boolean isTestMode = isTestMode(myPreferences);
 
         if (scheduleNotificationForCandleLightingToday(zcalToday, clientsLocation) ||
                 isTestMode) {
 
-            Date notificationTime = getNotificationTime(zcalToday, sharedPreferences);
+            Date notificationTime = getNotificationTime(zcalToday, myPreferences);
 
             Date now = Calendar.getInstance().getTime();
 

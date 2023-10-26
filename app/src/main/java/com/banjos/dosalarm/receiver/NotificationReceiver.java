@@ -34,21 +34,21 @@ public class NotificationReceiver extends BroadcastReceiver {
 
     private void showNotification(Context context) {
 
-        SharedPreferences sharedPreferences = PreferencesService.getMyPreferences(context);
+        SharedPreferences settingsPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
-        if (!isUserWAntsNotifications(sharedPreferences)) {
+        if (!isUserWantsNotifications(settingsPreferences)) {
             Log.d("NotificationReceiver", "Not sending notification | user doesn't want to receive notifications");
             return;
         }
 
-        String notificationTitle = prepareNotificationTitle(context, sharedPreferences);
+        String notificationTitle = prepareNotificationTitle(context);
 
         if (notificationTitle == null) {
             Log.d("NotificationReceiver", "Not sending notification | Today has no candle lighting");
             return;
         }
 
-        String notificationText = prepareNotificationText(sharedPreferences, context);
+        String notificationText = prepareNotificationText(context, settingsPreferences);
 
         NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(context,  NotificationJobScheduler.CHANNEL_ID)
@@ -72,10 +72,10 @@ public class NotificationReceiver extends BroadcastReceiver {
         notificationManager.notify(1, builder.build());
     }
 
-    private String prepareNotificationTitle(Context context,  SharedPreferences sharedPreferences) {
+    private String prepareNotificationTitle(Context context) {
         AlarmLocation clientsLocation = LocationService.getClientLocationDetails(context);
 
-        boolean testMode = isTestMode(sharedPreferences);
+        boolean testMode = isTestMode(context);
 
         Date candleLightingTimeToday = testMode ? new Date((new Date().getTime()) + (1000 * 60 * 127)) :
                ZmanimService.getCandleLightingTimeToday(clientsLocation);
@@ -97,9 +97,9 @@ public class NotificationReceiver extends BroadcastReceiver {
         return title;
     }
 
-    private String prepareNotificationText(SharedPreferences sharedPreferences, Context context) {
+    private String prepareNotificationText(Context context, SharedPreferences settingsPreferences) {
 
-        List<String> checkList = gtChecklist(sharedPreferences, context);
+        List<String> checkList = gtChecklist(context, settingsPreferences);
 
         StringBuilder sb = new StringBuilder();
         for (String str:checkList) {
@@ -111,20 +111,21 @@ public class NotificationReceiver extends BroadcastReceiver {
         return context.getString(R.string.notification_body)+ ": " + sb.toString();
     }
 
-    private boolean isUserWAntsNotifications(SharedPreferences sharedPreferences) {
-        return sharedPreferences.getBoolean("enable_pre_shabbat_checklist_notifications", true);
+    private boolean isUserWantsNotifications(SharedPreferences settingsPreferences) {
+        return settingsPreferences.getBoolean("enable_pre_shabbat_checklist_notifications", true);
     }
     
-    private List<String> gtChecklist(SharedPreferences sharedPreferences, Context context) {
-        String dosAlarm = sharedPreferences.getBoolean("notification_checklist_dosalarm", true)? context.getString(R.string.notification_checklist_dosalarm) :"";
-        String refrigerator = sharedPreferences.getBoolean("notification_checklist_refrigerator", true)? context.getString(R.string.notification_checklist_refrigerator) :"";
-        String dishwasher = sharedPreferences.getBoolean("notification_checklist_dishwasher", true)? context.getString(R.string.notification_checklist_dishwasher) :"";
-        String clock = sharedPreferences.getBoolean("notification_checklist_electricity", true)? context.getString(R.string.notification_checklist_electricity) :"";
-        String airConditioner = sharedPreferences.getBoolean("notification_checklist_air_conditioner", true)? context.getString(R.string.notification_checklist_air_conditioner) :"";
-        String kettle = sharedPreferences.getBoolean("notification_checklist_kettle", true)? context.getString(R.string.notification_checklist_kettle) :"";
-        String hotPlate = sharedPreferences.getBoolean("notification_checklist_hot_plate", true)? context.getString(R.string.notification_checklist_hot_plate) :"";
-        String candles = sharedPreferences.getBoolean("notification_checklist_candles", true)?context.getString(R.string.notification_checklist_candles) :"";
-        String phone = sharedPreferences.getBoolean("notification_checklist_phone", true)? context.getString(R.string.notification_checklist_phone) :"";
+    private List<String> gtChecklist(Context context, SharedPreferences settingsPreferences) {
+
+        String dosAlarm = settingsPreferences.getBoolean("notification_checklist_dosalarm", true)? context.getString(R.string.notification_checklist_dosalarm) :"";
+        String refrigerator = settingsPreferences.getBoolean("notification_checklist_refrigerator", true)? context.getString(R.string.notification_checklist_refrigerator) :"";
+        String dishwasher = settingsPreferences.getBoolean("notification_checklist_dishwasher", true)? context.getString(R.string.notification_checklist_dishwasher) :"";
+        String clock = settingsPreferences.getBoolean("notification_checklist_electricity", true)? context.getString(R.string.notification_checklist_electricity) :"";
+        String airConditioner = settingsPreferences.getBoolean("notification_checklist_air_conditioner", true)? context.getString(R.string.notification_checklist_air_conditioner) :"";
+        String kettle = settingsPreferences.getBoolean("notification_checklist_kettle", true)? context.getString(R.string.notification_checklist_kettle) :"";
+        String hotPlate = settingsPreferences.getBoolean("notification_checklist_hot_plate", true)? context.getString(R.string.notification_checklist_hot_plate) :"";
+        String candles = settingsPreferences.getBoolean("notification_checklist_candles", true)?context.getString(R.string.notification_checklist_candles) :"";
+        String phone = settingsPreferences.getBoolean("notification_checklist_phone", true)? context.getString(R.string.notification_checklist_phone) :"";
 
         return Arrays.asList(dosAlarm, refrigerator, dishwasher, clock, airConditioner, kettle, hotPlate, candles, phone);
 
@@ -150,7 +151,8 @@ public class NotificationReceiver extends BroadcastReceiver {
         }
     }
 
-    private boolean isTestMode(SharedPreferences myPrefs) {
-        return myPrefs.getBoolean("testMode", false);
+    private boolean isTestMode(Context context) {
+        SharedPreferences myPreferences = PreferencesService.getMyPreferences(context);
+        return myPreferences.getBoolean("testMode", false);
     }
 }
