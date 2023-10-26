@@ -274,8 +274,7 @@ public class MainActivity extends AppCompatActivity {
                         preferencesService.removeAlarm(alarm);
                         startActivity(new Intent(this, MainActivity.class));
                     });
-                    shareAlarmBtn.setOnClickListener(view ->
-                            shareContent());
+                    shareAlarmBtn.setOnClickListener(view -> shareContent(alarm));
 
                 } else {
                     deselectTextView(textView);
@@ -300,8 +299,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void shareContent() {
-        String shareText = "I'm waking up at 10/10/23 with DosAlarm!!";
+    private void shareContent(Alarm alarm) {
+        Date alarmTime = alarm.getDateAndTime().getTime();
+        String date = DateTimesFormats.dateFormat.format(alarmTime);
+        String time = DateTimesFormats.timeFormat.format(alarmTime);
+        String shareText = getString(R.string.share_msg, date, time);
+
         String mimeType = "text/plain";
 
         ShareCompat.IntentBuilder

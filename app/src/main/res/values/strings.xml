@@ -100,4 +100,6 @@
     <string name="pref_checklist_candles">Prepare the candles</string>
     <string name="pref_checklist_phone">Phone your family</string>
 
+    <string name="share_msg">I\'m waking up on %1$s at %2$s  with DosAlarm! \n\n\Don\'t  have yet dos-alarm? download here: https://tinyurl.com/52esu8dx</string>
+
 </resources>

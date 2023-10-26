@@ -35,8 +35,8 @@ public class NotificationJobScheduler {
         }
 
         PeriodicWorkRequest notificationWorkRequest =
-                new PeriodicWorkRequest.Builder(NotificationWorker.class, 15, TimeUnit.MINUTES,
-                        15, TimeUnit.MINUTES).addTag(WORKER_TAG).build();
+                new PeriodicWorkRequest.Builder(NotificationWorker.class, 1, TimeUnit.HOURS,
+                        1, TimeUnit.HOURS).addTag(WORKER_TAG).build();
 
         WorkManager.getInstance(context).enqueue(notificationWorkRequest);
 

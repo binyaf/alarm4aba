@@ -99,4 +99,7 @@
     <string name="pref_checklist_hot_plate">פלטה לשבת</string>
     <string name="pref_checklist_candles"> נרות שבת</string>
     <string name="pref_checklist_phone">להתקשר למשפחה לאחל שבת שלום</string>
+
+    <string name="share_msg">אני מתעורר ב %1$s ב %2$s בעזרת DOALARM.   מגניב, לא?  \n\n אין לך עדיין את האפליקציה? הורד אותה מכאן: https://tinyurl.com/52esu8dx</string>
+
 </resources>

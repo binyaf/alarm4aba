@@ -8,4 +8,5 @@ public class DateTimesFormats {
     public static final DateFormat dateFormat = new SimpleDateFormat("dd/MM/YYY");
 
     public static final DateFormat timeFormat = new SimpleDateFormat("HH:mm");
+
 }
