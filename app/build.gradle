@@ -10,8 +10,8 @@ android {
         applicationId "com.alarms.myalarm"
         minSdk 28
         targetSdk 33
-        versionCode 61
-        versionName "0.0.1"
+        versionCode 64
+        versionName "0.0.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

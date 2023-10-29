@@ -35,6 +35,10 @@ public class PreferencesService {
         return context.getSharedPreferences(MY_PREFERENCES_KEY, Context.MODE_PRIVATE);
     }
 
+    public static boolean isTestMode(Context context) {
+        return getMyPreferences(context).getBoolean("testMode", false);
+    }
+
     public Map<Integer, Alarm> getAlarms() {
 
         String alarmsJson = preferences.getString(ALARMS_KEY, "");

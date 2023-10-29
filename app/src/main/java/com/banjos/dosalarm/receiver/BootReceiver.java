@@ -1,4 +1,4 @@
-package com.banjos.dosalarm.tools;
+package com.banjos.dosalarm.receiver;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.banjos.dosalarm.tools.IntentCreator;
+import com.banjos.dosalarm.tools.PreferencesService;
 import com.banjos.dosalarm.types.Alarm;
 
 import java.util.Map;

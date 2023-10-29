@@ -43,7 +43,7 @@
             android:enabled="true"
             android:exported="false" />
         <receiver
-            android:name=".tools.BootReceiver"
+            android:name=".receiver.BootReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>

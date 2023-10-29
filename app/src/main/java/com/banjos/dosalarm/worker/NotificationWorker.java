@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.preference.PreferenceManager;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
@@ -26,9 +27,13 @@ public class NotificationWorker extends Worker {
     private LocationService locationService;
     private int CANDLE_LIGHTING_REQUEST_CODE = 10;
 
+    private SharedPreferences settingsPreference;
+
+
     public NotificationWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
         locationService = new LocationService();
+        settingsPreference = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
     @NonNull
@@ -47,14 +52,11 @@ public class NotificationWorker extends Worker {
 
         ZmanimCalendar zcalToday = ZmanimService.getTodaysZmanimCalendar(clientsLocation);
 
-        SharedPreferences myPreferences = PreferencesService.getMyPreferences(context);
+        boolean isTestMode = PreferencesService.isTestMode(context);
 
-        boolean isTestMode = isTestMode(myPreferences);
+        if (scheduleNotificationForCandleLightingToday(zcalToday, clientsLocation) || isTestMode) {
 
-        if (scheduleNotificationForCandleLightingToday(zcalToday, clientsLocation) ||
-                isTestMode) {
-
-            Date notificationTime = getNotificationTime(zcalToday, myPreferences);
+            Date notificationTime = getNotificationTime(zcalToday);
 
             Date now = Calendar.getInstance().getTime();
 
@@ -78,25 +80,25 @@ public class NotificationWorker extends Worker {
     }
 
     private boolean scheduleNotificationForCandleLightingToday(ZmanimCalendar zcalToday, AlarmLocation clientsLocation) {
-       boolean hasCandleLighting = ZmanimService.hasCandleLightingToday(clientsLocation);
+        boolean hasCandleLighting = ZmanimService.hasCandleLightingToday(clientsLocation);
 
         if (hasCandleLighting) {
-            boolean isBeforeCandleLightingTime =  zcalToday.getCandleLighting().before(Calendar.getInstance().getTime());
+            boolean isNowBeforeCandleLightingTime = zcalToday.getCandleLighting().before(Calendar.getInstance().getTime());
             boolean isAfterMorning = LocalTime.now().isAfter(LocalTime.of(11, 0));
-            return isBeforeCandleLightingTime && isAfterMorning ;
+            return isNowBeforeCandleLightingTime && isAfterMorning;
         }
         return false;
 
     }
 
-    private Date getNotificationTime(ZmanimCalendar today, SharedPreferences sharedPreferences) {
+    private Date getNotificationTime(ZmanimCalendar today) {
 
-        int timeBeforeShabbat = timeBeforeShabbatToSendNotificationInMinutes(sharedPreferences);
+        int timeBeforeShabbat = timeBeforeShabbatToSendNotificationInMinutes();
 
         Calendar notificationTime = Calendar.getInstance();
 
-        if (isTestMode(sharedPreferences)) {
-          //  notificationTime.set(Calendar.HOUR, notificationTime.get(Calendar.HOUR));
+        if (PreferencesService.isTestMode(getApplicationContext())) {
+            //  notificationTime.set(Calendar.HOUR, notificationTime.get(Calendar.HOUR));
             notificationTime.set(Calendar.MINUTE, notificationTime.get(Calendar.MINUTE) + 1);
         } else {
             notificationTime.setTime(today.getCandleLighting());
@@ -105,13 +107,9 @@ public class NotificationWorker extends Worker {
         return notificationTime.getTime();
     }
 
-    private int timeBeforeShabbatToSendNotificationInMinutes(SharedPreferences sharedPreferences) {
-        String time = sharedPreferences.getString("pref_notification_time_before_shabbat", "60");
+    private int timeBeforeShabbatToSendNotificationInMinutes() {
+        String time = settingsPreference.getString("pref_notification_time_before_shabbat", "60");
         return Integer.valueOf(time);
-    }
-
-    private boolean isTestMode(SharedPreferences myPrefs) {
-        return myPrefs.getBoolean("testMode", false);
     }
 
 }

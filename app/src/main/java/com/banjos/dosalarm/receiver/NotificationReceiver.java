@@ -27,16 +27,20 @@ import java.util.List;
 
 public class NotificationReceiver extends BroadcastReceiver {
 
+    private SharedPreferences settingsPreferences;
+
     @Override
     public void onReceive(Context context, Intent intent) {
+        settingsPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         showNotification(context);
     }
 
     private void showNotification(Context context) {
 
-        SharedPreferences settingsPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        boolean isUserWantsNotifications =
+                settingsPreferences.getBoolean("enable_pre_shabbat_checklist_notifications", true);
 
-        if (!isUserWantsNotifications(settingsPreferences)) {
+        if (!isUserWantsNotifications) {
             Log.d("NotificationReceiver", "Not sending notification | user doesn't want to receive notifications");
             return;
         }
@@ -48,7 +52,7 @@ public class NotificationReceiver extends BroadcastReceiver {
             return;
         }
 
-        String notificationText = prepareNotificationText(context, settingsPreferences);
+        String notificationText = prepareNotificationText(context);
 
         NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(context,  NotificationJobScheduler.CHANNEL_ID)
@@ -75,7 +79,7 @@ public class NotificationReceiver extends BroadcastReceiver {
     private String prepareNotificationTitle(Context context) {
         AlarmLocation clientsLocation = LocationService.getClientLocationDetails(context);
 
-        boolean testMode = isTestMode(context);
+        boolean testMode = PreferencesService.isTestMode(context);
 
         Date candleLightingTimeToday = testMode ? new Date((new Date().getTime()) + (1000 * 60 * 127)) :
                ZmanimService.getCandleLightingTimeToday(clientsLocation);
@@ -86,6 +90,11 @@ public class NotificationReceiver extends BroadcastReceiver {
 
         // Calculate the difference in minutes
         long timeDifferenceMillis = candleLightingTimeToday.getTime() - System.currentTimeMillis();
+
+        if (timeDifferenceMillis < 0) {
+            Log.d("NotificationReceiver", "wanted to send a notification after shabbat candle lighting for some reason");
+            return null;
+        }
         long minutesDifference = timeDifferenceMillis / (60 * 1000);
 
         // Present the difference in a human-readable format
@@ -97,9 +106,9 @@ public class NotificationReceiver extends BroadcastReceiver {
         return title;
     }
 
-    private String prepareNotificationText(Context context, SharedPreferences settingsPreferences) {
+    private String prepareNotificationText(Context context) {
 
-        List<String> checkList = gtChecklist(context, settingsPreferences);
+        List<String> checkList = gtChecklist(context);
 
         StringBuilder sb = new StringBuilder();
         for (String str:checkList) {
@@ -111,11 +120,8 @@ public class NotificationReceiver extends BroadcastReceiver {
         return context.getString(R.string.notification_body)+ ": " + sb.toString();
     }
 
-    private boolean isUserWantsNotifications(SharedPreferences settingsPreferences) {
-        return settingsPreferences.getBoolean("enable_pre_shabbat_checklist_notifications", true);
-    }
-    
-    private List<String> gtChecklist(Context context, SharedPreferences settingsPreferences) {
+
+    private List<String> gtChecklist(Context context) {
 
         String dosAlarm = settingsPreferences.getBoolean("notification_checklist_dosalarm", true)? context.getString(R.string.notification_checklist_dosalarm) :"";
         String refrigerator = settingsPreferences.getBoolean("notification_checklist_refrigerator", true)? context.getString(R.string.notification_checklist_refrigerator) :"";
@@ -151,8 +157,4 @@ public class NotificationReceiver extends BroadcastReceiver {
         }
     }
 
-    private boolean isTestMode(Context context) {
-        SharedPreferences myPreferences = PreferencesService.getMyPreferences(context);
-        return myPreferences.getBoolean("testMode", false);
-    }
 }
