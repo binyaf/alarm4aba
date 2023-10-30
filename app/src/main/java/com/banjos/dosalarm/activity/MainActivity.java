@@ -38,6 +38,7 @@ import com.banjos.dosalarm.tools.DateTimesFormats;
 import com.banjos.dosalarm.tools.IntentCreator;
 import com.banjos.dosalarm.tools.LocationService;
 import com.banjos.dosalarm.tools.NotificationJobScheduler;
+import com.banjos.dosalarm.tools.ZmanimService;
 import com.banjos.dosalarm.types.Alarm;
 import com.banjos.dosalarm.types.AlarmLocation;
 import com.banjos.dosalarm.types.AlarmType;
@@ -301,9 +302,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void shareContent(Alarm alarm) {
         Date alarmTime = alarm.getDateAndTime().getTime();
+        String hebrewDate = ZmanimService.getHebrewDateStringFromDate(alarmTime);
         String date = DateTimesFormats.dateFormat.format(alarmTime);
+        String completeDate = date + ", " + hebrewDate;
         String time = DateTimesFormats.timeFormat.format(alarmTime);
-        String shareText = getString(R.string.share_msg, date, time);
+        String shareText = getString(R.string.share_msg, completeDate, time);
 
         String mimeType = "text/plain";
 
@@ -412,17 +415,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private String prepareAlarmDetailsText(Alarm alarm) {
+        Date alarmDate = alarm.getDateAndTime().getTime();
 
-        Calendar alarmDate = alarm.getDateAndTime();
+        String hebrewDate = ZmanimService.getHebrewDateStringFromDate(alarmDate);
 
-        JewishDate jd = new JewishDate(alarmDate);
-        HebrewDateFormatter hdf = new HebrewDateFormatter();
-        hdf.setHebrewFormat(true);
-        String hebrewDate = hdf.format(jd);
-
-        String date = DateTimesFormats.dateFormat.format(alarmDate.getTime());
-        String time = DateTimesFormats.timeFormat.format(alarmDate.getTime());
-        String label = null;
+        String date = DateTimesFormats.dateFormat.format(alarmDate);
+        String time = DateTimesFormats.timeFormat.format(alarmDate);
+        String label;
         if (alarm.getLabel() != null && !alarm.getLabel().isEmpty()) {
             label = getString(R.string.alarm_will_start_with_label, "<b>" + alarm.getLabel() + "</b>");
         } else {
@@ -430,9 +429,8 @@ public class MainActivity extends AppCompatActivity {
         }
         String text = "<br><font color=" + Color.GRAY + "  size=3 >&nbsp;&nbsp;&nbsp;" + label + " </font><br>" +
                 "<font size=30 color=" + Color.BLACK + ">&nbsp;<b> " + date +
-                "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + hebrewDate + "</b>" +
-                "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + time +
-                "</font><br>";
+                "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + hebrewDate +
+                "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + time + "</b></font><br>";
 
         if (alarm.getType() == AlarmType.MINCHA) {
             text += "<br><font color=" + Color.GRAY + "  size=3 >15 min. before sunset</font><br>";

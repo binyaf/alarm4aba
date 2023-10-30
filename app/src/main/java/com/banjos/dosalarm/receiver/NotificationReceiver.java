@@ -79,10 +79,7 @@ public class NotificationReceiver extends BroadcastReceiver {
     private String prepareNotificationTitle(Context context) {
         AlarmLocation clientsLocation = LocationService.getClientLocationDetails(context);
 
-        boolean testMode = PreferencesService.isTestMode(context);
-
-        Date candleLightingTimeToday = testMode ? new Date((new Date().getTime()) + (1000 * 60 * 127)) :
-               ZmanimService.getCandleLightingTimeToday(clientsLocation);
+        Date candleLightingTimeToday = ZmanimService.getCandleLightingTimeToday(clientsLocation, context);
 
         if (candleLightingTimeToday == null) {
             return null;

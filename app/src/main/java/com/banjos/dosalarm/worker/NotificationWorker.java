@@ -54,7 +54,7 @@ public class NotificationWorker extends Worker {
 
         boolean isTestMode = PreferencesService.isTestMode(context);
 
-        if (scheduleNotificationForCandleLightingToday(zcalToday, clientsLocation, isTestMode)) {
+        if (scheduleNotificationForCandleLightingToday(zcalToday, clientsLocation, context)) {
 
             Date notificationTime = getNotificationTime(zcalToday);
 
@@ -79,9 +79,10 @@ public class NotificationWorker extends Worker {
         }
     }
 
-    private boolean scheduleNotificationForCandleLightingToday(ZmanimCalendar zcalToday, AlarmLocation clientsLocation, boolean isTestMode) {
+    private boolean scheduleNotificationForCandleLightingToday(ZmanimCalendar zcalToday,
+                                                               AlarmLocation clientsLocation, Context context) {
         boolean hasCandleLighting =
-                  isTestMode ? true :ZmanimService.hasCandleLightingToday(clientsLocation);
+                  ZmanimService.hasCandleLightingToday(clientsLocation, context);
 
         if (hasCandleLighting) {
             Date now = Calendar.getInstance().getTime();

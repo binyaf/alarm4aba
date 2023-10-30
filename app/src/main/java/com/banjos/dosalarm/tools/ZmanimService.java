@@ -1,10 +1,15 @@
 package com.banjos.dosalarm.tools;
 
+import android.content.Context;
+
 import com.banjos.dosalarm.types.AlarmLocation;
 import com.kosherjava.zmanim.ZmanimCalendar;
+import com.kosherjava.zmanim.hebrewcalendar.HebrewDateFormatter;
 import com.kosherjava.zmanim.hebrewcalendar.JewishCalendar;
+import com.kosherjava.zmanim.hebrewcalendar.JewishDate;
 import com.kosherjava.zmanim.util.GeoLocation;
 
+import java.util.Calendar;
 import java.util.Date;
 
 public class ZmanimService {
@@ -30,19 +35,34 @@ public class ZmanimService {
 
     }
 
-    public static Date getCandleLightingTimeToday(AlarmLocation clientsLocation) {
+    public static Date getCandleLightingTimeToday(AlarmLocation clientsLocation, Context context) {
 
-        if (hasCandleLightingToday(clientsLocation)) {
+        if (hasCandleLightingToday(clientsLocation, context)) {
             return getTodaysZmanimCalendar(clientsLocation).getCandleLighting();
         }
         return null;
     }
 
-    public static boolean hasCandleLightingToday(AlarmLocation clientsLocation) {
+    public static boolean hasCandleLightingToday(AlarmLocation clientsLocation, Context context) {
+
+        if (PreferencesService.isTestMode(context)) {
+            return true;
+        }
+
         boolean inIsrael = clientsLocation.getCityCode().endsWith("_IL");
 
         JewishCalendar jc = new JewishCalendar();
         jc.setInIsrael(inIsrael);
         return jc.hasCandleLighting();
+    }
+
+    public static String getHebrewDateStringFromDate(Date alarmDate) {
+
+        JewishDate jd = new JewishDate(alarmDate);
+        HebrewDateFormatter hdf = new HebrewDateFormatter();
+        hdf.setHebrewFormat(true);
+        String hebrewDate = hdf.format(jd);
+
+        return hebrewDate;
     }
 }
