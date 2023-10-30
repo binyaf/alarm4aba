@@ -54,7 +54,7 @@ public class NotificationWorker extends Worker {
 
         boolean isTestMode = PreferencesService.isTestMode(context);
 
-        if (scheduleNotificationForCandleLightingToday(zcalToday, clientsLocation) || isTestMode) {
+        if (scheduleNotificationForCandleLightingToday(zcalToday, clientsLocation, isTestMode)) {
 
             Date notificationTime = getNotificationTime(zcalToday);
 
@@ -79,16 +79,17 @@ public class NotificationWorker extends Worker {
         }
     }
 
-    private boolean scheduleNotificationForCandleLightingToday(ZmanimCalendar zcalToday, AlarmLocation clientsLocation) {
-        boolean hasCandleLighting = ZmanimService.hasCandleLightingToday(clientsLocation);
+    private boolean scheduleNotificationForCandleLightingToday(ZmanimCalendar zcalToday, AlarmLocation clientsLocation, boolean isTestMode) {
+        boolean hasCandleLighting =
+                  isTestMode ? true :ZmanimService.hasCandleLightingToday(clientsLocation);
 
         if (hasCandleLighting) {
-            boolean isNowBeforeCandleLightingTime = zcalToday.getCandleLighting().before(Calendar.getInstance().getTime());
-            boolean isAfterMorning = LocalTime.now().isAfter(LocalTime.of(11, 0));
+            Date now = Calendar.getInstance().getTime();
+            boolean isNowBeforeCandleLightingTime = now.before(zcalToday.getCandleLighting());
+            boolean isAfterMorning = LocalTime.now().isAfter(LocalTime.of(10, 0));
             return isNowBeforeCandleLightingTime && isAfterMorning;
         }
         return false;
-
     }
 
     private Date getNotificationTime(ZmanimCalendar today) {
@@ -97,13 +98,13 @@ public class NotificationWorker extends Worker {
 
         Calendar notificationTime = Calendar.getInstance();
 
-        if (PreferencesService.isTestMode(getApplicationContext())) {
+       /* if (PreferencesService.isTestMode(getApplicationContext())) {
             //  notificationTime.set(Calendar.HOUR, notificationTime.get(Calendar.HOUR));
             notificationTime.set(Calendar.MINUTE, notificationTime.get(Calendar.MINUTE) + 1);
-        } else {
+        } else {*/
             notificationTime.setTime(today.getCandleLighting());
             notificationTime.add(Calendar.MINUTE, -timeBeforeShabbat);
-        }
+      //  }
         return notificationTime.getTime();
     }
 
