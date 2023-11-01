@@ -75,7 +75,7 @@ public class NotificationWorker extends Worker {
                         notificationTime + " | now: " + now + " | in the past not Scheduling | test mode: " + isTestMode);
             }
         } else {
-            Log.d("NotificationWorker", "no notification to schedule | test mode: false");
+            Log.d("NotificationWorker", "no notification to schedule | test mode: " + isTestMode);
         }
     }
 
