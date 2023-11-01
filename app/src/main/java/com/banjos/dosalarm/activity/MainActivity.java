@@ -23,7 +23,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -33,19 +32,17 @@ import androidx.core.app.ShareCompat;
 import androidx.core.content.ContextCompat;
 
 import com.banjos.dosalarm.R;
-import com.banjos.dosalarm.tools.PreferencesService;
 import com.banjos.dosalarm.tools.DateTimesFormats;
 import com.banjos.dosalarm.tools.IntentCreator;
 import com.banjos.dosalarm.tools.LocationService;
 import com.banjos.dosalarm.tools.NotificationJobScheduler;
+import com.banjos.dosalarm.tools.PreferencesService;
 import com.banjos.dosalarm.tools.ZmanimService;
 import com.banjos.dosalarm.types.Alarm;
 import com.banjos.dosalarm.types.AlarmLocation;
 import com.banjos.dosalarm.types.AlarmType;
 import com.banjos.dosalarm.types.IntentKeys;
 import com.kosherjava.zmanim.ZmanimCalendar;
-import com.kosherjava.zmanim.hebrewcalendar.HebrewDateFormatter;
-import com.kosherjava.zmanim.hebrewcalendar.JewishDate;
 import com.kosherjava.zmanim.util.GeoLocation;
 
 import java.text.DateFormat;

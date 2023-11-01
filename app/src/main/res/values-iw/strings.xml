@@ -48,18 +48,18 @@
 
     <!-- Preference locations -->
     <string name="pref_location_title">המיקום שלך</string>
-    <string name="JLM_IL">ירושלים</string>
-    <string name="TLV_IL">תל אביב</string>
-    <string name="HAF_IL">חיפה</string>
-    <string name="GVZ_IL">גבעת זאב</string>
-    <string name="MBA_IL">מזכרת בתיה</string>
-    <string name="SDR_IL">שדרות</string>
-    <string name="EIL_IL">אילת</string>
-    <string name="NYC_US">ניו יורק</string>
-    <string name="LAX_US">לוס אנג\'לס</string>
-    <string name="MIA_US">מיאמי</string>
-    <string name="TOR_CA">טורונטו</string>
-    <string name="LON_UK">לונדון</string>
+    <string name="JLM_IL">ירושלים, ישראל</string>
+    <string name="TLV_IL">תל אביב, ישראל</string>
+    <string name="HAF_IL">חיפה, ישראל</string>
+    <string name="GVZ_IL">גבעת זאב, ישראל</string>
+    <string name="MBA_IL">מזכרת בתיה, ישראל</string>
+    <string name="SDR_IL">שדרות, ישראל</string>
+    <string name="EIL_IL">אילת, ישראל</string>
+    <string name="NYC_US">ניו יורק, ארה\"ב</string>
+    <string name="LAX_US">לוס אנג\'לס, ארה\"ב</string>
+    <string name="MIA_US">מיאמי, ארה\"ב</string>
+    <string name="TOR_CA">טורונטו, קנדה</string>
+    <string name="LON_UK">לונדון, אנגליה</string>
 
     <!-- notification -->
     <string name="time_beforeShabbat_notification">זמן לפני שבת לקבלת ההתראה</string>
@@ -80,16 +80,18 @@
     <string name="min_210">שלוש וחצי שעות</string>
     <string name="min_240">ארבע שעות</string>
 
-    <string name="notification_checklist_dosalarm">לכוון שעון מעורר לשחרית מחר בבוקר (DosAlarm)</string>
+    <string name="notification_checklist_dosalarm">לכוון שעון מעורר (DosAlarm)</string>
     <string name="notification_checklist_refrigerator">לכבות את האור במקרר</string>
     <string name="notification_checklist_dishwasher">לכוון טיימר למדיח כלים</string>
     <string name="notification_checklist_electricity">לכוון שעון שבת לבית</string>
     <string name="notification_checklist_air_conditioner">לכוון שעון שבת למזגן</string>
     <string name="notification_checklist_kettle">להרתיח מיחם לשבת</string>
     <string name="notification_checklist_hot_plate">להכין פלטה לשבת</string>
-    <string name="notification_checklist_candles">להכין נרות</string>
+    <string name="notification_checklist_candles">להכין נרות שבת</string>
     <string name="notification_checklist_phone">להתקשר למשפחה לאחל שבת שלום</string>
 
+    <string name="pref_click_here_for_details">לחץ כאן לערוך את פרטי ההתראה</string>
+    <string name="pref_checklist_title">בהתראה ארצה לקבל תזכורת על:</string>
     <string name="pref_checklist_dosalarm">לכוון שעון מעורר (DosAlarm)</string>
     <string name="pref_checklist_refrigerator">אור במקרר</string>
     <string name="pref_checklist_dishwasher">טיימר למדיח כלים</string>
@@ -97,7 +99,7 @@
     <string name="pref_checklist_air_conditioner">טיימר למזגן</string>
     <string name="pref_checklist_kettle">מיחם לשבת</string>
     <string name="pref_checklist_hot_plate">פלטה לשבת</string>
-    <string name="pref_checklist_candles"> נרות שבת</string>
+    <string name="pref_checklist_candles">נרות שבת</string>
     <string name="pref_checklist_phone">להתקשר למשפחה לאחל שבת שלום</string>
 
     <string name="share_msg">אני לא בטוח למה זה אמור לעניין אותך, אבל אני מתעורר ב %1$s ב %2$s בעזרת Dos Alarm.   מגניב, לא?  \n\n אין לך עדיין את האפליקציה? הורד אותה מכאן: https://tinyurl.com/52esu8dx</string>

@@ -48,18 +48,18 @@
 
     <!-- Preference locations -->
     <string name="pref_location_title">Your location</string>
-    <string name="JLM_IL">Jerusalem</string>
-    <string name="TLV_IL">Tel Aviv</string>
-    <string name="HAF_IL">Haifah</string>
-    <string name="GVZ_IL">Givaat Zeev</string>
-    <string name="MBA_IL">Mazkeret Batya</string>
-    <string name="SDR_IL">Sderot</string>
-    <string name="EIL_IL">Eilat</string>
-    <string name="NYC_US">New York</string>
-    <string name="LAX_US">Los Angeles</string>
-    <string name="MIA_US">Miami</string>
-    <string name="TOR_CA">Toronto</string>
-    <string name="LON_UK">London</string>
+    <string name="JLM_IL">Jerusalem, Israel</string>
+    <string name="TLV_IL">Tel Aviv, Israel</string>
+    <string name="HAF_IL">Haifah, Israel</string>
+    <string name="GVZ_IL">Givaat Zeev, Israel</string>
+    <string name="MBA_IL">Mazkeret Batya, Israel</string>
+    <string name="SDR_IL">Sderot, Israel</string>
+    <string name="EIL_IL">Eilat, Israel</string>
+    <string name="NYC_US">New York, USA</string>
+    <string name="LAX_US">Los Angeles, USA</string>
+    <string name="MIA_US">Miami, USA</string>
+    <string name="TOR_CA">Toronto, USA</string>
+    <string name="LON_UK">London, USA</string>
 
     <!-- notification -->
     <string name="time_beforeShabbat_notification">Time before Shabbat to receive the notification</string>
@@ -90,16 +90,19 @@
    <string name="notification_checklist_candles">Prepare the candles</string>
    <string name="notification_checklist_phone">Call family to wish shabbat Shalom</string>
 
-    <string name="pref_checklist_dosalarm">Set alarm (DosAlarm) for tomorrow morning</string>
+    <string name="pref_click_here_for_details">click here to choose notification details</string>
+    <string name="pref_checklist_title">In the notification remind me about:</string>
+    <string name="pref_checklist_dosalarm">Set alarm clock (DosAlarm)</string>
     <string name="pref_checklist_refrigerator">Refrigerator light</string>
     <string name="pref_checklist_dishwasher">Dishwasher timer</string>
-    <string name="pref_checklist_electricity">Shabbat clock</string>
-    <string name="pref_checklist_air_conditioner">Air conditioner timer</string>
-    <string name="pref_checklist_kettle">Prepare the Shabbat kettle</string>
+    <string name="pref_checklist_electricity">Shabbat Clock</string>
+    <string name="pref_checklist_air_conditioner">Air Conditioner timer</string>
+    <string name="pref_checklist_kettle">Prepare the Shabbat Kettle</string>
     <string name="pref_checklist_hot_plate">Prepare the Hot Plate</string>
-    <string name="pref_checklist_candles">Prepare the candles</string>
-    <string name="pref_checklist_phone">Phone your family</string>
+    <string name="pref_checklist_candles">Prepare the Shabbat Candles</string>
+    <string name="pref_checklist_phone">Phone my family</string>
 
+    <!-- share -->
     <string name="share_msg">I\'m not sure why this will interest you, but I\'m waking up on %1$s at %2$s  with DosAlarm! \n\n\Don\'t  have yet dos-alarm? download here: https://tinyurl.com/52esu8dx</string>
 
 </resources>

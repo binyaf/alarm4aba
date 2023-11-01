@@ -21,7 +21,6 @@
 
     </PreferenceCategory>
 
-
     <PreferenceCategory app:key="pref_shabbat_checklist_notifications_category" app:title="@string/pref_shabbat_checklist_notifications_header">
         <SwitchPreference
             app:key="enable_pre_shabbat_checklist_notifications"
@@ -35,15 +34,16 @@
             android:entryValues="@array/pref_notification_time_before_shabbat_values"
             android:defaultValue="60"
             app:useSimpleSummaryProvider="true"/>
-        <CheckBoxPreference app:key="notification_checklist_dosalarm" app:title="@string/pref_checklist_dosalarm"  app:defaultValue="true" />
-        <CheckBoxPreference app:key="notification_checklist_refrigerator" app:title="@string/pref_checklist_refrigerator"  app:defaultValue="true" />
-        <CheckBoxPreference app:key="notification_checklist_dishwasher" app:title="@string/pref_checklist_dishwasher"  app:defaultValue="true" />
-        <CheckBoxPreference app:key="notification_checklist_electricity" app:title="@string/pref_checklist_electricity" app:defaultValue="true" />
-        <CheckBoxPreference app:key="notification_checklist_air_conditioner" app:title="@string/pref_checklist_air_conditioner" app:defaultValue="true" />
-        <CheckBoxPreference app:key="notification_checklist_kettle" app:title="@string/pref_checklist_kettle" app:defaultValue="true" />
-        <CheckBoxPreference app:key="notification_checklist_hot_plate" app:title="@string/pref_checklist_hot_plate" app:defaultValue="true" />
-        <CheckBoxPreference app:key="notification_checklist_candles" app:title="@string/pref_checklist_candles" app:defaultValue="true" />
-        <CheckBoxPreference app:key="notification_checklist_phone" app:title="@string/pref_checklist_phone" app:defaultValue="true" />
+
+        <MultiSelectListPreference
+            app:summary="@string/pref_click_here_for_details"
+            android:key="pref_pre_shabbat_notifications_checklist"
+            android:title="@string/pref_checklist_title"
+            android:dialogTitle="Choose options"
+            android:entries="@array/pref_pre_shabbat_notification_entries"
+            android:entryValues="@array/pref_pre_shabbat_notification_values"
+            android:defaultValue="@array/pref_pre_shabbat_notification_values" />
+
     </PreferenceCategory>
 
 </PreferenceScreen>

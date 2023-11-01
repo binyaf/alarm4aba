@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import java.util.Date;
 import android.util.Log;
 
 import androidx.core.app.ActivityCompat;
@@ -18,12 +17,15 @@ import androidx.preference.PreferenceManager;
 import com.banjos.dosalarm.R;
 import com.banjos.dosalarm.tools.LocationService;
 import com.banjos.dosalarm.tools.NotificationJobScheduler;
-import com.banjos.dosalarm.tools.PreferencesService;
 import com.banjos.dosalarm.tools.ZmanimService;
 import com.banjos.dosalarm.types.AlarmLocation;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class NotificationReceiver extends BroadcastReceiver {
 
@@ -107,30 +109,33 @@ public class NotificationReceiver extends BroadcastReceiver {
 
         List<String> checkList = gtChecklist(context);
 
+        if (checkList == null || checkList.size() == 0) {
+            return "";
+        }
         StringBuilder sb = new StringBuilder();
         for (String str:checkList) {
             if (str != null && !str.equals("")) {
                 sb.append("\n* " + str);
             }
         }
-
-        return context.getString(R.string.notification_body)+ ": " + sb.toString();
+        sb.append(context.getString(R.string.notification_body)).append(":");
+        return sb.toString();
     }
 
 
     private List<String> gtChecklist(Context context) {
+        List notifications = new ArrayList();
+        Set<String> values = settingsPreferences.getStringSet("pref_pre_shabbat_notifications_checklist", new HashSet<>());
+        List<String> valuesList = Arrays.asList(Arrays.toString(values.toArray()));
 
-        String dosAlarm = settingsPreferences.getBoolean("notification_checklist_dosalarm", true)? context.getString(R.string.notification_checklist_dosalarm) :"";
-        String refrigerator = settingsPreferences.getBoolean("notification_checklist_refrigerator", true)? context.getString(R.string.notification_checklist_refrigerator) :"";
-        String dishwasher = settingsPreferences.getBoolean("notification_checklist_dishwasher", true)? context.getString(R.string.notification_checklist_dishwasher) :"";
-        String clock = settingsPreferences.getBoolean("notification_checklist_electricity", true)? context.getString(R.string.notification_checklist_electricity) :"";
-        String airConditioner = settingsPreferences.getBoolean("notification_checklist_air_conditioner", true)? context.getString(R.string.notification_checklist_air_conditioner) :"";
-        String kettle = settingsPreferences.getBoolean("notification_checklist_kettle", true)? context.getString(R.string.notification_checklist_kettle) :"";
-        String hotPlate = settingsPreferences.getBoolean("notification_checklist_hot_plate", true)? context.getString(R.string.notification_checklist_hot_plate) :"";
-        String candles = settingsPreferences.getBoolean("notification_checklist_candles", true)?context.getString(R.string.notification_checklist_candles) :"";
-        String phone = settingsPreferences.getBoolean("notification_checklist_phone", true)? context.getString(R.string.notification_checklist_phone) :"";
-
-        return Arrays.asList(dosAlarm, refrigerator, dishwasher, clock, airConditioner, kettle, hotPlate, candles, phone);
+        for (String notificationKey : valuesList) {
+            int resourceId = context.getResources().getIdentifier(notificationKey, "string", context.getPackageName());
+            if (resourceId != 0) {
+                String notificationStr = context.getString(resourceId);
+                notifications.add(notificationStr);
+            }
+        }
+        return notifications;
 
     }
 
@@ -148,7 +153,6 @@ public class NotificationReceiver extends BroadcastReceiver {
             if (remainingMinutes == 0) {
                 return hours == 1 ? context.getString(R.string.one_hour) : context.getString(R.string.hours, hours);
             } else {
-             //   return context.getString(R.string.hours_and_minutes, hours, remainingMinutes);
                 return context.getString(R.string.hours, hours) + " " + context.getString(R.string.and_minutes, remainingMinutes);
             }
         }

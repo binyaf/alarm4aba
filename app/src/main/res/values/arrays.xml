@@ -96,4 +96,28 @@
         <item>@string/LON_UK</item>
     </string-array>
 
+    <string-array name="pref_pre_shabbat_notification_entries">
+        <item>@string/pref_checklist_dosalarm</item>
+        <item>@string/pref_checklist_refrigerator</item>
+        <item>@string/pref_checklist_dishwasher</item>
+        <item>@string/pref_checklist_electricity</item>
+        <item>@string/pref_checklist_air_conditioner</item>
+        <item>@string/pref_checklist_kettle</item>
+        <item>@string/pref_checklist_hot_plate</item>
+        <item>@string/pref_checklist_candles</item>
+        <item>@string/pref_checklist_phone</item>
+    </string-array>
+
+    <string-array name="pref_pre_shabbat_notification_values">
+        <item>notification_checklist_dosalarm</item>
+        <item>notification_checklist_refrigerator</item>
+        <item>notification_checklist_dishwasher</item>
+        <item>notification_checklist_electricity</item>
+        <item>notification_checklist_air_conditioner</item>
+        <item>notification_checklist_kettle</item>
+        <item>notification_checklist_hot_plate</item>
+        <item>notification_checklist_candles</item>
+        <item>notification_checklist_phone</item>
+    </string-array>
+
 </resources>

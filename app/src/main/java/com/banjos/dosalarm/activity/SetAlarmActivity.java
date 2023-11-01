@@ -1,12 +1,10 @@
 package com.banjos.dosalarm.activity;
 
-import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -28,8 +26,8 @@ import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
 
 import com.banjos.dosalarm.R;
-import com.banjos.dosalarm.tools.PreferencesService;
 import com.banjos.dosalarm.tools.IntentCreator;
+import com.banjos.dosalarm.tools.PreferencesService;
 import com.banjos.dosalarm.types.Alarm;
 import com.banjos.dosalarm.types.AlarmType;
 import com.banjos.dosalarm.types.IntentKeys;
@@ -53,13 +51,12 @@ public class SetAlarmActivity extends AppCompatActivity {
     private final DateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.US);
     private NumberPicker numberPicker;
     private EditText alarmLabelEditText;
-    private PreferencesService preferencesService;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_alarm_screen);
-        preferencesService = new PreferencesService(getApplicationContext());
+
         TextView title = findViewById(R.id.addEditAlarmTitle);
         final Alarm alarm;
 
@@ -253,7 +250,7 @@ public class SetAlarmActivity extends AppCompatActivity {
     }
 
     private void saveAlarmToSharePreferences(Alarm alarm) {
-
+        PreferencesService preferencesService = new PreferencesService(getApplicationContext());
         Map<Integer, Alarm> allAlarms = preferencesService.getAlarms();
         allAlarms.put(alarm.getId(), alarm);
         preferencesService.saveAlarms(allAlarms);
