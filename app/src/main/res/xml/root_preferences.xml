@@ -25,7 +25,7 @@
         <SwitchPreference
             app:key="enable_pre_shabbat_checklist_notifications"
             app:title="@string/pref_enable_notifications_title"
-            app:defaultValue="true">
+            app:defaultValue="false">
         </SwitchPreference>
         <ListPreference
             android:key="pref_notification_time_before_shabbat"
