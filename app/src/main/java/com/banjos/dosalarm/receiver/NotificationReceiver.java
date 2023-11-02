@@ -55,7 +55,7 @@ public class NotificationReceiver extends BroadcastReceiver {
         }
 
         String notificationText = prepareNotificationText(context);
-
+        Log.d("NotificationReceiver", "notification body:" + notificationText);
         NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(context,  NotificationJobScheduler.CHANNEL_ID)
                 .setSmallIcon(R.drawable.candles)
@@ -99,7 +99,6 @@ public class NotificationReceiver extends BroadcastReceiver {
         // Present the difference in a human-readable format
         String formattedDifference = formatTimeDifference(minutesDifference, context);
 
-        Log.d("NotificationReceiver", "minutes until shabbat:" + minutesDifference);
         String title = context.getString(R.string.notification_candle_lighting_title, formattedDifference);
         Log.d("NotificationReceiver", "notification title:" + title);
         return title;
@@ -113,12 +112,13 @@ public class NotificationReceiver extends BroadcastReceiver {
             return "";
         }
         StringBuilder sb = new StringBuilder();
+        sb.append("\n").append(context.getString(R.string.notification_body)).append(":");
         for (String str:checkList) {
             if (str != null && !str.equals("")) {
                 sb.append("\n* " + str);
             }
         }
-        sb.append(context.getString(R.string.notification_body)).append(":");
+
         return sb.toString();
     }
 
@@ -126,9 +126,8 @@ public class NotificationReceiver extends BroadcastReceiver {
     private List<String> gtChecklist(Context context) {
         List notifications = new ArrayList();
         Set<String> values = settingsPreferences.getStringSet("pref_pre_shabbat_notifications_checklist", new HashSet<>());
-        List<String> valuesList = Arrays.asList(Arrays.toString(values.toArray()));
 
-        for (String notificationKey : valuesList) {
+        for (String notificationKey : values) {
             int resourceId = context.getResources().getIdentifier(notificationKey, "string", context.getPackageName());
             if (resourceId != 0) {
                 String notificationStr = context.getString(resourceId);
