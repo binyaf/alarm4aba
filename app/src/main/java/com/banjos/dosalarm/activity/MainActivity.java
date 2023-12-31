@@ -355,7 +355,7 @@ public class MainActivity extends AppCompatActivity {
         String szTfilaGRAStr = timeFormat.format(szTfilaGRA);
 
         Log.d("ALARM",
-                " type: " + alarm.getType() + " | " +
+                "type: " + alarm.getType() + " | " +
                 " now: " + timeFormat.format(Calendar.getInstance().getTime()) + " | " +
                 " alarm time: " + timeFormat.format(alarmDateAndTime) );
 

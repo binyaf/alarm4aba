@@ -246,7 +246,12 @@ public class SetAlarmActivity extends AppCompatActivity {
         AlarmManager.AlarmClockInfo alarmClockInfo =
                 new AlarmManager.AlarmClockInfo(alarm.getDateAndTime().getTimeInMillis(), pendingIntent);
 
-        alarmManager.setAlarmClock(alarmClockInfo, pendingIntent);
+
+        try {
+            alarmManager.setAlarmClock(alarmClockInfo, pendingIntent);
+        } catch (SecurityException e) {
+            Log.e("setAlarmClock", "Couldn't set alarm, security issue", e);
+        }
     }
 
     private void saveAlarmToSharePreferences(Alarm alarm) {
