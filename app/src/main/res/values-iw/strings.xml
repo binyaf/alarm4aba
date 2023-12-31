@@ -42,9 +42,9 @@
 
     <!-- Preference Titles -->
     <string name="pref_alarm_duration_title">ברירת המחדל למשך ההתראה (שניות)</string>
-    <string name="pref_enable_notifications_title">התראות מופעלות</string>
+    <string name="pref_enable_notifications_title">תזכורות מופעלות</string>
     <string name="defaults_header">ברירות מחדל</string>
-    <string name="pref_shabbat_checklist_notifications_header">תזכורת לרשימת ההכנות לשבת</string>
+    <string name="pref_shabbat_checklist_notifications_header">תזכורות לשבת</string>
 
     <!-- Preference locations -->
     <string name="pref_location_title">המיקום שלך</string>
@@ -62,7 +62,7 @@
     <string name="LON_UK">לונדון, אנגליה</string>
 
     <!-- notification -->
-    <string name="time_beforeShabbat_notification">זמן לפני שבת לקבלת ההתראה</string>
+    <string name="time_beforeShabbat_notification">כמה זמן לפני שבת תרצה לקבל את התזכורת?</string>
     <string name="notification_candle_lighting_title">הדלקת נרות שבת בעוד %1$s</string>
     <string name="notification_body">לא לשכוח לסיים את ההכנות בזמן</string>
     <string name="ok">אישור</string>
@@ -92,7 +92,7 @@
 
     <string name="pref_click_here_for_details">לחץ כאן לערוך את פרטי ההתראה</string>
     <string name="pref_checklist_title">בהתראה ארצה לקבל תזכורת על:</string>
-    <string name="pref_checklist_dosalarm">לכוון שעון מעורר (DosAlarm)</string>
+    <string name="pref_checklist_dosalarm">שעון מעורר (DosAlarm)</string>
     <string name="pref_checklist_refrigerator">אור במקרר</string>
     <string name="pref_checklist_dishwasher">טיימר למדיח כלים</string>
     <string name="pref_checklist_electricity">שעון שבת</string>

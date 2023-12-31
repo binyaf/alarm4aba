@@ -42,9 +42,9 @@
 
     <!-- Preference Titles -->
     <string name="pref_alarm_duration_title">Default alarm duration (sec.)</string>
-    <string name="pref_enable_notifications_title">Notifications enabled</string>
+    <string name="pref_enable_notifications_title">Reminders enabled</string>
     <string name="defaults_header">Defaults</string>
-    <string name="pref_shabbat_checklist_notifications_header">Shabbat Checklist Notifications</string>
+    <string name="pref_shabbat_checklist_notifications_header">Shabbat Reminders</string>
 
     <!-- Preference locations -->
     <string name="pref_location_title">Your location</string>
@@ -58,11 +58,11 @@
     <string name="NYC_US">New York, USA</string>
     <string name="LAX_US">Los Angeles, USA</string>
     <string name="MIA_US">Miami, USA</string>
-    <string name="TOR_CA">Toronto, USA</string>
-    <string name="LON_UK">London, USA</string>
+    <string name="TOR_CA">Toronto, CA</string>
+    <string name="LON_UK">London, UK</string>
 
     <!-- notification -->
-    <string name="time_beforeShabbat_notification">Time before Shabbat to receive the notification</string>
+    <string name="time_beforeShabbat_notification">How long before Shabbat do you wish to receive the reminders?</string>
     <string name="notification_candle_lighting_title">Shabbat Candle-Lighting is in %1$s</string>
     <string name="notification_body">Don\'t forget to finish preparations on time</string>
     <string name="ok">OK</string>
@@ -90,16 +90,16 @@
    <string name="notification_checklist_candles">Prepare the candles</string>
    <string name="notification_checklist_phone">Call family to wish shabbat Shalom</string>
 
-    <string name="pref_click_here_for_details">click here to choose notification details</string>
+    <string name="pref_click_here_for_details">Click here to specify reminders</string>
     <string name="pref_checklist_title">In the notification remind me about:</string>
-    <string name="pref_checklist_dosalarm">Set alarm clock (DosAlarm)</string>
+    <string name="pref_checklist_dosalarm">Alarm clock (DosAlarm)</string>
     <string name="pref_checklist_refrigerator">Refrigerator light</string>
     <string name="pref_checklist_dishwasher">Dishwasher timer</string>
     <string name="pref_checklist_electricity">Shabbat Clock</string>
     <string name="pref_checklist_air_conditioner">Air Conditioner timer</string>
-    <string name="pref_checklist_kettle">Prepare the Shabbat Kettle</string>
-    <string name="pref_checklist_hot_plate">Prepare the Hot Plate</string>
-    <string name="pref_checklist_candles">Prepare the Shabbat Candles</string>
+    <string name="pref_checklist_kettle">Shabbat Urn</string>
+    <string name="pref_checklist_hot_plate">Hot Plate</string>
+    <string name="pref_checklist_candles">Shabbat Candles</string>
     <string name="pref_checklist_phone">Phone my family</string>
 
     <!-- share -->
