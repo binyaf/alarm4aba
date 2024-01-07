@@ -166,6 +166,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        Log.d("MainActivity", "back clicked- exiting ");
+        finishAffinity();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.upper_bar, menu);
         return true;

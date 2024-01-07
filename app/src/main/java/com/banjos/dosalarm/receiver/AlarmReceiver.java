@@ -3,6 +3,7 @@ package com.banjos.dosalarm.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioAttributes;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -12,6 +13,7 @@ import android.os.Vibrator;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
+
 import com.banjos.dosalarm.activity.MainActivity;
 import com.banjos.dosalarm.tools.PreferencesService;
 import com.banjos.dosalarm.types.Alarm;
@@ -43,13 +45,23 @@ public class AlarmReceiver extends BroadcastReceiver {
         vibrator.vibrate(8000);
 
         Toast.makeText(context, "", Toast.LENGTH_LONG).show();
-        Uri alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-        if (alarmUri == null) {
-            alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+        Uri alarmSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+        if (alarmSoundUri == null) {
+            alarmSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
         }
 
-        Ringtone ringtone = RingtoneManager.getRingtone(context, alarmUri);
+        Ringtone ringtone = RingtoneManager.getRingtone(context, alarmSoundUri);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_ALARM)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .build();
+
+            ringtone.setAudioAttributes(audioAttributes);
+        } else {
+            // For versions before Lollipop, there's no need to set audio attributes
+        }
         ringtone.play();
 
         new Handler().postDelayed(new Runnable() {
