@@ -119,16 +119,16 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        ImageView todaysZemanimIcon = findViewById(R.id.timeIconImageView);
-        todaysZemanimIcon.setOnClickListener(v -> {
+        ImageView todaysZmanimIcon = findViewById(R.id.timeIconImageView);
+        todaysZmanimIcon.setOnClickListener(v -> {
             Log.d("MainActivity", "today's zmanim clicked");
             AlertDialog dialog = createTodayZmanimAlertDialog();
             dialog.show();
         });
 
-        TextView todaysZemanimText = findViewById(R.id.labelTextView);
+        TextView todaysZmanimTxt = findViewById(R.id.labelTextView);
 
-        todaysZemanimText.setOnClickListener(new View.OnClickListener() {
+        todaysZmanimTxt.setOnClickListener(new View.OnClickListener() {
             int clicksOnEmptyTextView = 0;
             @Override
             public void onClick(View v) {

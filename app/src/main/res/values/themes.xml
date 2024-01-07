@@ -19,6 +19,6 @@
         <item name="colorOnSecondary">@color/purple_700</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <!-- Customize your theme here. -->
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 </resources>

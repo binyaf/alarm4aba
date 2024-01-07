@@ -15,8 +15,8 @@
     <string name="alarm_time_label">Alarm Time</string>
     <string name="alarm_date_label">Alarm Date</string>
     <string name="alarm_label_label">Alarm Label</string>
-    <string name="todays_zmanim_short">Today\'s Zemanim</string>
-    <string name="todays_zmanim">Today\'s Zemanim - %1$s</string>
+    <string name="todays_zmanim_short">Today\'s Zmanim</string>
+    <string name="todays_zmanim">Today\'s Zmanim - %1$s</string>
     <string name="alarm_will_start">Alarm will start at:</string>
     <string name="alarm_will_start_with_label">Alarm (%1$s) will start at:</string>
     <string name="alarm_after_shma">Your alarm is after Sof Zman Shma</string>
