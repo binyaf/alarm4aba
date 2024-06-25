@@ -69,7 +69,8 @@ public class SetAlarmActivity extends AppCompatActivity {
             alarm = new Alarm(AlarmType.REGULAR, defaultDuration,alarmDateAndTime);
             title.setText(R.string.add_alarm);
         }
-        SharedPreferences myPrefs = PreferencesService.getMyPreferences(getApplicationContext());
+        PreferencesService preferencesService = new PreferencesService(getApplicationContext());
+        SharedPreferences myPrefs = preferencesService.getMyPreferences();
 
         boolean isTestMode = myPrefs.getBoolean("testMode", false);
         if (isTestMode) {

@@ -20,6 +20,13 @@
     "latitude": 25.7617,
     "timeZone": "America/New_York"
   },
+  "BOS_US": {
+    "cityCode": "BOS_US",
+    "altitude": 14,
+    "longitude": -71.0570,
+    "latitude": 42.3611,
+    "timeZone": "America/New_York"
+  },
     "TOR_CA": {
     "cityCode": "TOR_CA",
     "altitude": 76,

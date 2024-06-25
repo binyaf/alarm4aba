@@ -10,7 +10,7 @@
     <string name="edit">Edit</string>
     <string name="share">Share</string>
     <string name="warning">Warning</string>
-    <string name="add_alarm">Add Alarm</string>
+    <string name="add_alarm">Add</string>
     <string name="alarm_duration_label">Alarm Duration (sec.)</string>
     <string name="alarm_time_label">Alarm Time</string>
     <string name="alarm_date_label">Alarm Date</string>
@@ -58,6 +58,7 @@
     <string name="NYC_US">New York, USA</string>
     <string name="LAX_US">Los Angeles, USA</string>
     <string name="MIA_US">Miami, USA</string>
+    <string name="BOS_US">Boston, USA</string>
     <string name="TOR_CA">Toronto, CA</string>
     <string name="LON_UK">London, UK</string>
 
@@ -102,7 +103,13 @@
     <string name="pref_checklist_candles">Shabbat Candles</string>
     <string name="pref_checklist_phone">Phone my family</string>
 
+    <string name="reminder_text">Reminder - don\'t forget %1$s</string>
+    <string name="remind_me_about">Remind me to pray:</string>
+    <string name="shacharit">Shacharit</string>
+    <string name="mincha">Mincha</string>
+    <string name="maariv">Maariv</string>
     <!-- share -->
     <string name="share_msg">I\'m not sure why this will interest you, but I\'m waking up on %1$s at %2$s  with DosAlarm! \n\n\Don\'t  have yet dos-alarm? download here: https://tinyurl.com/52esu8dx</string>
+
 
 </resources>

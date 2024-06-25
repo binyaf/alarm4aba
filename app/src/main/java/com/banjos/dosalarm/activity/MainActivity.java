@@ -19,12 +19,14 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ImageSpan;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -42,6 +44,8 @@ import com.banjos.dosalarm.types.Alarm;
 import com.banjos.dosalarm.types.AlarmLocation;
 import com.banjos.dosalarm.types.AlarmType;
 import com.banjos.dosalarm.types.IntentKeys;
+import com.banjos.dosalarm.worker.NotificationWorker;
+import com.kosherjava.zmanim.ComplexZmanimCalendar;
 import com.kosherjava.zmanim.ZmanimCalendar;
 import com.kosherjava.zmanim.util.GeoLocation;
 
@@ -60,8 +64,12 @@ public class MainActivity extends AppCompatActivity {
     public static final int MAX_ALARMS = 4;
     private AlarmLocation alarmLocation;
     private String cityNameForPresentation;
-
     private LocationService locationService;
+
+    private Switch shacharitReminderSwitch;
+    private Switch minchaReminderSwitch;
+    private Switch maarivReminderSwitch;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -69,7 +77,9 @@ public class MainActivity extends AppCompatActivity {
         Context context = getApplicationContext();
         locationService = new LocationService();
 
-        SharedPreferences myPrefs = PreferencesService.getMyPreferences(context);
+        preferencesService = new PreferencesService(context);
+
+        SharedPreferences myPrefs = preferencesService.getMyPreferences();
 
         //this is supposed to be called once in the applications life... when client upgrades his app
         //we call the UpgradeReceiver and the job will be updated
@@ -77,7 +87,6 @@ public class MainActivity extends AppCompatActivity {
             NotificationJobScheduler.scheduleDailyNotificationsJob(context);
             markNotificationsWorkAsScheduled(myPrefs);
         }
-        preferencesService = new PreferencesService(context);
 
         alarmLocation = locationService.getClientLocationDetails(context);
         cityNameForPresentation = getCityNameByCityCode(alarmLocation.getCityCode());
@@ -138,11 +147,27 @@ public class MainActivity extends AppCompatActivity {
                     AlertDialog dialog = createSevenClicksDialog();
                     dialog.show();
                     clicksOnEmptyTextView = 0;
+                    NotificationWorker.schedulePrayerReminders(context);
+
                 } else {
                     Log.d("AnimationClick", "number of clicks = " + clicksOnEmptyTextView);
                 }
             }
         });
+
+        maarivReminderSwitch = findViewById(R.id.maariv_reminder_switch);
+        maarivReminderSwitch.setChecked(preferencesService.isMaarivReminderSelected());
+
+        minchaReminderSwitch = findViewById(R.id.mincha_reminder_switch);
+        minchaReminderSwitch.setChecked(preferencesService.isMinchaReminderSelected());
+
+        shacharitReminderSwitch = findViewById(R.id.shacharit_reminder_switch);
+        shacharitReminderSwitch.setChecked(preferencesService.isShacharisReminderSelected());
+
+        // Set listener for switch state changes
+        shacharitReminderSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> preferencesService.shacharitReminderSwitched(isChecked));
+        minchaReminderSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> preferencesService.minchaReminderSwitched(isChecked));
+        maarivReminderSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> preferencesService.maarivReminderSwitched(isChecked));
     }
 
     private AlertDialog createSevenClicksDialog() {
@@ -299,6 +324,7 @@ public class MainActivity extends AppCompatActivity {
         textView.setTextSize(16);
 
         textView.setLayoutParams(layoutParams);
+        textView.setGravity(Gravity.TOP);
         linearLayout.addView(textView);
 
     }
@@ -458,6 +484,8 @@ public class MainActivity extends AppCompatActivity {
         timeFormat.setTimeZone(gl.getTimeZone());
 
         ZmanimCalendar zcal = new ZmanimCalendar(gl);
+        ComplexZmanimCalendar czc = new ComplexZmanimCalendar(gl);
+        ;
 
         StringBuilder sb = new StringBuilder("<br>");
         sb.append(getString(R.string.sunrise, timeFormat.format(zcal.getSunrise()))).append(" <br><br>")
@@ -466,8 +494,9 @@ public class MainActivity extends AppCompatActivity {
                 .append(getString(R.string.latest_shacharis_mga, timeFormat.format(zcal.getSofZmanTfilaMGA()))).append(" <br><br>")
                 .append(getString(R.string.latest_shacharis_gra, timeFormat.format(zcal.getSofZmanTfilaGRA()))).append(" <br><br>")
                 .append(getString(R.string.midday, timeFormat.format(zcal.getChatzos()))).append(" <br><br>")
-                .append( getString(R.string.sunset, timeFormat.format(zcal.getSunset()))).append(" <br><br>")
+                .append(getString(R.string.sunset, timeFormat.format(zcal.getSunset()))).append(" <br><br>")
                 .append(getString(R.string.nightfall, timeFormat.format(zcal.getTzais()))).append(" <br><br>")
+                .append(getString(R.string.nightfall, timeFormat.format(czc.getTzaisGeonim6Point45Degrees()))).append(" <br><br>")
                 .append(" <br><br>");
         return sb.toString();
 

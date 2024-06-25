@@ -45,7 +45,8 @@ public class ZmanimService {
 
     public static boolean hasCandleLightingToday(AlarmLocation clientsLocation, Context context) {
 
-        if (PreferencesService.isTestMode(context)) {
+        PreferencesService preferencesService = new PreferencesService(context);
+        if (preferencesService.isTestMode()) {
             return true;
         }
 

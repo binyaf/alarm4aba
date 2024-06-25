@@ -8,6 +8,8 @@
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
 
     <application
         android:allowBackup="true"
@@ -35,12 +37,23 @@
             android:name=".activity.SetAlarmActivity"
             android:theme="@style/Theme.DosAlarm">
         </activity>
-
+        <activity android:name=".activity.ReminderActivity"
+            android:theme="@style/Theme.AppCompat.Light.Dialog"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <receiver
             android:name=".receiver.AlarmReceiver"
             android:exported="true" />
         <receiver
             android:name=".receiver.NotificationReceiver"
+            android:enabled="true"
+            android:exported="false" />
+        <receiver
+            android:name=".receiver.PrayerReminderReceiver"
             android:enabled="true"
             android:exported="false" />
         <receiver

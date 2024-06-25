@@ -20,7 +20,8 @@ public class NotificationJobScheduler {
     private static final String CHANNEL_NAME = "dosAlarmDailyNotificationsChannelName";
     public static void scheduleDailyNotificationsJob(Context context) {
 
-        Log.d("NotificationJobScheduler", "Scheduling NotificationWorker job (is supposed to be called once, and on every upgrade)");
+        Log.d("NotificationJobScheduler", "Scheduling NotificationWorker job " +
+                "(is supposed to be called once, and on every upgrade)");
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
@@ -34,9 +35,10 @@ public class NotificationJobScheduler {
             }
         }
 
+        //there's a minimum interval limit of 15 minutes for PeriodicWorkRequest
         PeriodicWorkRequest notificationWorkRequest =
-                new PeriodicWorkRequest.Builder(NotificationWorker.class, 1, TimeUnit.HOURS,
-                        1, TimeUnit.HOURS).addTag(WORKER_TAG).build();
+                new PeriodicWorkRequest.Builder(NotificationWorker.class, 1, TimeUnit.MINUTES,
+                        1, TimeUnit.MINUTES).addTag(WORKER_TAG).build();
 
         WorkManager.getInstance(context).enqueue(notificationWorkRequest);
 

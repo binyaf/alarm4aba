@@ -8,46 +8,44 @@
     android:orientation="vertical"
     android:textAlignment="center">
 
-
-    <Button
-        android:id="@+id/addAdditionAlarmBtn"
-        android:layout_width="180dp"
-        android:layout_height="41dp"
-        android:layout_centerInParent="true"
-        android:layout_gravity="top|center_horizontal"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/rounded_corner"
-        android:backgroundTint="@color/blue"
-        android:drawableLeft="@drawable/add_icon"
-        android:gravity="center"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:text="@string/add_alarm"
-        android:textAllCaps="false"
-        android:textColor="#897"
-        android:textSize="20sp" />
-
+    <!-- Upper Part (Top Buttons) -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <Button
+            android:id="@+id/addAdditionAlarmBtn"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="48dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/rounded_corner"
+            android:backgroundTint="@color/blue"
+            android:drawableLeft="@drawable/add_icon"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:text="@string/add_alarm"
+            android:textAllCaps="false"
+            android:textColor="#897"
+            android:textSize="20sp" />
 
         <Button
             android:id="@+id/editAlarmBtn"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
             android:background="@drawable/rounded_corner"
             android:backgroundTint="@color/grey"
             android:drawableStart="@drawable/edit_icon"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
             android:enabled="false"
-            android:gravity="center"
-            android:layout_gravity="center_vertical"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
             android:text="@string/edit"
             android:textAllCaps="false"
             android:textColor="@color/white"
@@ -56,22 +54,17 @@
 
         <Button
             android:id="@+id/deleteAlarmBtn"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginStart="33dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
             android:background="@drawable/rounded_corner"
             android:backgroundTint="@color/light_red"
             android:drawableStart="@drawable/delete_icon"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
             android:enabled="false"
-            android:gravity="center"
-            android:layout_gravity="center_vertical"
-            android:paddingTop="1dp"
-            android:paddingBottom="1dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
             android:text="@string/delete"
             android:textAllCaps="false"
             android:textColor="@color/white"
@@ -80,59 +73,102 @@
 
         <Button
             android:id="@+id/shareAlarmButton"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:contentDescription="@string/share"
-            android:enabled="false"
-            android:gravity="center"
-            android:paddingLeft="8dp"
-            android:paddingTop="1dp"
-            android:paddingRight="8dp"
-            android:paddingBottom="1dp"
-            android:drawableStart="@android:drawable/ic_menu_share"
-            android:visibility="invisible"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginStart="33dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
             android:background="@drawable/rounded_corner"
             android:backgroundTint="@color/light_green"
+            android:drawableStart="@android:drawable/ic_menu_share"
+            android:enabled="false"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:visibility="invisible"
             android:text="@string/share"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="15sp" />
     </LinearLayout>
 
+    <!-- divider -->
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
         android:background="@android:color/darker_gray" />
 
+    <!-- list of alarms (dynamically) -->
     <LinearLayout
         android:id="@+id/alarmsLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_weight="1"/>
 
+    <!-- divider -->
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
         android:background="@android:color/darker_gray" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:text="@string/remind_me_about"
+        android:padding="5dp"
+        android:textSize="18dp"/>
+
+    <!-- prayer reminders -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <Switch
+            android:id="@+id/shacharit_reminder_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/shacharit"
+            android:layout_margin="6dp"/>
+
+        <Switch
+            android:id="@+id/mincha_reminder_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/mincha"
+            android:layout_margin="6dp"/>
+
+        <Switch
+            android:id="@+id/maariv_reminder_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/maariv"
+            android:layout_margin="6dp"/>
+    </LinearLayout>
+
+    <!-- divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+
+    <!-- bottom buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="fill_vertical"
+        android:padding="16dp"
+        android:orientation="vertical">
 
     <ImageView
         android:id="@+id/timeIconImageView"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_centerInParent="true"
-        android:layout_gravity="bottom|center"
+        android:layout_gravity="center"
         android:layout_marginTop="20dp"
-        android:gravity="bottom|center"
         android:src="@drawable/time_icon" />
 
     <TextView
@@ -142,8 +178,9 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_gravity="center"
-        android:gravity="bottom|center"
+        android:gravity="center"
         android:text="@string/todays_zmanim"
+        android:layout_marginBottom="20dp"
         android:textColor="#3434AD" />
 
     <ImageView
@@ -151,5 +188,6 @@
         android:layout_width="1dp"
         android:layout_height="1dp"
         android:gravity="bottom|center" />
+    </LinearLayout>
 
 </LinearLayout>

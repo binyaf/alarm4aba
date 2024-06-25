@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="16dp">
+
+    <!-- App Icon -->
+    <ImageView
+        android:id="@+id/appIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="24dp"
+        android:src="@mipmap/ic_launcher_1" />
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/alarmTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/appIcon"
+        android:layout_centerHorizontal="true"
+        android:text="DosAlarm - Reminder"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="16dp" />
+
+    <TextView
+        android:id="@+id/reminderText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/reminder_text"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="24dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+            <!-- Snooze Button -->
+            <Button
+                android:id="@+id/snoozeButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/alarmTitle"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:text="Snooze" />
+
+            <!-- Stop Button -->
+            <Button
+                android:id="@+id/stopButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/alarmTitle"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="8dp"
+                android:text="Stop" />
+    </LinearLayout>
+</LinearLayout>
