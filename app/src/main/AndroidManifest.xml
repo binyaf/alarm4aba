@@ -55,7 +55,11 @@
         <receiver
             android:name=".receiver.PrayerReminderReceiver"
             android:enabled="true"
-            android:exported="false" />
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.yourapp.ALARM_TRIGGER" />
+            </intent-filter>
+        </receiver>
         <receiver
             android:name=".receiver.BootReceiver"
             android:enabled="true"

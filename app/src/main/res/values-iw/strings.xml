@@ -108,6 +108,14 @@
     <string name="shacharit">שחרית</string>
     <string name="mincha">מנחה</string>
     <string name="maariv">ערבית</string>
+    <string name="stop">עצור</string>
+    <string name="snooze">נודניק</string>
+    <string name="prayer_reminder_shacharit_title">הגיע הזמן לתפילת שחרית</string>
+    <string name="prayer_reminder_shacharit_text">קום לתפילת שחרית</string>
+    <string name="prayer_reminder_mincha_title">הגיע הזמן לתפילת מנחה</string>
+    <string name="prayer_reminder_mincha_text">תפילת מנחה - לא להתעצל...</string>
+    <string name="prayer_reminder_maariv_title">הגיע הזמן לתפילת ערבית</string>
+    <string name="prayer_reminder_maariv_text">תפילת ערבית - אפילו שזה רשות</string>
 
     <string name="share_msg">אני לא בטוח למה זה אמור לעניין אותך, אבל אני מתעורר ב %1$s ב %2$s בעזרת Dos Alarm.   מגניב, לא?  \n\n אין לך עדיין את האפליקציה? הורד אותה מכאן: https://tinyurl.com/52esu8dx</string>
 

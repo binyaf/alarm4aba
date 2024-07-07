@@ -19,6 +19,7 @@ import com.banjos.dosalarm.tools.LocationService;
 import com.banjos.dosalarm.tools.NotificationJobScheduler;
 import com.banjos.dosalarm.tools.ZmanimService;
 import com.banjos.dosalarm.types.AlarmLocation;
+import com.banjos.dosalarm.types.NotificationType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,10 +35,10 @@ public class NotificationReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         settingsPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        showNotification(context);
+        showNotification(context, NotificationType.CANDLE_LIGHTING);
     }
 
-    private void showNotification(Context context) {
+    private void showNotification(Context context, NotificationType type) {
 
         boolean isUserWantsNotifications =
                 settingsPreferences.getBoolean("enable_pre_shabbat_checklist_notifications", true);
@@ -75,7 +76,7 @@ public class NotificationReceiver extends BroadcastReceiver {
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        notificationManager.notify(1, builder.build());
+        notificationManager.notify(type.getId(), builder.build());
     }
 
     private String prepareNotificationTitle(Context context) {

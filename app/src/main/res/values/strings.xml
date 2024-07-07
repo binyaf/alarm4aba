@@ -108,8 +108,16 @@
     <string name="shacharit">Shacharit</string>
     <string name="mincha">Mincha</string>
     <string name="maariv">Maariv</string>
+    <string name="stop">Stop</string>
+    <string name="snooze">Snooze</string>
+    <string name="prayer_reminder_shacharit_title">Time to Pray Shacharit</string>
+    <string name="prayer_reminder_shacharit_text">Shacharit!! wake up man, time to pray Shacharit</string>
+    <string name="prayer_reminder_mincha_title">Time to Pray Mincha</string>
+    <string name="prayer_reminder_mincha_text">Mincha!! wake up man, time to pray Mincha</string>
+    <string name="prayer_reminder_maariv_title">Time to Pray Maariv</string>
+    <string name="prayer_reminder_maariv_text">Maariv!!don\'t fall asleep, it\'s time to pray Maariv</string>
+
     <!-- share -->
     <string name="share_msg">I\'m not sure why this will interest you, but I\'m waking up on %1$s at %2$s  with DosAlarm! \n\n\Don\'t  have yet dos-alarm? download here: https://tinyurl.com/52esu8dx</string>
-
 
 </resources>

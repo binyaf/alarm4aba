@@ -19,7 +19,9 @@ public class ReminderActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("PrayerReminder", "ReminderActivity - showPopupAlert ");        setContentView(R.layout.reminder_activity);
+        Log.d("PrayerReminder", "ReminderActivity - showPopupAlert - start");
+
+        setContentView(R.layout.reminder_activity);
 
         // Make the activity appear as a popup
         // Make the activity full screen and show when locked
@@ -67,6 +69,7 @@ public class ReminderActivity extends Activity {
                 finish(); // Close the activity
             }
         });
+        Log.d("PrayerReminder", "ReminderActivity - showPopupAlert - end ");
     }
 
     @Override

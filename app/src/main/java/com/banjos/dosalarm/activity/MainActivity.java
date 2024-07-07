@@ -1,11 +1,15 @@
 package com.banjos.dosalarm.activity;
 
+import static com.banjos.dosalarm.tools.IntentCreator.getNotificationPendingIntent;
+
+import android.Manifest;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -28,8 +32,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.ShareCompat;
 import androidx.core.content.ContextCompat;
 
@@ -44,6 +51,7 @@ import com.banjos.dosalarm.types.Alarm;
 import com.banjos.dosalarm.types.AlarmLocation;
 import com.banjos.dosalarm.types.AlarmType;
 import com.banjos.dosalarm.types.IntentKeys;
+import com.banjos.dosalarm.types.NotificationType;
 import com.banjos.dosalarm.worker.NotificationWorker;
 import com.kosherjava.zmanim.ComplexZmanimCalendar;
 import com.kosherjava.zmanim.ZmanimCalendar;
@@ -57,6 +65,8 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private static final String NOTIFICATIONS_WORK_SCHEDULED_KEY = "notificationsWorkScheduled";
+
+    private static final int NOTIFICATION_PERMISSION_REQUEST_CODE = 1;
 
     private AlarmManager alarmManager;
     private LinearLayout linearLayout;
@@ -147,8 +157,14 @@ public class MainActivity extends AppCompatActivity {
                     AlertDialog dialog = createSevenClicksDialog();
                     dialog.show();
                     clicksOnEmptyTextView = 0;
-                    NotificationWorker.schedulePrayerReminders(context);
 
+                    //TODO remove
+                    PendingIntent pendingIntent =
+                            getNotificationPendingIntent(context, 11, NotificationType.SHACHARIT_REMINDER);
+                    Calendar todayCal = Calendar.getInstance();
+                    todayCal.add(Calendar.SECOND, 10);
+                    NotificationWorker.scheduleNotification(context, pendingIntent, todayCal.getTime());
+                    //
                 } else {
                     Log.d("AnimationClick", "number of clicks = " + clicksOnEmptyTextView);
                 }
@@ -165,9 +181,48 @@ public class MainActivity extends AppCompatActivity {
         shacharitReminderSwitch.setChecked(preferencesService.isShacharisReminderSelected());
 
         // Set listener for switch state changes
-        shacharitReminderSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> preferencesService.shacharitReminderSwitched(isChecked));
-        minchaReminderSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> preferencesService.minchaReminderSwitched(isChecked));
-        maarivReminderSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> preferencesService.maarivReminderSwitched(isChecked));
+        shacharitReminderSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                    if (isChecked) {
+                        if (areNotificationsEnabled()) {
+                            preferencesService.shacharitReminderSwitched(true);
+                        } else {
+                            preferencesService.shacharitReminderSwitched(false);
+                            shacharitReminderSwitch.setChecked(false);
+                        }
+                    } else {
+                        preferencesService.shacharitReminderSwitched(false);
+                    }
+                });
+        minchaReminderSwitch.setOnCheckedChangeListener((buttonView, isChecked) ->
+                preferencesService.minchaReminderSwitched(isChecked));
+        maarivReminderSwitch.setOnCheckedChangeListener((buttonView, isChecked) ->
+                preferencesService.maarivReminderSwitched(isChecked));
+    }
+
+    private boolean areNotificationsEnabled() {
+        if (!userAgreedToReceiveNotifications()) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,  "android.permission.POST_NOTIFICATIONS")) {
+                Log.d("Permissions", "Requesting user to Approve sending Notifications");
+                requestNotificationPermission();
+            } else {
+                Log.d("Permissions", "User Denied Permission With 'Don't Ask Again'");
+                return false;
+            }
+            return userAgreedToReceiveNotifications();
+        } else {
+           return true;
+        }
+    }
+
+    private boolean userAgreedToReceiveNotifications() {
+        return ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void requestNotificationPermission() {
+        ActivityCompat.requestPermissions(this,
+                new String[]{"android.permission.POST_NOTIFICATIONS"},
+                NOTIFICATION_PERMISSION_REQUEST_CODE
+        );
     }
 
     private AlertDialog createSevenClicksDialog() {
@@ -508,6 +563,20 @@ public class MainActivity extends AppCompatActivity {
 
     private void markNotificationsWorkAsScheduled(SharedPreferences myPrefs) {
         myPrefs.edit().putBoolean(NOTIFICATIONS_WORK_SCHEDULED_KEY, true).apply();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == NOTIFICATION_PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission was granted, show the notification
+                Toast.makeText(this, "Notification permission approvaed", Toast.LENGTH_SHORT).show();
+            } else {
+                // Permission denied, handle accordingly
+                Toast.makeText(this, "Notification permission denied", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
 }

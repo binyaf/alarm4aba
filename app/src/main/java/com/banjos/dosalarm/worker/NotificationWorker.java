@@ -1,5 +1,7 @@
 package com.banjos.dosalarm.worker;
 
+import static com.banjos.dosalarm.tools.IntentCreator.getNotificationPendingIntent;
+
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -11,12 +13,11 @@ import androidx.preference.PreferenceManager;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
-import com.banjos.dosalarm.tools.DateTimesFormats;
-import com.banjos.dosalarm.tools.IntentCreator;
 import com.banjos.dosalarm.tools.LocationService;
 import com.banjos.dosalarm.tools.PreferencesService;
 import com.banjos.dosalarm.tools.ZmanimService;
 import com.banjos.dosalarm.types.AlarmLocation;
+import com.banjos.dosalarm.types.NotificationType;
 import com.kosherjava.zmanim.ZmanimCalendar;
 
 import java.time.LocalTime;
@@ -56,68 +57,58 @@ public class NotificationWorker extends Worker {
 
         ZmanimCalendar zcalToday = ZmanimService.getTodaysZmanimCalendar(clientsLocation);
 
-        boolean isTestMode = preferencesService.isTestMode();
+        //boolean isTestMode = preferencesService.isTestMode();
 
         boolean scheduleCandleLightingNotification = scheduleNotificationForCandleLightingToday(zcalToday, clientsLocation, context);
-
-        boolean schedulePrayerNotification = schedulePrayerNotification();
 
         if (scheduleCandleLightingNotification) {
 
             Date notificationTime = getCandleLightingNotificationTime(zcalToday);
 
-            Date now = Calendar.getInstance().getTime();
-
             PendingIntent pendingIntent =
-                    IntentCreator.getNotificationPendingIntent(context, CANDLE_LIGHTING_REQUEST_CODE);
+                    getNotificationPendingIntent(context, CANDLE_LIGHTING_REQUEST_CODE, NotificationType.CANDLE_LIGHTING);
 
-            AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-            alarmManager.cancel(pendingIntent);
-
-            if (notificationTime.after(now)) {
-                Log.d("NotificationWorker", "Scheduling notification | time: " +
-                        notificationTime + " | now: " + now + " | test mode: " + isTestMode);
-                alarmManager.set(AlarmManager.RTC_WAKEUP, notificationTime.getTime(), pendingIntent);
-            } else {
-                Log.d("NotificationWorker", "NOT Scheduling notification:  " +
-                        notificationTime + " | now: " + now + " | in the past not Scheduling | test mode: " + isTestMode);
-            }
+            scheduleNotification(context, pendingIntent, notificationTime);
         }
 
-        if (schedulePrayerNotification) {
-            schedulePrayerReminders(context);
+        if (preferencesService.isShacharisReminderSelected()) {
+            PendingIntent pendingIntent =
+                    getNotificationPendingIntent(context, SHACHARIS_REQUEST_CODE, NotificationType.SHACHARIT_REMINDER);
+            Calendar todayCal = Calendar.getInstance();
+            todayCal.add(Calendar.SECOND, 10);
+            scheduleNotification(context, pendingIntent, todayCal.getTime());
         }
 
-        if (!scheduleCandleLightingNotification && !schedulePrayerNotification) {
-            Log.d("NotificationWorker", "no notification to schedule | test mode: " + isTestMode);
+        if (preferencesService.isMinchaReminderSelected()) {
+            PendingIntent pendingIntent =
+                    getNotificationPendingIntent(context, MINCHA_REQUEST_CODE, NotificationType.MINCHA_REMINDER);
+            Calendar todayCal = Calendar.getInstance();
+            todayCal.add(Calendar.SECOND, 20);
+            scheduleNotification(context, pendingIntent, todayCal.getTime());
         }
 
+        if (preferencesService.isMaarivReminderSelected()) {
+            PendingIntent pendingIntent =
+                    getNotificationPendingIntent(context, MAARIV_REQUEST_CODE, NotificationType.MAARIV_REMINDER);
+            Calendar todayCal = Calendar.getInstance();
+            todayCal.add(Calendar.SECOND, 30);
+            scheduleNotification(context, pendingIntent, todayCal.getTime());
+        }
     }
 
-    public static void schedulePrayerReminders(Context context) {
-        Log.d("NotificationWorker", "about to schedule PN ");
-
-        Calendar nowCal = Calendar.getInstance();
-        nowCal.add(Calendar.SECOND, 10);
-        Date notificationTime = nowCal.getTime();
-
-        PendingIntent pendingIntent =
-                IntentCreator.getPrayerReminderPendingIntent(context, SHACHARIS_REQUEST_CODE);
-
+    public static void scheduleNotification(Context context, PendingIntent pendingIntent, Date notificationTime) {
+        Date now = Calendar.getInstance().getTime();
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(pendingIntent);
 
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, notificationTime.getTime(), pendingIntent);
-        String date =  DateTimesFormats.dateFormat.format(notificationTime);
-        Log.d("NotificationWorker", "scheduled PN | time:" + date);
-    }
-
-    private boolean schedulePrayerNotification() {
-        boolean notifyMaariv = preferencesService.isMaarivReminderSelected();
-        boolean notifyMincha =  preferencesService.isMinchaReminderSelected();
-        boolean notifyShacharis = preferencesService.isShacharisReminderSelected();
-
-        return notifyMaariv || notifyMincha || notifyShacharis;
+        if (notificationTime.after(now)) {
+            Log.d("NotificationWorker", "Scheduling notification | time: " +
+                    notificationTime + " | now: " + now);
+            alarmManager.set(AlarmManager.RTC_WAKEUP, notificationTime.getTime(), pendingIntent);
+        } else {
+            Log.d("NotificationWorker", "NOT Scheduling notification:  " +
+                    notificationTime + " | now: " + now + " | in the past not Scheduling");
+        }
     }
 
     private boolean scheduleNotificationForCandleLightingToday(ZmanimCalendar zcalToday,
