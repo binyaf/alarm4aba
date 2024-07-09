@@ -66,7 +66,7 @@ public class NotificationWorker extends Worker {
             Date notificationTime = getCandleLightingNotificationTime(zcalToday);
 
             PendingIntent pendingIntent =
-                    getNotificationPendingIntent(context, CANDLE_LIGHTING_REQUEST_CODE, NotificationType.CANDLE_LIGHTING);
+                    getNotificationPendingIntent(context, CANDLE_LIGHTING_REQUEST_CODE, NotificationType.CANDLE_LIGHTING_REMINDER);
 
             scheduleNotification(context, pendingIntent, notificationTime);
         }

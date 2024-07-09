@@ -36,7 +36,7 @@ public class IntentCreator {
     public static PendingIntent getNotificationPendingIntent(Context context, int requestCode, NotificationType type) {
         Class<?> clazz = NotificationReceiver.class;
 
-        if (type == NotificationType.CANDLE_LIGHTING) {
+        if (type == NotificationType.CANDLE_LIGHTING_REMINDER) {
             clazz = NotificationReceiver.class;
         } else  if (type == NotificationType.SHACHARIT_REMINDER) {
             clazz = PrayerReminderReceiver.class;

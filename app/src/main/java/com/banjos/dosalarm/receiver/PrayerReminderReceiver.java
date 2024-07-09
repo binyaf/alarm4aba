@@ -41,9 +41,15 @@ public class PrayerReminderReceiver extends BroadcastReceiver {
     private void showNotification(Context context, String type) {
 
         NotificationType notificationType = NotificationType.valueOf(type);
-        if (NotificationType.STOP_SHACHARIT_REMINDER == notificationType) {
+        if (NotificationType.STOP_SHACHARIT_REMINDER == notificationType ||
+                NotificationType.STOP_MINCHA_REMINDER == notificationType ||
+                NotificationType.STOP_MAARIV_REMINDER == notificationType||
+                NotificationType.STOP_CANDLE_LIGHTING_REMINDER == notificationType) {
             stopNotification(context, notificationType);
-        } else if (NotificationType.SNOOZE_SHACHARIT_REMINDER == notificationType) {
+        } else if (NotificationType.SNOOZE_SHACHARIT_REMINDER == notificationType ||
+                NotificationType.SNOOZE_MINCHA_REMINDER == notificationType ||
+                NotificationType.SNOOZE_MAARIV_REMINDER == notificationType ||
+                NotificationType.SNOOZE_CANDLE_LIGHTING_REMINDER == notificationType) {
             snoozeNotification(context, notificationType);
         } else {
            showPrayerNotification(context, notificationType);
@@ -111,9 +117,9 @@ public class PrayerReminderReceiver extends BroadcastReceiver {
     private void playSound(Context context) {
         if (mediaPlayer == null) {
             mediaPlayer = MediaPlayer.create(context, Uri.parse("content://settings/system/alarm_alert"));
-            mediaPlayer.setLooping(true);  // Loop the sound continuously
-            mediaPlayer.start();
         }
+        mediaPlayer.setLooping(true);  // Loop the sound continuously
+        mediaPlayer.start();
     }
 
     private void stopNotification(Context context, NotificationType notificationType) {

@@ -22,7 +22,6 @@ import com.banjos.dosalarm.types.AlarmLocation;
 import com.banjos.dosalarm.types.NotificationType;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -35,7 +34,7 @@ public class NotificationReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         settingsPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        showNotification(context, NotificationType.CANDLE_LIGHTING);
+        showNotification(context, NotificationType.CANDLE_LIGHTING_REMINDER);
     }
 
     private void showNotification(Context context, NotificationType type) {
