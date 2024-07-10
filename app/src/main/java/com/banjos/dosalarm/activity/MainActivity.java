@@ -13,7 +13,10 @@ import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -56,7 +59,8 @@ import com.banjos.dosalarm.worker.NotificationWorker;
 import com.kosherjava.zmanim.ComplexZmanimCalendar;
 import com.kosherjava.zmanim.ZmanimCalendar;
 import com.kosherjava.zmanim.util.GeoLocation;
-
+import android.os.Bundle;
+import androidx.appcompat.app.AppCompatActivity;
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -79,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
     private Switch shacharitReminderSwitch;
     private Switch minchaReminderSwitch;
     private Switch maarivReminderSwitch;
+    private Switch candleLightReminderSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,19 +176,27 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        candleLightReminderSwitch = findViewById(R.id.candle_lighting_reminder_switch);
         maarivReminderSwitch = findViewById(R.id.maariv_reminder_switch);
-        maarivReminderSwitch.setChecked(preferencesService.isMaarivReminderSelected());
-
         minchaReminderSwitch = findViewById(R.id.mincha_reminder_switch);
-        minchaReminderSwitch.setChecked(preferencesService.isMinchaReminderSelected());
-
         shacharitReminderSwitch = findViewById(R.id.shacharit_reminder_switch);
+
+        if (!userAgreedToReceiveNotifications()) {
+            preferencesService.candleLightReminderSwitched(false);
+            preferencesService.shacharitReminderSwitched(false);
+            preferencesService.minchaReminderSwitched(false);
+            preferencesService.maarivReminderSwitched(false);
+        }
+
+        candleLightReminderSwitch.setChecked(preferencesService.isCandleLightReminderSelected());
+        maarivReminderSwitch.setChecked(preferencesService.isMaarivReminderSelected());
+        minchaReminderSwitch.setChecked(preferencesService.isMinchaReminderSelected());
         shacharitReminderSwitch.setChecked(preferencesService.isShacharisReminderSelected());
 
         // Set listener for switch state changes
         shacharitReminderSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
                     if (isChecked) {
-                        if (areNotificationsEnabled()) {
+                        if (areNotificationsEnabled(context)) {
                             preferencesService.shacharitReminderSwitched(true);
                         } else {
                             preferencesService.shacharitReminderSwitched(false);
@@ -193,25 +206,63 @@ public class MainActivity extends AppCompatActivity {
                         preferencesService.shacharitReminderSwitched(false);
                     }
                 });
-        minchaReminderSwitch.setOnCheckedChangeListener((buttonView, isChecked) ->
-                preferencesService.minchaReminderSwitched(isChecked));
-        maarivReminderSwitch.setOnCheckedChangeListener((buttonView, isChecked) ->
-                preferencesService.maarivReminderSwitched(isChecked));
+
+        minchaReminderSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                if (areNotificationsEnabled(context)) {
+                    preferencesService.minchaReminderSwitched(true);
+                } else {
+                    preferencesService.minchaReminderSwitched(false);
+                    minchaReminderSwitch.setChecked(false);
+                }
+            } else {
+                preferencesService.minchaReminderSwitched(false);
+            }
+        });
+
+        maarivReminderSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                if (areNotificationsEnabled(context)) {
+                    preferencesService.maarivReminderSwitched(true);
+                } else {
+                    preferencesService.maarivReminderSwitched(false);
+                    maarivReminderSwitch.setChecked(false);
+                }
+            } else {
+                preferencesService.maarivReminderSwitched(false);
+            }
+        });
+
+        candleLightReminderSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                if (areNotificationsEnabled(context)) {
+                    preferencesService.candleLightReminderSwitched(true);
+                } else {
+                    preferencesService.candleLightReminderSwitched(false);
+                    candleLightReminderSwitch.setChecked(false);
+                }
+            } else {
+                preferencesService.candleLightReminderSwitched(false);
+            }
+        });
     }
 
-    private boolean areNotificationsEnabled() {
-        if (!userAgreedToReceiveNotifications()) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,  "android.permission.POST_NOTIFICATIONS")) {
-                Log.d("Permissions", "Requesting user to Approve sending Notifications");
-                requestNotificationPermission();
-            } else {
-                Log.d("Permissions", "User Denied Permission With 'Don't Ask Again'");
-                return false;
-            }
-            return userAgreedToReceiveNotifications();
-        } else {
-           return true;
+    private boolean areNotificationsEnabled(Context context) {
+        if (userAgreedToReceiveNotifications()) {
+            Log.d("NotificationsPermissions", "User agreed to receive notifications");
+            return true;
         }
+
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this,  "android.permission.POST_NOTIFICATIONS")) {
+            Log.d("NotificationsPermissions", "Requesting user to Approve sending Notifications");
+            requestNotificationPermission();
+        } else {
+            Log.d("NotificationsPermissions", "User Denied Permission With 'Don't Ask Again', calling 'openNotificationSettings'");
+            openNotificationSettings(context);
+            return false;
+        }
+        return userAgreedToReceiveNotifications();
+
     }
 
     private boolean userAgreedToReceiveNotifications() {
@@ -223,6 +274,19 @@ public class MainActivity extends AppCompatActivity {
                 new String[]{"android.permission.POST_NOTIFICATIONS"},
                 NOTIFICATION_PERMISSION_REQUEST_CODE
         );
+    }
+
+    private void openNotificationSettings(Context context) {
+        Intent intent = new Intent();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            intent.setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
+            intent.putExtra(Settings.EXTRA_APP_PACKAGE, context.getPackageName());
+        } else {
+            intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+            intent.setData(Uri.parse("package:" + context.getPackageName()));
+        }
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // Add this line
+        context.startActivity(intent);
     }
 
     private AlertDialog createSevenClicksDialog() {

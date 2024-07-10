@@ -126,26 +126,85 @@
         android:orientation="horizontal"
         android:padding="16dp">
 
-        <Switch
-            android:id="@+id/shacharit_reminder_switch"
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/shacharit"
-            android:layout_margin="6dp"/>
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
 
-        <Switch
-            android:id="@+id/mincha_reminder_switch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/mincha"
-            android:layout_margin="6dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/shacharit"
+                android:layout_marginBottom="4dp"/>
 
-        <Switch
-            android:id="@+id/maariv_reminder_switch"
+            <Switch
+                android:id="@+id/shacharit_reminder_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/maariv"
-            android:layout_margin="6dp"/>
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/mincha"
+                android:layout_marginBottom="4dp"/>
+
+            <Switch
+                android:id="@+id/mincha_reminder_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/maariv"
+                android:layout_marginBottom="4dp"/>
+
+            <Switch
+                android:id="@+id/maariv_reminder_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/candle_lighting"
+                android:layout_marginBottom="4dp"/>
+
+            <Switch
+                android:id="@+id/candle_lighting_reminder_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"/>
+        </LinearLayout>
     </LinearLayout>
 
     <!-- divider -->

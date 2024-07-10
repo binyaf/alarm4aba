@@ -108,6 +108,7 @@
     <string name="shacharit">שחרית</string>
     <string name="mincha">מנחה</string>
     <string name="maariv">ערבית</string>
+    <string name="candle_lighting">הגלדת נרות</string>
     <string name="stop">עצור</string>
     <string name="snooze">נודניק</string>
     <string name="prayer_reminder_shacharit_title">לתפילת שחרית</string>

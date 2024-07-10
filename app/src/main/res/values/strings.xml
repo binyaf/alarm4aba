@@ -108,6 +108,7 @@
     <string name="shacharit">Shacharit</string>
     <string name="mincha">Mincha</string>
     <string name="maariv">Maariv</string>
+    <string name="candle_lighting">Candle Lighting</string>
     <string name="stop">Stop</string>
     <string name="snooze">Snooze</string>
     <string name="prayer_reminder_shacharit_title">Time to Pray Shacharit</string>

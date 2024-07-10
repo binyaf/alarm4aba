@@ -27,6 +27,7 @@ public class PreferencesService {
     private static final String REMINDERS_SHACHARIT_SELECTED = "remindersShacharitEnabled";
     private static final String REMINDERS_MINCHA_SELECTED = "remindersMinchaEnabled";
     private static final String REMINDERS_MAARIV_SELECTED = "remindersMaarivEnabled";
+    private static final String REMINDERS_CANDLE_LIGHT_SELECTED = "remindersCandleLightEnabled";
 
     public PreferencesService(Context context) {
         this.context = context;
@@ -104,7 +105,9 @@ public class PreferencesService {
     public boolean isShacharisReminderSelected() {
         return preferences.getBoolean(REMINDERS_SHACHARIT_SELECTED, false);
     }
-
+    public boolean isCandleLightReminderSelected() {
+        return preferences.getBoolean(REMINDERS_CANDLE_LIGHT_SELECTED, false);
+    }
     public void shacharitReminderSwitched(boolean newValue) {
         preferences.edit().putBoolean(REMINDERS_SHACHARIT_SELECTED, newValue).apply();
     }
@@ -116,5 +119,9 @@ public class PreferencesService {
     public void maarivReminderSwitched(boolean newValue) {
         preferences.edit().putBoolean(REMINDERS_MAARIV_SELECTED, newValue).apply();
     }
+    public void candleLightReminderSwitched(boolean newValue) {
+        preferences.edit().putBoolean(REMINDERS_CANDLE_LIGHT_SELECTED, newValue).apply();
+    }
+
 }
 
