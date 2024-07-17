@@ -44,7 +44,16 @@
     <string name="pref_alarm_duration_title">Default alarm duration (sec.)</string>
     <string name="pref_enable_notifications_title">Reminders enabled</string>
     <string name="defaults_header">Defaults</string>
-    <string name="pref_shabbat_checklist_notifications_header">Shabbat Reminders</string>
+    <string name="pref_notifications_candle_header">Shabbat Candle lighting Reminder</string>
+    <string name="pref_notifications_shacharit_header">Shacharit Reminder (not including Shabbat)</string>
+    <string name="pref_notifications_mincha_header">Mincha Reminder (not including Shabbat)</string>
+    <string name="pref_notifications_maariv_header">Maariv Reminder (not including Shabbat)</string>
+    <string name="pref_notifications_shacharit_sunrise_text">minutes before sunrise</string>
+    <string name="pref_notifications_mincha_sunset_text">minutes before sunset</string>
+    <string name="pref_notifications_maariv_sunset_text">minutes after sunset</string>
+    <string name="pref_notifications_shacharit_szks_text">minutes before Sof Zman Kryiat Sma</string>
+    <string name="pref_notifications_shacharit_fixed_text">fixed time</string>
+    <string name="pref_notifications_candle_minutes_text">Time before Shabbat</string>
 
     <!-- Preference locations -->
     <string name="pref_location_title">Your location</string>
@@ -63,14 +72,22 @@
     <string name="LON_UK">London, UK</string>
 
     <!-- notification -->
-    <string name="time_beforeShabbat_notification">How long before Shabbat do you wish to receive the reminders?</string>
+
     <string name="notification_candle_lighting_title">Shabbat Candle-Lighting is in %1$s</string>
     <string name="notification_body">Don\'t forget to finish preparations on time</string>
     <string name="ok">OK</string>
 
+   <string name="min_5">5 min.</string>
+   <string name="min_10">10 min.</string>
    <string name="min_15">15 min.</string>
+   <string name="min_20">20 min.</string>
+   <string name="min_25">25 min.</string>
    <string name="min_30">30 min.</string>
+   <string name="min_35">45 min.</string>
+   <string name="min_40">40 min.</string>
    <string name="min_45">45 min.</string>
+   <string name="min_50">50 min.</string>
+   <string name="min_55">55 min.</string>
    <string name="min_60">1 hour</string>
    <string name="min_75">1:15 hours</string>
    <string name="min_90">1.5 hours</string>

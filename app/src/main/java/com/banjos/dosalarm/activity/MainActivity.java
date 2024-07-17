@@ -198,6 +198,7 @@ public class MainActivity extends AppCompatActivity {
                     if (isChecked) {
                         if (areNotificationsEnabled(context)) {
                             preferencesService.shacharitReminderSwitched(true);
+                            //TODO run from here and from every other 'switch' NotificationWorker.scheduleNotifications - not critical
                         } else {
                             preferencesService.shacharitReminderSwitched(false);
                             shacharitReminderSwitch.setChecked(false);

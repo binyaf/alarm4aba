@@ -61,7 +61,10 @@ public class PrayerReminderReceiver extends BroadcastReceiver {
         String title = "";
         String text = "";
 
-        if (NotificationType.SHACHARIT_REMINDER == type && preferencesService.isShacharisReminderSelected()) {
+        if (NotificationType.CANDLE_LIGHTING_REMINDER == type && preferencesService.isCandleLightReminderSelected()) {
+            title = "candle lighting";
+            text = "text";
+        } else if (NotificationType.SHACHARIT_REMINDER == type && preferencesService.isShacharisReminderSelected()) {
             title = context.getString(R.string.prayer_reminder_shacharit_title);
             text = context.getString(R.string.prayer_reminder_shacharit_text);
         } else if (NotificationType.MINCHA_REMINDER == type && preferencesService.isMinchaReminderSelected()) {

@@ -36,9 +36,7 @@ public class SettingsActivity extends AppCompatActivity  {
 
             super.onCreate(savedInstanceState);
 
-            SwitchPreference switchPreferenceEnableNotifications = (SwitchPreference) findPreference("enable_pre_shabbat_checklist_notifications");
-
-            ListPreference timeBeforeShabbatList = (ListPreference) findPreference("pref_notification_time_before_shabbat");
+          /*  ListPreference timeBeforeShabbatList = (ListPreference) findPreference("pref_notification_time_before_shabbat");
             MultiSelectListPreference multiSelectNotificationDetails =
                     (MultiSelectListPreference) findPreference("pref_pre_shabbat_notifications_checklist");
 
@@ -51,7 +49,7 @@ public class SettingsActivity extends AppCompatActivity  {
                 timeBeforeShabbatList.setEnabled(isChecked);
                 multiSelectNotificationDetails.setEnabled(isChecked);
                 return true;
-            });
+            });*/
         }
 
         @Override

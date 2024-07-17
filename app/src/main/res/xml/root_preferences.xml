@@ -21,15 +21,16 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory app:key="pref_shabbat_checklist_notifications_category" app:title="@string/pref_shabbat_checklist_notifications_header">
-        <SwitchPreference
+    <!-- Candle -->
+    <PreferenceCategory app:key="pref_shabbat_checklist_notifications_category" app:title="@string/pref_notifications_candle_header">
+      <!--  <SwitchPreference
             app:key="enable_pre_shabbat_checklist_notifications"
             app:title="@string/pref_enable_notifications_title"
             app:defaultValue="false">
-        </SwitchPreference>
+        </SwitchPreference>-->
         <ListPreference
             android:key="pref_notification_time_before_shabbat"
-            android:title="@string/time_beforeShabbat_notification"
+            android:title="@string/pref_notifications_candle_minutes_text"
             android:entries="@array/pref_notification_time_before_shabbat_entries"
             android:entryValues="@array/pref_notification_time_before_shabbat_values"
             android:defaultValue="60"
@@ -43,7 +44,39 @@
             android:entries="@array/pref_pre_shabbat_notification_entries"
             android:entryValues="@array/pref_pre_shabbat_notification_values"
             android:defaultValue="@array/pref_pre_shabbat_notification_values" />
+    </PreferenceCategory>
 
+    <!-- Shacharit -->
+    <PreferenceCategory app:key="pref_shacharit_notifications_category" app:title="@string/pref_notifications_shacharit_header">
+        <ListPreference
+            android:key="pref_shacharit_notification_time_before_sunrise"
+            android:title="@string/pref_notifications_shacharit_sunrise_text"
+            android:entries="@array/pref_notification_time_5_min_jump"
+            android:entryValues="@array/pref_notification_time_5_min_jump_values"
+            android:defaultValue="40"
+            app:useSimpleSummaryProvider="true"/>
+    </PreferenceCategory>
+
+    <!-- Mincha -->
+    <PreferenceCategory app:key="pref_mincha_notifications_category" app:title="@string/pref_notifications_mincha_header">
+        <ListPreference
+            android:key="pref_mincha_notification_time_before_sunset"
+            android:title="@string/pref_notifications_mincha_sunset_text"
+            android:entries="@array/pref_notification_time_5_min_jump"
+            android:entryValues="@array/pref_notification_time_5_min_jump_values"
+            android:defaultValue="20"
+            app:useSimpleSummaryProvider="true"/>
+    </PreferenceCategory>
+
+    <!-- Maariv -->
+    <PreferenceCategory app:key="pref_maariv_notifications_category" app:title="@string/pref_notifications_maariv_header">
+        <ListPreference
+            android:key="pref_maariv_notification_time_after_sunset"
+            android:title="@string/pref_notifications_maariv_sunset_text"
+            android:entries="@array/pref_notification_time_5_min_jump"
+            android:entryValues="@array/pref_notification_time_5_min_jump_values"
+            android:defaultValue="20"
+            app:useSimpleSummaryProvider="true"/>
     </PreferenceCategory>
 
 </PreferenceScreen>

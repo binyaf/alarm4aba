@@ -14,6 +14,21 @@
         <item>@string/min_240</item>
     </string-array>
 
+    <string-array name="pref_notification_time_5_min_jump">
+        <item>@string/min_5</item>
+        <item>@string/min_10</item>
+        <item>@string/min_15</item>
+        <item>@string/min_20</item>
+        <item>@string/min_25</item>
+        <item>@string/min_30</item>
+        <item>@string/min_35</item>
+        <item>@string/min_40</item>
+        <item>@string/min_45</item>
+        <item>@string/min_50</item>
+        <item>@string/min_55</item>
+        <item>@string/min_60</item>
+    </string-array>
+
     <string-array name="pref_notification_time_before_shabbat_values">
         <item>15</item>
         <item>30</item>
@@ -27,6 +42,21 @@
         <item>180</item>
         <item>210</item>
         <item>240</item>
+    </string-array>
+
+    <string-array name="pref_notification_time_5_min_jump_values">
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>20</item>
+        <item>25</item>
+        <item>30</item>
+        <item>35</item>
+        <item>40</item>
+        <item>45</item>
+        <item>50</item>
+        <item>55</item>
+        <item>60</item>
     </string-array>
 
     <!-- Reply Preference -->

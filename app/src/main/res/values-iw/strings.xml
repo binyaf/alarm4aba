@@ -44,7 +44,16 @@
     <string name="pref_alarm_duration_title">ברירת המחדל למשך ההתראה (שניות)</string>
     <string name="pref_enable_notifications_title">תזכורות מופעלות</string>
     <string name="defaults_header">ברירות מחדל</string>
-    <string name="pref_shabbat_checklist_notifications_header">תזכורות לשבת</string>
+    <string name="pref_notifications_candle_header">תזכורת להדלקת נרות שבת</string>
+    <string name="pref_notifications_shacharit_header">תזכורת לתפילת שחרית</string>
+    <string name="pref_notifications_mincha_header">תזכורת לתפילת מנחה</string>
+    <string name="pref_notifications_maariv_header">תזכורת לתפילת ערבית</string>
+    <string name="pref_notifications_shacharit_sunrise_text">דקות לפני זריחה</string>
+    <string name="pref_notifications_mincha_sunset_text">דקות לפני שקיעה</string>
+    <string name="pref_notifications_maariv_sunset_text">דקות אחרי שקיעה</string>
+    <string name="pref_notifications_shacharit_szks_text">דקות לפני סוף זמן קריאת שמע כל בוקר</string>
+    <string name="pref_notifications_shacharit_fixed_text">בשעה קבועה כל בוקר</string>
+    <string name="pref_notifications_candle_minutes_text">זמן לפני שבת</string>
 
     <!-- Preference locations -->
     <string name="pref_location_title">המיקום שלך</string>
@@ -63,14 +72,21 @@
     <string name="LON_UK">לונדון, אנגליה</string>
 
     <!-- notification -->
-    <string name="time_beforeShabbat_notification">כמה זמן לפני שבת תרצה לקבל את התזכורת?</string>
     <string name="notification_candle_lighting_title">הדלקת נרות שבת בעוד %1$s</string>
     <string name="notification_body">לא לשכוח לסיים את ההכנות בזמן</string>
     <string name="ok">אישור</string>
 
+    <string name="min_5">5 דקות</string>
+    <string name="min_10">10 דקות</string>
     <string name="min_15">15 דקות</string>
+    <string name="min_20">20 דקות</string>
+    <string name="min_25">25 דקות</string>
     <string name="min_30">30 דקןת</string>
+    <string name="min_35">35 דקןת</string>
+    <string name="min_40">40 דקות</string>
     <string name="min_45">45 דקות</string>
+    <string name="min_50">50 דקות</string>
+    <string name="min_55">55 דקות</string>
     <string name="min_60">60 דקות</string>
     <string name="min_75">שעה ורבע</string>
     <string name="min_90">שעה וחצי</string>

@@ -57,42 +57,63 @@ public class NotificationWorker extends Worker {
 
         ZmanimCalendar zcalToday = ZmanimService.getTodaysZmanimCalendar(clientsLocation);
 
-        //boolean isTestMode = preferencesService.isTestMode();
+        boolean isTestMode = preferencesService.isTestMode();
 
-        boolean scheduleCandleLightingNotification = scheduleNotificationForCandleLightingToday(zcalToday, clientsLocation, context);
+        if (preferencesService.isCandleLightReminderSelected()) {
 
-        if (scheduleCandleLightingNotification) {
+            boolean scheduleCandleLightingNotification = scheduleNotificationForCandleLightingToday(zcalToday, clientsLocation, context);
 
-            Date notificationTime = getCandleLightingNotificationTime(zcalToday);
+            if (scheduleCandleLightingNotification) {
 
-            PendingIntent pendingIntent =
-                    getNotificationPendingIntent(context, CANDLE_LIGHTING_REQUEST_CODE, NotificationType.CANDLE_LIGHTING_REMINDER);
+                Date notificationTime = getCandleLightingNotificationTime(zcalToday);
 
-            scheduleNotification(context, pendingIntent, notificationTime);
+                PendingIntent pendingIntent =
+                        getNotificationPendingIntent(context, CANDLE_LIGHTING_REQUEST_CODE, NotificationType.CANDLE_LIGHTING_REMINDER);
+
+                scheduleNotification(context, pendingIntent, notificationTime);
+            }
         }
 
         if (preferencesService.isShacharisReminderSelected()) {
             PendingIntent pendingIntent =
                     getNotificationPendingIntent(context, SHACHARIS_REQUEST_CODE, NotificationType.SHACHARIT_REMINDER);
             Calendar todayCal = Calendar.getInstance();
-            todayCal.add(Calendar.SECOND, 10);
-            scheduleNotification(context, pendingIntent, todayCal.getTime());
+            Date notificationTime;
+            if (isTestMode) {
+                todayCal.add(Calendar.SECOND, 10);
+                notificationTime = todayCal.getTime();
+            } else {
+                notificationTime = getShacharitNotificationTime(zcalToday);
+            }
+            scheduleNotification(context, pendingIntent, notificationTime);
         }
 
         if (preferencesService.isMinchaReminderSelected()) {
             PendingIntent pendingIntent =
                     getNotificationPendingIntent(context, MINCHA_REQUEST_CODE, NotificationType.MINCHA_REMINDER);
             Calendar todayCal = Calendar.getInstance();
-            todayCal.add(Calendar.SECOND, 20);
-            scheduleNotification(context, pendingIntent, todayCal.getTime());
+            Date notificationTime;
+            if (isTestMode) {
+                todayCal.add(Calendar.SECOND, 20);
+                notificationTime = todayCal.getTime();
+            } else {
+                notificationTime = getMinchaNotificationTime(zcalToday);
+            }
+            scheduleNotification(context, pendingIntent, notificationTime);
         }
 
         if (preferencesService.isMaarivReminderSelected()) {
             PendingIntent pendingIntent =
                     getNotificationPendingIntent(context, MAARIV_REQUEST_CODE, NotificationType.MAARIV_REMINDER);
             Calendar todayCal = Calendar.getInstance();
-            todayCal.add(Calendar.SECOND, 30);
-            scheduleNotification(context, pendingIntent, todayCal.getTime());
+            Date notificationTime;
+            if (isTestMode) {
+                todayCal.add(Calendar.SECOND, 30);
+                notificationTime = todayCal.getTime();
+            } else {
+                notificationTime = getMaarivNotificationTime(zcalToday);
+            }
+            scheduleNotification(context, pendingIntent, notificationTime);
         }
     }
 
@@ -127,7 +148,7 @@ public class NotificationWorker extends Worker {
 
     private Date getCandleLightingNotificationTime(ZmanimCalendar today) {
 
-        int timeBeforeShabbat = timeBeforeShabbatToSendNotificationInMinutes();
+        int timeBeforeShabbat =  preferencesService.getCandleLightingMinutesBeforeShabbatForReminder();
 
         Calendar notificationTime = Calendar.getInstance();
 
@@ -141,9 +162,30 @@ public class NotificationWorker extends Worker {
         return notificationTime.getTime();
     }
 
-    private int timeBeforeShabbatToSendNotificationInMinutes() {
-        String time = settingsPreference.getString("pref_notification_time_before_shabbat", "60");
-        return Integer.valueOf(time);
+    private Date getMaarivNotificationTime(ZmanimCalendar zcalToday) {
+        int maarivMinutesBeforeSunriseForReminder = preferencesService.getMaarivMinutesBeforeSunriseForReminder();
+
+        Calendar todayCal = Calendar.getInstance();
+        todayCal.add(Calendar.SECOND, 30);
+        return todayCal.getTime();
     }
+
+    private Date getMinchaNotificationTime(ZmanimCalendar zcalToday) {
+
+        int minchaMinutesBeforeSunriseForReminder = preferencesService.getMinchaMinutesBeforeSunriseForReminder();
+
+        Calendar todayCal = Calendar.getInstance();
+        todayCal.add(Calendar.SECOND, 20);
+        return todayCal.getTime();
+    }
+
+    private Date getShacharitNotificationTime(ZmanimCalendar zcalToday) {
+        int shacharitMinutesBeforeSunriseForReminder = preferencesService.getShacharitMinutesBeforeSunriseCorReminder();
+
+        Calendar todayCal = Calendar.getInstance();
+        todayCal.add(Calendar.SECOND, 10);
+        return todayCal.getTime();
+    }
+
 
 }

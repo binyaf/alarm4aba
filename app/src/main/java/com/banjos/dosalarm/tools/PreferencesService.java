@@ -28,6 +28,11 @@ public class PreferencesService {
     private static final String REMINDERS_MINCHA_SELECTED = "remindersMinchaEnabled";
     private static final String REMINDERS_MAARIV_SELECTED = "remindersMaarivEnabled";
     private static final String REMINDERS_CANDLE_LIGHT_SELECTED = "remindersCandleLightEnabled";
+    private static final String REMINDERS_SHACHARIT_MINUTES_BEFORE_SUNRISE = "pref_shacharit_notification_time_before_sunrise";
+    private static final String REMINDERS_MINCHA_MINUTES_BEFORE_SUNSET = "pref_mincha_notification_time_before_sunset";
+    private static final String REMINDERS_MAARIV_MINUTES_AFTER_SUNSET = "pref_maariv_notification_time_after_sunset";
+
+    private static final String REMINDERS_CANDLE_MINUTES_BEFORE_SHABBAT = "pref_notification_time_before_shabbat";
 
     public PreferencesService(Context context) {
         this.context = context;
@@ -123,5 +128,23 @@ public class PreferencesService {
         preferences.edit().putBoolean(REMINDERS_CANDLE_LIGHT_SELECTED, newValue).apply();
     }
 
+    public int getShacharitMinutesBeforeSunriseCorReminder() {
+        return preferences.getInt(REMINDERS_SHACHARIT_MINUTES_BEFORE_SUNRISE, 40);
+    }
+
+    public int getMinchaMinutesBeforeSunriseForReminder() {
+        return preferences.getInt(REMINDERS_MINCHA_MINUTES_BEFORE_SUNSET, 20);
+    }
+
+    public int getMaarivMinutesBeforeSunriseForReminder() {
+        return preferences.getInt(REMINDERS_MAARIV_MINUTES_AFTER_SUNSET, 20);
+    }
+
+    public int getCandleLightingMinutesBeforeShabbatForReminder() {
+        return preferences.getInt(REMINDERS_CANDLE_MINUTES_BEFORE_SHABBAT, 40);
+    }
+
 }
+
+
 
