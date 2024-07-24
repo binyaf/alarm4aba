@@ -55,7 +55,8 @@ public class LocationService {
         if (location != null) {
             String locationStr = (String) all.get("location");
             if (locationStr.endsWith("_IL") || locationStr.endsWith("_US")
-                    || locationStr.endsWith("_UK") || locationStr.endsWith("_CA")) {
+                    || locationStr.endsWith("_UK") || locationStr.endsWith("_CA")
+                    || locationStr.endsWith("_FR")) {
                 return locationStr;
             }
         }

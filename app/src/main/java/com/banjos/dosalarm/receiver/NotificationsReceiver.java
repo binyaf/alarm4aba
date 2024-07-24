@@ -99,8 +99,8 @@ public class NotificationsReceiver extends BroadcastReceiver {
             text = context.getString(R.string.prayer_reminder_maariv_text);
         }
 
-        if (title == null || text == null) {
-            Log.e("NotificationsReceiver", "type: " + type.toString() + " | Not sending notification | title and/or text are empty");
+        if (title == null) {
+            Log.e("NotificationsReceiver", "type: " + type.toString() + " | Not sending notification | title is empty");
             return;
         }
         NotificationCompat.Builder builder = createNotificationBuilder(context, title, text);

@@ -110,6 +110,7 @@
         <item>BOS_US</item>
         <item>TOR_CA</item>
         <item>LON_UK</item>
+        <item>PAR_FR</item>
     </string-array>
 
     <string-array name="pref_location_entries">
@@ -126,6 +127,7 @@
         <item>@string/BOS_US</item>
         <item>@string/TOR_CA</item>
         <item>@string/LON_UK</item>
+        <item>@string/PAR_FR</item>
     </string-array>
 
     <string-array name="pref_pre_shabbat_notification_entries">

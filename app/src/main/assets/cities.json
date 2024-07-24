@@ -41,6 +41,13 @@
     "latitude": 51.5074,
     "timeZone": "Europe/London"
   },
+  "PAR_FR": {
+    "cityCode": "PAR_FR",
+    "altitude": 35,
+    "longitude": 2.3514,
+    "latitude": 48.8575,
+    "timeZone": "Europe/Paris"
+  },
   "TLV_IL": {
     "cityCode": "TLV_IL",
     "altitude": 5,

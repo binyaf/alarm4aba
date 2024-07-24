@@ -21,6 +21,8 @@
     <string name="alarm_will_start_with_label">ההתראה (%1$s) תופעל ב:</string>
     <string name="alarm_after_shma">ההתראה שלך היא לאחר סוף זמן קריאת שמע</string>
     <string name="alarm_after_tfilah">ההתראה שלך היא לאחר סוף זמן תפילה</string>
+    <string name="dawn">עלות השחר: %1$s</string>
+    <string name="talit_and_tefilin">זמן ציצית ותפילין: %1$s</string>
     <string name="sunrise">זריחה: %1$s</string>
     <string name="latest_shma_mga">סוף זמן קריאת שמע מגן אברהם: %1$s</string>
     <string name="latest_shma_gra">סוף זמן קריאת שמע גרא: %1$s</string>
@@ -41,7 +43,7 @@
     <string name="and_minutes">ו %1$d דקות</string>
 
     <!-- Preference Titles -->
-    <string name="pref_alarm_duration_title">ברירת המחדל למשך ההתראה (שניות)</string>
+    <string name="pref_alarm_duration_title">ברירת המחדל למשך ההתראה בשבת(שניות)</string>
     <string name="pref_enable_notifications_title">תזכורות מופעלות</string>
     <string name="defaults_header">ברירות מחדל</string>
     <string name="pref_notifications_candle_header">תזכורת להדלקת נרות שבת</string>
@@ -70,6 +72,7 @@
     <string name="MIA_US">מיאמי, ארה\"ב</string>
     <string name="TOR_CA">טורונטו, קנדה</string>
     <string name="LON_UK">לונדון, אנגליה</string>
+    <string name="PAR_FR">פריס, צרפת</string>
 
     <!-- notification -->
     <string name="notification_candle_lighting_title">הדלקת נרות שבת בעוד %1$s</string>
@@ -128,7 +131,7 @@
     <string name="stop">עצור</string>
     <string name="snooze">נודניק</string>
     <string name="prayer_reminder_shacharit_title">תזכורת לתפילת שחרית</string>
-    <string name="prayer_reminder_shacharit_text">התגבר כארי וקום לתפילת שחרית\nזריחה בשעה %1$s \n סוף זמן קריאת שמע (מג\"א) בשעה %2$s</string>
+    <string name="prayer_reminder_shacharit_text">התגבר כארי וקום לתפילת שחרית\nזריחה בשעה %1$s \n סוף זמן קריאת שמע (גר\"א) בשעה %2$s</string>
     <string name="prayer_reminder_mincha_title">תזכורת לתפילת מנחה</string>
     <string name="prayer_reminder_mincha_text">%1$s שקיעה בשעה</string>
     <string name="prayer_reminder_maariv_title">תזכורת לתפילת ערבית</string>

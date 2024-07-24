@@ -58,12 +58,7 @@ import com.banjos.dosalarm.types.NotificationType;
 import com.banjos.dosalarm.worker.NotificationWorker;
 import com.kosherjava.zmanim.ComplexZmanimCalendar;
 import com.kosherjava.zmanim.ZmanimCalendar;
-import com.kosherjava.zmanim.hebrewcalendar.HebrewDateFormatter;
-import com.kosherjava.zmanim.hebrewcalendar.JewishCalendar;
 import com.kosherjava.zmanim.util.GeoLocation;
-import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.work.WorkerParameters;
 
 import java.text.DateFormat;
 import java.util.Calendar;
@@ -369,7 +364,7 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void updateDrawState(TextPaint ds) {
+                    public void updateDrawState(@NonNull TextPaint ds) {
                         super.updateDrawState(ds);
                         // Optionally, customize the appearance of the clickable span
                         ds.setUnderlineText(false); // Remove underline
@@ -616,16 +611,19 @@ public class MainActivity extends AppCompatActivity {
         String hebrewDate = ZmanimService.getHebrewDateStringFromDate(new Date());
         StringBuilder sb = new StringBuilder("<br>");
         sb.append("<center>").append(hebrewDate).append("</center>").append(" <br><br><br>");
-        sb.append(getString(R.string.sunrise, timeFormat.format(zcal.getSunrise()))).append(" <br><br>")
-                .append(getString(R.string.latest_shma_mga, timeFormat.format(zcal.getSofZmanShmaMGA()))).append(" <br><br>")
-                .append(getString(R.string.latest_shma_gra, timeFormat.format(zcal.getSofZmanShmaGRA()))).append(" <br><br>")
-                .append(getString(R.string.latest_shacharis_mga, timeFormat.format(zcal.getSofZmanTfilaMGA()))).append(" <br><br>")
-                .append(getString(R.string.latest_shacharis_gra, timeFormat.format(zcal.getSofZmanTfilaGRA()))).append(" <br><br>")
-                .append(getString(R.string.midday, timeFormat.format(zcal.getChatzos()))).append(" <br><br>")
-                .append(getString(R.string.sunset, timeFormat.format(zcal.getSunset()))).append(" <br><br>")
-                .append(getString(R.string.nightfall, timeFormat.format(zcal.getTzais()))).append(" <br><br>")
-                .append(getString(R.string.nightfall, timeFormat.format(czc.getTzaisGeonim6Point45Degrees()))).append(" <br><br>")
-                .append(" <br><br>");
+
+        sb.append(getString(R.string.dawn, timeFormat.format(zcal.getAlosHashachar()))).append(" <br><br>")
+           // .append(getString(R.string.talit_and_tefilin, timeFormat.format(zcal.???()))).append(" <br><br>")
+            .append(getString(R.string.sunrise, timeFormat.format(zcal.getSunrise()))).append(" <br><br>")
+            .append(getString(R.string.latest_shma_mga, timeFormat.format(zcal.getSofZmanShmaMGA()))).append(" <br><br>")
+            .append(getString(R.string.latest_shma_gra, timeFormat.format(zcal.getSofZmanShmaGRA()))).append(" <br><br>")
+            .append(getString(R.string.latest_shacharis_mga, timeFormat.format(zcal.getSofZmanTfilaMGA()))).append(" <br><br>")
+            .append(getString(R.string.latest_shacharis_gra, timeFormat.format(zcal.getSofZmanTfilaGRA()))).append(" <br><br>")
+            .append(getString(R.string.midday, timeFormat.format(zcal.getChatzos()))).append(" <br><br>")
+            .append(getString(R.string.sunset, timeFormat.format(zcal.getSunset()))).append(" <br><br>")
+            .append(getString(R.string.nightfall, timeFormat.format(zcal.getTzais()))).append(" <br><br>")
+            .append(getString(R.string.nightfall, timeFormat.format(czc.getTzaisGeonim6Point45Degrees()))).append(" <br><br>")
+            .append(" <br><br>");
         return sb.toString();
     }
 

@@ -22,10 +22,12 @@
     <string name="alarm_after_shma">Your alarm is after Sof Zman Shma</string>
     <string name="alarm_after_tfilah">Your alarm is after Sof Zman Tfila</string>
     <string name="sunrise">Sunrise: %1$s</string>
-    <string name="latest_shma_mga">Latest Shema MGA: %1$s</string>
-    <string name="latest_shma_gra">Latest Shema GRA: %1$s</string>
-    <string name="latest_shacharis_mga">Latest Shacharis MGA: %1$s</string>
-    <string name="latest_shacharis_gra">Latest Shachris GRA: %1$s</string>
+    <string name="dawn">Dawn: %1$s</string>
+    <string name="talit_and_tefilin">Earliest Talis and Tefillin: %1$s</string>
+    <string name="latest_shma_mga">Latest Shema M"A: %1$s</string>
+    <string name="latest_shma_gra">Latest Shema GR"A: %1$s</string>
+    <string name="latest_shacharis_mga">Latest Shacharis M"A: %1$s</string>
+    <string name="latest_shacharis_gra">Latest Shachris GR"A: %1$s</string>
     <string name="midday">Midday: %1$s</string>
     <string name="sunset">Sunset: %1$s</string>
     <string name="nightfall">Tzeit Hakochavim: %1$s</string>
@@ -41,7 +43,7 @@
     <string name="and_minutes">and %1$d minutes</string>
 
     <!-- Preference Titles -->
-    <string name="pref_alarm_duration_title">Default alarm duration (sec.)</string>
+    <string name="pref_alarm_duration_title">Default alarm duration for Shabbat(sec.)</string>
     <string name="pref_enable_notifications_title">Reminders enabled</string>
     <string name="defaults_header">Defaults</string>
     <string name="pref_notifications_candle_header">Shabbat Candle lighting Reminder</string>
@@ -49,9 +51,9 @@
     <string name="pref_notifications_mincha_header">Mincha Reminder (not including Shabbat)</string>
     <string name="pref_notifications_maariv_header">Maariv Reminder (not including Shabbat)</string>
     <string name="pref_notifications_shacharit_sunrise_text">minutes before sunrise</string>
-    <string name="pref_notifications_mincha_sunset_text">minutes before sunset</string>
-    <string name="pref_notifications_maariv_sunset_text">minutes after sunset</string>
-    <string name="pref_notifications_shacharit_szks_text">minutes before Sof Zman Kryiat Sma</string>
+    <string name="pref_notifications_mincha_sunset_text">Minutes before sunset</string>
+    <string name="pref_notifications_maariv_sunset_text">Minutes after sunset</string>
+    <string name="pref_notifications_shacharit_szks_text">Minutes before Sof Zman Kryiat Sma</string>
     <string name="pref_notifications_shacharit_fixed_text">fixed time</string>
     <string name="pref_notifications_candle_minutes_text">Time before Shabbat</string>
 
@@ -70,6 +72,7 @@
     <string name="BOS_US">Boston, USA</string>
     <string name="TOR_CA">Toronto, CA</string>
     <string name="LON_UK">London, UK</string>
+    <string name="PAR_FR">Paris, FR</string>
 
     <!-- notification -->
 
@@ -129,7 +132,7 @@
     <string name="stop">Stop</string>
     <string name="snooze">Snooze</string>
     <string name="prayer_reminder_shacharit_title">Time to Pray Shacharit</string>
-    <string name="prayer_reminder_shacharit_text">Wake up! It is time to pray Shacharit.\n Sunrise is at %1$s \nSof zman kryiat Shma is at %2$s</string>
+    <string name="prayer_reminder_shacharit_text">Wake up! It is time to pray Shacharit.\nSunrise is at %1$s \nSof Zman Kryiat Sehma (gr"a) is at %2$s</string>
     <string name="prayer_reminder_mincha_title">Time to Pray Mincha</string>
     <string name="prayer_reminder_mincha_text">Reminder - It is time to pray Mincha. Sunset is at %1$s</string>
     <string name="prayer_reminder_maariv_title">Time to Pray Maariv</string>
