@@ -10,7 +10,8 @@
     <string name="edit">Edit</string>
     <string name="share">Share</string>
     <string name="warning">Warning</string>
-    <string name="add_alarm">Add</string>
+    <string name="add_alarm">Add Alarm</string>
+    <string name="add">Add</string>
     <string name="alarm_duration_label">Alarm Duration (sec.)</string>
     <string name="alarm_time_label">Alarm Time</string>
     <string name="alarm_date_label">Alarm Date</string>

@@ -13,7 +13,7 @@ android {
         versionCode 80
         versionName "1.0.1"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.testrunner.AndroidJUnitRunner"
     }
 
     buildTypes {

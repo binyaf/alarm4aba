@@ -28,7 +28,7 @@
             android:drawableLeft="@drawable/add_icon"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
-            android:text="@string/add_alarm"
+            android:text="@string/add"
             android:textAllCaps="false"
             android:textColor="#897"
             android:textSize="20sp" />

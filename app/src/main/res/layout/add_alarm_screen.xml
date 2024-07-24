@@ -10,7 +10,7 @@
 
     <TextView
         android:id="@+id/addEditAlarmTitle"
-        android:layout_width="192dp"
+        android:layout_width="392dp"
         android:layout_height="70dp"
         android:layout_margin="1sp"
         android:gravity="top|center"

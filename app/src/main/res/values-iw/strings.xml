@@ -6,11 +6,12 @@
     <string name="create">הוסף התראה</string>
     <string name="createMincha">תזכורת לתפילת מנחה</string>
     <string name="delete">מחק</string>
-    <string name="edit_alarm">ערוך התראה</string>
+    <string name="edit_alarm">ערוך שעון מעורר</string>
     <string name="edit">ערוך</string>
     <string name="share">שתף</string>
     <string name="warning">אזהרה</string>
-    <string name="add_alarm">הוסף</string>
+    <string name="add_alarm">הוסף שעון מעורר</string>
+    <string name="add">הוסף</string>
     <string name="alarm_duration_label">משך ההתראה (שניות)</string>
     <string name="alarm_time_label">שעה</string>
     <string name="alarm_date_label">תאריך</string>
