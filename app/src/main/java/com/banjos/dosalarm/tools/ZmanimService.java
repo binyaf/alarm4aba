@@ -9,7 +9,6 @@ import com.kosherjava.zmanim.hebrewcalendar.JewishCalendar;
 import com.kosherjava.zmanim.hebrewcalendar.JewishDate;
 import com.kosherjava.zmanim.util.GeoLocation;
 
-import java.util.Calendar;
 import java.util.Date;
 
 public class ZmanimService {
@@ -50,11 +49,16 @@ public class ZmanimService {
             return true;
         }
 
-        boolean inIsrael = clientsLocation.getCityCode().endsWith("_IL");
+        boolean inIsrael = isInIsrael(clientsLocation);
 
         JewishCalendar jc = new JewishCalendar();
         jc.setInIsrael(inIsrael);
+
         return jc.hasCandleLighting();
+    }
+
+    private static boolean isInIsrael(AlarmLocation alarmLocation) {
+        return alarmLocation.getCityCode().endsWith("_IL");
     }
 
     public static String getHebrewDateStringFromDate(Date alarmDate) {
@@ -65,5 +69,13 @@ public class ZmanimService {
         String hebrewDate = hdf.format(jd);
 
         return hebrewDate;
+    }
+
+    public static boolean isNowAssurBemlacha(AlarmLocation alarmLocation) {
+
+        boolean inIsrael = isInIsrael(alarmLocation);
+        ZmanimCalendar zcalToday = new ZmanimCalendar();
+        return zcalToday.isAssurBemlacha(new Date(), zcalToday.getTzais(), inIsrael);
+
     }
 }

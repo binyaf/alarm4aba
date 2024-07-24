@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import androidx.preference.PreferenceManager;
+
 import com.banjos.dosalarm.types.Alarm;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -20,7 +22,12 @@ public class PreferencesService {
 
     private final Gson gson;
     private final Context context;
+
+    //here are the preferences of the 'settings' page
     private SharedPreferences preferences;
+
+    //here are the user preferences from arround the app
+    private SharedPreferences sharedPreferencesSettings;
     private static final String ALARMS_KEY = "alarms";
     private static final String MY_PREFERENCES_KEY = "MyPrefs";
 
@@ -31,13 +38,13 @@ public class PreferencesService {
     private static final String REMINDERS_SHACHARIT_MINUTES_BEFORE_SUNRISE = "pref_shacharit_notification_time_before_sunrise";
     private static final String REMINDERS_MINCHA_MINUTES_BEFORE_SUNSET = "pref_mincha_notification_time_before_sunset";
     private static final String REMINDERS_MAARIV_MINUTES_AFTER_SUNSET = "pref_maariv_notification_time_after_sunset";
-
     private static final String REMINDERS_CANDLE_MINUTES_BEFORE_SHABBAT = "pref_notification_time_before_shabbat";
 
     public PreferencesService(Context context) {
         this.context = context;
         this.gson = new Gson();
         this.preferences = context.getSharedPreferences(MY_PREFERENCES_KEY, Context.MODE_PRIVATE);
+        this.sharedPreferencesSettings = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
     public SharedPreferences getMyPreferences() {
@@ -128,21 +135,42 @@ public class PreferencesService {
         preferences.edit().putBoolean(REMINDERS_CANDLE_LIGHT_SELECTED, newValue).apply();
     }
 
-    public int getShacharitMinutesBeforeSunriseCorReminder() {
-        return preferences.getInt(REMINDERS_SHACHARIT_MINUTES_BEFORE_SUNRISE, 40);
+    public int getShacharitMinutesBeforeSunriseForReminder() {
+        String val =  sharedPreferencesSettings.getString(REMINDERS_SHACHARIT_MINUTES_BEFORE_SUNRISE, "40");
+        return Integer.valueOf(val);
     }
 
-    public int getMinchaMinutesBeforeSunriseForReminder() {
-        return preferences.getInt(REMINDERS_MINCHA_MINUTES_BEFORE_SUNSET, 20);
+    public int getMinchaMinutesBeforeSunsetForReminder() {
+        String val = sharedPreferencesSettings.getString(REMINDERS_MINCHA_MINUTES_BEFORE_SUNSET, "20");
+        return Integer.valueOf(val);
     }
 
-    public int getMaarivMinutesBeforeSunriseForReminder() {
-        return preferences.getInt(REMINDERS_MAARIV_MINUTES_AFTER_SUNSET, 20);
+    public int getMaarivMinutesAfterSunsetForReminder() {
+        String val = sharedPreferencesSettings.getString(REMINDERS_MAARIV_MINUTES_AFTER_SUNSET, "20");
+        return Integer.valueOf(val);
     }
 
     public int getCandleLightingMinutesBeforeShabbatForReminder() {
-        return preferences.getInt(REMINDERS_CANDLE_MINUTES_BEFORE_SHABBAT, 40);
+        String val =  sharedPreferencesSettings.getString(REMINDERS_CANDLE_MINUTES_BEFORE_SHABBAT, "40");
+        return Integer.valueOf(val);
     }
+
+    public void setShacharitMinutesBeforeSunriseForReminder(int min) {
+        sharedPreferencesSettings.edit().putInt(REMINDERS_SHACHARIT_MINUTES_BEFORE_SUNRISE, min);
+    }
+
+    public void setMinchaMinutesBeforeSunsetForReminder(int min) {
+        sharedPreferencesSettings.edit().putInt(REMINDERS_MINCHA_MINUTES_BEFORE_SUNSET, min);
+    }
+
+    public void setMaarivMinutesAfterSunsetForReminder(int min) {
+        sharedPreferencesSettings.edit().putInt(REMINDERS_MAARIV_MINUTES_AFTER_SUNSET, min);
+    }
+
+    public void setCandleLightingMinutesBeforeShabbatForReminder(int min) {
+        sharedPreferencesSettings.edit().putInt(REMINDERS_CANDLE_MINUTES_BEFORE_SHABBAT, min);
+    }
+
 
 }
 

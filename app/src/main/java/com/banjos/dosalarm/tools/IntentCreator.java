@@ -6,8 +6,7 @@ import android.content.Intent;
 import android.os.Build;
 
 import com.banjos.dosalarm.receiver.AlarmReceiver;
-import com.banjos.dosalarm.receiver.NotificationReceiver;
-import com.banjos.dosalarm.receiver.PrayerReminderReceiver;
+import com.banjos.dosalarm.receiver.NotificationsReceiver;
 import com.banjos.dosalarm.types.Alarm;
 import com.banjos.dosalarm.types.IntentKeys;
 import com.banjos.dosalarm.types.NotificationType;
@@ -34,17 +33,7 @@ public class IntentCreator {
     }
 
     public static PendingIntent getNotificationPendingIntent(Context context, int requestCode, NotificationType type) {
-        Class<?> clazz = NotificationReceiver.class;
-
-        if (type == NotificationType.CANDLE_LIGHTING_REMINDER) {
-            clazz = NotificationReceiver.class;
-        } else  if (type == NotificationType.SHACHARIT_REMINDER) {
-            clazz = PrayerReminderReceiver.class;
-        } else  if (type == NotificationType.MINCHA_REMINDER) {
-            clazz = PrayerReminderReceiver.class;
-        } else  if (type == NotificationType.MAARIV_REMINDER) {
-            clazz = PrayerReminderReceiver.class;
-        }
+        Class<?> clazz = NotificationsReceiver.class;
 
         Intent intent = new Intent(context, clazz);
         intent.putExtra("NOTIFICATION_TYPE", type.toString());
@@ -68,7 +57,7 @@ public class IntentCreator {
     private static PendingIntent createPrayerReminderIntent(Context context, NotificationType notificationType) {
 
         // Create an intent for the delete action
-        Intent intent = new Intent(context, PrayerReminderReceiver.class);
+        Intent intent = new Intent(context, NotificationsReceiver.class);
         intent.putExtra("NOTIFICATION_TYPE", notificationType.toString());
         //   intent.putExtra("NOTIFICATION_ID", notificationType.toString());
 

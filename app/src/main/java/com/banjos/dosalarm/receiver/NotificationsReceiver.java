@@ -18,12 +18,23 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.banjos.dosalarm.R;
+import com.banjos.dosalarm.tools.DateTimesFormats;
 import com.banjos.dosalarm.tools.IntentCreator;
+import com.banjos.dosalarm.tools.LocationService;
 import com.banjos.dosalarm.tools.NotificationJobScheduler;
 import com.banjos.dosalarm.tools.PreferencesService;
+import com.banjos.dosalarm.tools.ZmanimService;
+import com.banjos.dosalarm.types.AlarmLocation;
 import com.banjos.dosalarm.types.NotificationType;
+import com.kosherjava.zmanim.ZmanimCalendar;
 
-public class PrayerReminderReceiver extends BroadcastReceiver {
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+public class NotificationsReceiver extends BroadcastReceiver {
 
     private SharedPreferences settingsPreferences;
 
@@ -31,16 +42,24 @@ public class PrayerReminderReceiver extends BroadcastReceiver {
 
     private static MediaPlayer mediaPlayer;
 
+    private AlarmLocation clientsLocation;
     @Override
     public void onReceive(Context context, Intent intent) {
         String type = intent.getStringExtra("NOTIFICATION_TYPE");
         preferencesService = new PreferencesService(context);
+        clientsLocation = LocationService.getClientLocationDetails(context);
         showNotification(context, type);
     }
 
     private void showNotification(Context context, String type) {
 
         NotificationType notificationType = NotificationType.valueOf(type);
+
+        if (notificationType == null) {
+            Log.e("NotificationsReceiver", "couldn't send notification, unknown type | type: " + type + " | Not sending notification | ");
+            return;
+        }
+
         if (NotificationType.STOP_SHACHARIT_REMINDER == notificationType ||
                 NotificationType.STOP_MINCHA_REMINDER == notificationType ||
                 NotificationType.STOP_MAARIV_REMINDER == notificationType||
@@ -52,29 +71,38 @@ public class PrayerReminderReceiver extends BroadcastReceiver {
                 NotificationType.SNOOZE_CANDLE_LIGHTING_REMINDER == notificationType) {
             snoozeNotification(context, notificationType);
         } else {
-           showPrayerNotification(context, notificationType);
+           showNotification(context, notificationType);
         }
     }
 
-    private void showPrayerNotification(Context context, NotificationType type) {
+    private void showNotification(Context context, NotificationType type) {
 
-        String title = "";
-        String text = "";
+        String title = null;
+        String text = null;
 
         if (NotificationType.CANDLE_LIGHTING_REMINDER == type && preferencesService.isCandleLightReminderSelected()) {
-            title = "candle lighting";
-            text = "text";
+            title = prepareCandleLightingTitle(context);
+            text = prepareCandleLightNotificationText(context);
         } else if (NotificationType.SHACHARIT_REMINDER == type && preferencesService.isShacharisReminderSelected()) {
+            ZmanimCalendar zCal = ZmanimService.getTodaysZmanimCalendar(clientsLocation);
             title = context.getString(R.string.prayer_reminder_shacharit_title);
-            text = context.getString(R.string.prayer_reminder_shacharit_text);
+            String sunrise = DateTimesFormats.timeFormat.format( zCal.getSunrise());
+            String szksGra = DateTimesFormats.timeFormat.format( zCal.getSofZmanShmaGRA());
+            text = context.getString(R.string.prayer_reminder_shacharit_text,sunrise, szksGra);
         } else if (NotificationType.MINCHA_REMINDER == type && preferencesService.isMinchaReminderSelected()) {
+            ZmanimCalendar zCal = ZmanimService.getTodaysZmanimCalendar(clientsLocation);
             title = context.getString(R.string.prayer_reminder_mincha_title);
-            text = context.getString(R.string.prayer_reminder_mincha_text);
+            String sunset = DateTimesFormats.timeFormat.format(zCal.getSunset());
+            text = context.getString(R.string.prayer_reminder_mincha_text, sunset);
         } else if (NotificationType.MAARIV_REMINDER == type && preferencesService.isMaarivReminderSelected()) {
             title = context.getString(R.string.prayer_reminder_maariv_title);
             text = context.getString(R.string.prayer_reminder_maariv_text);
         }
 
+        if (title == null || text == null) {
+            Log.e("NotificationsReceiver", "type: " + type.toString() + " | Not sending notification | title and/or text are empty");
+            return;
+        }
         NotificationCompat.Builder builder = createNotificationBuilder(context, title, text);
         if (builder != null) {
             playSound(context);
@@ -85,8 +113,82 @@ public class PrayerReminderReceiver extends BroadcastReceiver {
                 Log.d("PrayerReminderReceiver", "NO permission | notification-type:" + type);
             } else {
                 Log.d("PrayerReminderReceiver", "showing notification  | notification type:" + type  +
-                        " | notification id:" + type.getId());
+                        "title: " + title + " | text: " + text + " | notification id:" + type.getId());
                 notificationManager.notify(type.getId(), builder.build());
+            }
+        }
+    }
+
+    private String prepareCandleLightingTitle(Context context) {
+
+        Date candleLightingTimeToday = ZmanimService.getCandleLightingTimeToday(clientsLocation, context);
+
+        if (candleLightingTimeToday == null) {
+            return null;
+        }
+
+        // Calculate the difference in minutes
+        long timeDifferenceMillis = candleLightingTimeToday.getTime() - System.currentTimeMillis();
+
+        if (timeDifferenceMillis < 0) {
+            Log.d("NotificationsReceiver", "wanted to send a notification after shabbat candle lighting for some reason");
+            return null;
+        }
+        long minutesDifference = timeDifferenceMillis / (60 * 1000);
+
+        // Present the difference in a human-readable format
+        String formattedDifference = formatTimeDifference(minutesDifference, context);
+
+        return context.getString(R.string.notification_candle_lighting_title, formattedDifference);
+    }
+
+    private String prepareCandleLightNotificationText(Context context) {
+
+        List<String> checkList = getCandleLightingChecklist(context);
+
+        if (checkList == null || checkList.size() == 0) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append("\n").append(context.getString(R.string.notification_body)).append(":");
+        for (String str:checkList) {
+            if (str != null && !str.equals("")) {
+                sb.append("\n* " + str);
+            }
+        }
+
+        return sb.toString();
+    }
+
+    private List<String> getCandleLightingChecklist(Context context) {
+        List notifications = new ArrayList();
+        Set<String> values = settingsPreferences.getStringSet("pref_pre_shabbat_notifications_checklist", new HashSet<>());
+
+        for (String notificationKey : values) {
+            int resourceId = context.getResources().getIdentifier(notificationKey, "string", context.getPackageName());
+            if (resourceId != 0) {
+                String notificationStr = context.getString(resourceId);
+                notifications.add(notificationStr);
+            }
+        }
+        return notifications;
+    }
+
+    private static String formatTimeDifference(long minutesDifference, Context context) {
+        if (minutesDifference < 1) {
+            return context.getString(R.string.less_than_a_minute);
+        } else if (minutesDifference == 1) {
+            return context.getString(R.string.one_minute);
+        } else if (minutesDifference < 60) {
+            return context.getString(R.string.minutes, minutesDifference);
+        } else {
+            long hours = minutesDifference / 60;
+            long remainingMinutes = minutesDifference % 60;
+
+            if (remainingMinutes == 0) {
+                return hours == 1 ? context.getString(R.string.one_hour) : context.getString(R.string.hours, hours);
+            } else {
+                return context.getString(R.string.hours, hours) + " " + context.getString(R.string.and_minutes, remainingMinutes);
             }
         }
     }
@@ -105,13 +207,16 @@ public class PrayerReminderReceiver extends BroadcastReceiver {
                 NotificationJobScheduler.CHANNEL_ID)
                 .setSmallIcon(R.drawable.app_icon)
                 .setContentTitle(title)
-                .setContentText(text)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setSound(Uri.parse("content://settings/system/alarm_alert"))
+                .setSmallIcon(R.drawable.ic_dosalarm_notification)
+                .setCategory(NotificationCompat.CATEGORY_ALARM)
                 .addAction(R.drawable.cancel_icon, context.getString(R.string.stop), stopPendingIntent)
                 .addAction(R.drawable.save_icon, context.getString(R.string.snooze), snoozePendingIntent)
                 .setDeleteIntent(deletePendingIntent)
                 .setAutoCancel(true);
+
+       builder.setStyle(new NotificationCompat.BigTextStyle().bigText(text));
 
         return builder;
 
@@ -157,7 +262,7 @@ public class PrayerReminderReceiver extends BroadcastReceiver {
         // Set the snooze time (e.g., 10 minutes)
         long snoozeTimeMillis = System.currentTimeMillis() + 10 * 60 * 1000;
 
-        Intent intent = new Intent(context, NotificationReceiver.class);
+        Intent intent = new Intent(context, NotificationsReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);

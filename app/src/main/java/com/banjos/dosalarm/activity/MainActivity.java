@@ -58,9 +58,13 @@ import com.banjos.dosalarm.types.NotificationType;
 import com.banjos.dosalarm.worker.NotificationWorker;
 import com.kosherjava.zmanim.ComplexZmanimCalendar;
 import com.kosherjava.zmanim.ZmanimCalendar;
+import com.kosherjava.zmanim.hebrewcalendar.HebrewDateFormatter;
+import com.kosherjava.zmanim.hebrewcalendar.JewishCalendar;
 import com.kosherjava.zmanim.util.GeoLocation;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.work.WorkerParameters;
+
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -164,11 +168,13 @@ public class MainActivity extends AppCompatActivity {
                     clicksOnEmptyTextView = 0;
 
                     //TODO remove
+                   // NotificationWorker nw = new NotificationWorker(context, null);
+                   // nw.scheduleNotifications();
                     PendingIntent pendingIntent =
                             getNotificationPendingIntent(context, 11, NotificationType.SHACHARIT_REMINDER);
                     Calendar todayCal = Calendar.getInstance();
                     todayCal.add(Calendar.SECOND, 10);
-                    NotificationWorker.scheduleNotification(context, pendingIntent, todayCal.getTime());
+                    NotificationWorker.scheduleNotification(context, pendingIntent, todayCal.getTime(), NotificationType.SHACHARIT_REMINDER);
                     //
                 } else {
                     Log.d("AnimationClick", "number of clicks = " + clicksOnEmptyTextView);
@@ -340,7 +346,7 @@ public class MainActivity extends AppCompatActivity {
         if (alarmDateAndTime != null) {
 
             String html = prepareAlarmDetailsText(alarm);
-            String warning = buildWarningMsg(alarm);
+            String warning = null;//buildWarningMsg(alarm);  //want to remove this warning
 
             if (warning != null) {
                 String warningStr = getString(R.string.warning);
@@ -591,7 +597,8 @@ public class MainActivity extends AppCompatActivity {
         String msg = getTodaysZmanim();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        builder.setTitle(getString(R.string.todays_zmanim, cityNameForPresentation))
+        String title = getString(R.string.todays_zmanim, cityNameForPresentation);
+        builder.setTitle(title)
                 .setMessage(Html.fromHtml(msg))
                 .setIcon(R.drawable.time_icon)
                 .setPositiveButton(R.string.ok, (dialog, which) -> dialog.dismiss());
@@ -605,9 +612,10 @@ public class MainActivity extends AppCompatActivity {
 
         ZmanimCalendar zcal = new ZmanimCalendar(gl);
         ComplexZmanimCalendar czc = new ComplexZmanimCalendar(gl);
-        ;
 
+        String hebrewDate = ZmanimService.getHebrewDateStringFromDate(new Date());
         StringBuilder sb = new StringBuilder("<br>");
+        sb.append("<center>").append(hebrewDate).append("</center>").append(" <br><br><br>");
         sb.append(getString(R.string.sunrise, timeFormat.format(zcal.getSunrise()))).append(" <br><br>")
                 .append(getString(R.string.latest_shma_mga, timeFormat.format(zcal.getSofZmanShmaMGA()))).append(" <br><br>")
                 .append(getString(R.string.latest_shma_gra, timeFormat.format(zcal.getSofZmanShmaGRA()))).append(" <br><br>")
@@ -619,7 +627,6 @@ public class MainActivity extends AppCompatActivity {
                 .append(getString(R.string.nightfall, timeFormat.format(czc.getTzaisGeonim6Point45Degrees()))).append(" <br><br>")
                 .append(" <br><br>");
         return sb.toString();
-
     }
 
     private boolean isNotificationsWorkScheduled(SharedPreferences myPrefs) {

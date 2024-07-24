@@ -49,11 +49,7 @@
             android:name=".receiver.AlarmReceiver"
             android:exported="true" />
         <receiver
-            android:name=".receiver.NotificationReceiver"
-            android:enabled="true"
-            android:exported="false" />
-        <receiver
-            android:name=".receiver.PrayerReminderReceiver"
+            android:name=".receiver.NotificationsReceiver"
             android:enabled="true"
             android:exported="false" >
             <intent-filter>
