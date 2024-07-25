@@ -59,7 +59,6 @@ public class IntentCreator {
         // Create an intent for the delete action
         Intent intent = new Intent(context, NotificationsReceiver.class);
         intent.putExtra("NOTIFICATION_TYPE", notificationType.toString());
-        //   intent.putExtra("NOTIFICATION_ID", notificationType.toString());
 
         int flags = 0;
         // we call broadcast using pendingIntent 33 >= 31

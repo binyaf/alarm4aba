@@ -60,15 +60,9 @@ public class NotificationsReceiver extends BroadcastReceiver {
             return;
         }
 
-        if (NotificationType.STOP_SHACHARIT_REMINDER == notificationType ||
-                NotificationType.STOP_MINCHA_REMINDER == notificationType ||
-                NotificationType.STOP_MAARIV_REMINDER == notificationType||
-                NotificationType.STOP_CANDLE_LIGHTING_REMINDER == notificationType) {
+        if (notificationType.toString().startsWith("STOP_")) {
             stopNotification(context, notificationType);
-        } else if (NotificationType.SNOOZE_SHACHARIT_REMINDER == notificationType ||
-                NotificationType.SNOOZE_MINCHA_REMINDER == notificationType ||
-                NotificationType.SNOOZE_MAARIV_REMINDER == notificationType ||
-                NotificationType.SNOOZE_CANDLE_LIGHTING_REMINDER == notificationType) {
+        } else if (notificationType.toString().startsWith("SNOOZE_")) {
             snoozeNotification(context, notificationType);
         } else {
            showNotification(context, notificationType);
@@ -79,31 +73,39 @@ public class NotificationsReceiver extends BroadcastReceiver {
 
         String title = null;
         String text = null;
-
+        NotificationCompat.Builder builder = null;
         if (NotificationType.CANDLE_LIGHTING_REMINDER == type && preferencesService.isCandleLightReminderSelected()) {
             title = prepareCandleLightingTitle(context);
             text = prepareCandleLightNotificationText(context);
+            builder = createNotificationBuilder(context, title, text,
+                    NotificationType.STOP_CANDLE_LIGHTING_REMINDER, NotificationType.SNOOZE_CANDLE_LIGHTING_REMINDER);
         } else if (NotificationType.SHACHARIT_REMINDER == type && preferencesService.isShacharisReminderSelected()) {
             ZmanimCalendar zCal = ZmanimService.getTodaysZmanimCalendar(clientsLocation);
             title = context.getString(R.string.prayer_reminder_shacharit_title);
             String sunrise = DateTimesFormats.timeFormat.format( zCal.getSunrise());
             String szksGra = DateTimesFormats.timeFormat.format( zCal.getSofZmanShmaGRA());
             text = context.getString(R.string.prayer_reminder_shacharit_text,sunrise, szksGra);
+            builder = createNotificationBuilder(context, title, text,
+                    NotificationType.STOP_SHACHARIT_REMINDER, NotificationType.SNOOZE_CANDLE_LIGHTING_REMINDER);
         } else if (NotificationType.MINCHA_REMINDER == type && preferencesService.isMinchaReminderSelected()) {
             ZmanimCalendar zCal = ZmanimService.getTodaysZmanimCalendar(clientsLocation);
             title = context.getString(R.string.prayer_reminder_mincha_title);
             String sunset = DateTimesFormats.timeFormat.format(zCal.getSunset());
             text = context.getString(R.string.prayer_reminder_mincha_text, sunset);
+            builder = createNotificationBuilder(context, title, text,
+                    NotificationType.STOP_MINCHA_REMINDER, NotificationType.SNOOZE_MINCHA_REMINDER);
         } else if (NotificationType.MAARIV_REMINDER == type && preferencesService.isMaarivReminderSelected()) {
             title = context.getString(R.string.prayer_reminder_maariv_title);
             text = context.getString(R.string.prayer_reminder_maariv_text);
+            builder = createNotificationBuilder(context, title, text,
+                    NotificationType.STOP_MAARIV_REMINDER, NotificationType.SNOOZE_MAARIV_REMINDER);
         }
 
         if (title == null) {
             Log.e("NotificationsReceiver", "type: " + type.toString() + " | Not sending notification | title is empty");
             return;
         }
-        NotificationCompat.Builder builder = createNotificationBuilder(context, title, text);
+
         if (builder != null) {
             playSound(context);
 
@@ -193,14 +195,19 @@ public class NotificationsReceiver extends BroadcastReceiver {
         }
     }
 
-    private NotificationCompat.Builder createNotificationBuilder(Context context, String title, String text) {
+    private NotificationCompat.Builder createNotificationBuilder(Context context, String title, String text,
+                                                                 NotificationType stopReminderType, NotificationType snoozeReminderType) {
 
+        if (title == null) {
+            return null;
+        }
         // Create intents for the actions
         PendingIntent stopPendingIntent =
-                IntentCreator.getNotificationPendingIntent(context, NotificationType.STOP_SHACHARIT_REMINDER);
+                IntentCreator.getNotificationPendingIntent(context, stopReminderType);
         PendingIntent snoozePendingIntent =
-                IntentCreator.getNotificationPendingIntent(context, NotificationType.SNOOZE_SHACHARIT_REMINDER);
-        PendingIntent deletePendingIntent = IntentCreator.getNotificationPendingIntent(context, NotificationType.STOP_SHACHARIT_REMINDER);
+                IntentCreator.getNotificationPendingIntent(context, snoozeReminderType);
+
+        PendingIntent deletePendingIntent = IntentCreator.getNotificationPendingIntent(context, stopReminderType);
 
         // Build the notification
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context,
@@ -211,8 +218,8 @@ public class NotificationsReceiver extends BroadcastReceiver {
                 .setSound(Uri.parse("content://settings/system/alarm_alert"))
                 .setSmallIcon(R.drawable.ic_dosalarm_notification)
                 .setCategory(NotificationCompat.CATEGORY_ALARM)
-                .addAction(R.drawable.cancel_icon, context.getString(R.string.stop), stopPendingIntent)
-                .addAction(R.drawable.save_icon, context.getString(R.string.snooze), snoozePendingIntent)
+                .addAction(R.drawable.ic_dosalarm_notification, context.getString(R.string.stop), stopPendingIntent)
+                .addAction(R.drawable.ic_dosalarm_notification, context.getString(R.string.snooze), snoozePendingIntent)
                 .setDeleteIntent(deletePendingIntent)
                 .setAutoCancel(true);
 
@@ -243,7 +250,7 @@ public class NotificationsReceiver extends BroadcastReceiver {
 
 
     // Method to dismiss a notification
-    public void dismissNotification(Context  context, NotificationType notificationType) {
+    private void dismissNotification(Context  context, NotificationType notificationType) {
 
         NotificationManager notificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);

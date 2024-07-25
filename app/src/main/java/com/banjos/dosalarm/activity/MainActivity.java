@@ -166,10 +166,10 @@ public class MainActivity extends AppCompatActivity {
                    // NotificationWorker nw = new NotificationWorker(context, null);
                    // nw.scheduleNotifications();
                     PendingIntent pendingIntent =
-                            getNotificationPendingIntent(context, 11, NotificationType.SHACHARIT_REMINDER);
+                            getNotificationPendingIntent(context, 11, NotificationType.MINCHA_REMINDER);
                     Calendar todayCal = Calendar.getInstance();
                     todayCal.add(Calendar.SECOND, 10);
-                    NotificationWorker.scheduleNotification(context, pendingIntent, todayCal.getTime(), NotificationType.SHACHARIT_REMINDER);
+                    NotificationWorker.scheduleNotification(context, pendingIntent, todayCal.getTime(), NotificationType.MINCHA_REMINDER);
                     //
                 } else {
                     Log.d("AnimationClick", "number of clicks = " + clicksOnEmptyTextView);
