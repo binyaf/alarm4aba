@@ -70,7 +70,7 @@ public class NotificationWorker extends Worker {
                 Date notificationTime = getCandleLightingNotificationTime(zcalToday);
 
                 PendingIntent pendingIntent =
-                        getNotificationPendingIntent(context, CANDLE_LIGHTING_REQUEST_CODE, NotificationType.CANDLE_LIGHTING_REMINDER);
+                        getNotificationPendingIntent(context, NotificationType.CANDLE_LIGHTING_REMINDER);
 
                 scheduleNotification(context, pendingIntent, notificationTime, NotificationType.CANDLE_LIGHTING_REMINDER);
             } else {
@@ -80,7 +80,7 @@ public class NotificationWorker extends Worker {
 
         if (preferencesService.isShacharisReminderSelected()) {
             PendingIntent pendingIntent =
-                    getNotificationPendingIntent(context, SHACHARIS_REQUEST_CODE, NotificationType.SHACHARIT_REMINDER);
+                    getNotificationPendingIntent(context, NotificationType.SHACHARIT_REMINDER);
             Calendar todayCal = Calendar.getInstance();
             Date notificationTime;
             if (isTestMode) {
@@ -94,7 +94,7 @@ public class NotificationWorker extends Worker {
 
         if (preferencesService.isMinchaReminderSelected()) {
             PendingIntent pendingIntent =
-                    getNotificationPendingIntent(context, MINCHA_REQUEST_CODE, NotificationType.MINCHA_REMINDER);
+                    getNotificationPendingIntent(context, NotificationType.MINCHA_REMINDER);
             Calendar todayCal = Calendar.getInstance();
             Date notificationTime;
             if (isTestMode) {
@@ -108,7 +108,7 @@ public class NotificationWorker extends Worker {
 
         if (preferencesService.isMaarivReminderSelected()) {
             PendingIntent pendingIntent =
-                    getNotificationPendingIntent(context, MAARIV_REQUEST_CODE, NotificationType.MAARIV_REMINDER);
+                    getNotificationPendingIntent(context, NotificationType.MAARIV_REMINDER);
             Calendar todayCal = Calendar.getInstance();
             Date notificationTime;
             if (isTestMode) {

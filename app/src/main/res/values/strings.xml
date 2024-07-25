@@ -126,6 +126,7 @@
 
     <string name="reminder_text">Reminder - don\'t forget %1$s</string>
     <string name="remind_me_about">Remind me about:</string>
+    <string name="reminders_advanced_settings">advanced settings for reminders can be found in the settings page</string>
     <string name="shacharit">Shacharit</string>
     <string name="shacharit_vatikin">Shacharit \n (Vatikin)</string>
     <string name="mincha">Mincha\n</string>

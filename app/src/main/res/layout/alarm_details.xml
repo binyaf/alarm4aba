@@ -111,12 +111,26 @@
         android:layout_height="1dp"
         android:background="@android:color/darker_gray" />
 
-    <TextView
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:text="@string/remind_me_about"
-        android:padding="5dp"
-        android:textSize="18dp"/>
+        android:layout_height="wrap_content"
+        android:padding="1dp"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:text="@string/remind_me_about"
+            android:padding="5dp"
+            android:textSize="18dp"/>
+
+        <TextView
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:text="@string/reminders_advanced_settings"
+            android:paddingLeft="5dp"
+            android:textSize="12dp"/>
+    </LinearLayout>
 
     <!-- prayer reminders -->
     <LinearLayout

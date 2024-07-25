@@ -86,7 +86,7 @@ public class NotificationsReceiver extends BroadcastReceiver {
             String szksGra = DateTimesFormats.timeFormat.format( zCal.getSofZmanShmaGRA());
             text = context.getString(R.string.prayer_reminder_shacharit_text,sunrise, szksGra);
             builder = createNotificationBuilder(context, title, text,
-                    NotificationType.STOP_SHACHARIT_REMINDER, NotificationType.SNOOZE_CANDLE_LIGHTING_REMINDER);
+                    NotificationType.STOP_SHACHARIT_REMINDER, NotificationType.SNOOZE_SHACHARIT_REMINDER);
         } else if (NotificationType.MINCHA_REMINDER == type && preferencesService.isMinchaReminderSelected()) {
             ZmanimCalendar zCal = ZmanimService.getTodaysZmanimCalendar(clientsLocation);
             title = context.getString(R.string.prayer_reminder_mincha_title);
@@ -112,10 +112,10 @@ public class NotificationsReceiver extends BroadcastReceiver {
             // Show the notification
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
             if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                Log.d("PrayerReminderReceiver", "NO permission | notification-type:" + type);
+                Log.d("NotificationsReceiver", "NO permission | notification-type:" + type);
             } else {
-                Log.d("PrayerReminderReceiver", "showing notification  | notification type:" + type  +
-                        "title: " + title + " | text: " + text + " | notification id:" + type.getId());
+                Log.d("NotificationsReceiver", "showing notification  | notification type:" + type  +
+                        " | title: " + title + " | text: " + text + " | notification id:" + type.getId());
                 notificationManager.notify(type.getId(), builder.build());
             }
         }
@@ -202,8 +202,7 @@ public class NotificationsReceiver extends BroadcastReceiver {
             return null;
         }
         // Create intents for the actions
-        PendingIntent stopPendingIntent =
-                IntentCreator.getNotificationPendingIntent(context, stopReminderType);
+        PendingIntent stopPendingIntent = IntentCreator.getNotificationPendingIntent(context, stopReminderType);
         PendingIntent snoozePendingIntent =
                 IntentCreator.getNotificationPendingIntent(context, snoozeReminderType);
 
@@ -219,7 +218,7 @@ public class NotificationsReceiver extends BroadcastReceiver {
                 .setSmallIcon(R.drawable.ic_dosalarm_notification)
                 .setCategory(NotificationCompat.CATEGORY_ALARM)
                 .addAction(R.drawable.ic_dosalarm_notification, context.getString(R.string.stop), stopPendingIntent)
-                .addAction(R.drawable.ic_dosalarm_notification, context.getString(R.string.snooze), snoozePendingIntent)
+                .addAction(R.drawable.ic_launcher_foreground, context.getString(R.string.snooze), snoozePendingIntent)
                 .setDeleteIntent(deletePendingIntent)
                 .setAutoCancel(true);
 
@@ -238,8 +237,8 @@ public class NotificationsReceiver extends BroadcastReceiver {
     }
 
     private void stopNotification(Context context, NotificationType notificationType) {
-        Log.d("PrayerReminderReceiver", "stopping notification  | notification-type:" + notificationType.getType() +
-                " | notification id:" + notificationType.getId());
+        Log.d("NotificationsReceiver", "stopping notification  | notification-type:" + notificationType.getType() +
+                " | notification id:" + notificationType.getId() + " | request-code: " + notificationType.getRequestCode());
         dismissNotification(context, notificationType);
         if (mediaPlayer != null) {
             mediaPlayer.stop();
@@ -261,20 +260,21 @@ public class NotificationsReceiver extends BroadcastReceiver {
         }
     }
 
-
-    //TODO need to test
     private void snoozeNotification(Context context, NotificationType notificationType) {
-        Log.d("PrayerReminderReceiver", "snoozing notification  | notification-type:" + notificationType.getType() +
+        Log.d("NotificationReceiver", "snoozing notification  | notification-type:" + notificationType.getType() +
                 " | notification id:" + notificationType.getId());
-        // Set the snooze time (e.g., 10 minutes)
-        long snoozeTimeMillis = System.currentTimeMillis() + 10 * 60 * 1000;
+
+        stopNotification(context, notificationType);
+        // Set the snooze time  5 minutes)
+       long snoozeTimeMillis = System.currentTimeMillis() + 5 * 60 * 1000;
 
         Intent intent = new Intent(context, NotificationsReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        PendingIntent snoozePendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         if (alarmManager != null) {
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, snoozeTimeMillis, pendingIntent);
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, snoozeTimeMillis, snoozePendingIntent);
         }
     }
 }
