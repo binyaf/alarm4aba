@@ -621,8 +621,7 @@ public class MainActivity extends AppCompatActivity {
             .append(getString(R.string.latest_shacharis_gra, timeFormat.format(zcal.getSofZmanTfilaGRA()))).append(" <br><br>")
             .append(getString(R.string.midday, timeFormat.format(zcal.getChatzos()))).append(" <br><br>")
             .append(getString(R.string.sunset, timeFormat.format(zcal.getSunset()))).append(" <br><br>")
-            .append(getString(R.string.nightfall, timeFormat.format(zcal.getTzais()))).append(" <br><br>")
-            .append(getString(R.string.nightfall, timeFormat.format(czc.getTzaisGeonim6Point45Degrees()))).append(" <br><br>")
+            .append(getString(R.string.nightfall, timeFormat.format(czc.getTzaisBaalHatanya()))).append(" <br><br>")
             .append(" <br><br>");
         return sb.toString();
     }

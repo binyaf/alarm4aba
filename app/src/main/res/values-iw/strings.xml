@@ -125,7 +125,7 @@
 
     <string name="reminder_text">תזכורת - לא לשכוח להתפלל %1$s</string>
     <string name="remind_me_about">הזכר לי:</string>
-    <string name="reminders_advanced_settings">הגדרות מתקדמות לתזכורות נמצאות במסך ההגדרות</string>
+    <string name="reminders_advanced_settings"> הגדרות מתקדמות לתזכורות נמצאות במסך ההגדרות</string>
     <string name="shacharit">שחרית</string>
     <string name="shacharit_vatikin">שחרית\n(ותיקין)</string>
     <string name="mincha">מנחה\n</string>

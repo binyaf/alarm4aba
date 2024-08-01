@@ -97,12 +97,9 @@ public class NotificationWorker extends Worker {
                     getNotificationPendingIntent(context, NotificationType.MINCHA_REMINDER);
             Calendar todayCal = Calendar.getInstance();
             Date notificationTime;
-            if (isTestMode) {
-                todayCal.add(Calendar.SECOND, 20);
-                notificationTime = todayCal.getTime();
-            } else {
-                notificationTime = getMinchaNotificationTime(zcalToday);
-            }
+
+            notificationTime = getMinchaNotificationTime(zcalToday);
+
             scheduleNotification(context, pendingIntent, notificationTime, NotificationType.MINCHA_REMINDER);
         }
 
@@ -110,13 +107,7 @@ public class NotificationWorker extends Worker {
             PendingIntent pendingIntent =
                     getNotificationPendingIntent(context, NotificationType.MAARIV_REMINDER);
             Calendar todayCal = Calendar.getInstance();
-            Date notificationTime;
-            if (isTestMode) {
-                todayCal.add(Calendar.SECOND, 30);
-                notificationTime = todayCal.getTime();
-            } else {
-                notificationTime = getMaarivNotificationTime(zcalToday);
-            }
+            Date notificationTime = getMaarivNotificationTime(zcalToday);
 
             //want to avoid sending notifications on Shabbat etc.
             if (! ZmanimService.isNowAssurBemlacha(clientsLocation)) {
@@ -163,13 +154,9 @@ public class NotificationWorker extends Worker {
 
         Calendar notificationTime = Calendar.getInstance();
 
-       /* if (PreferencesService.isTestMode()) {
-            //  notificationTime.set(Calendar.HOUR, notificationTime.get(Calendar.HOUR));
-            notificationTime.set(Calendar.MINUTE, notificationTime.get(Calendar.MINUTE) + 1);
-        } else {*/
-            notificationTime.setTime(today.getCandleLighting());
-            notificationTime.add(Calendar.MINUTE, -timeBeforeShabbat);
-      //  }
+        notificationTime.setTime(today.getCandleLighting());
+        notificationTime.add(Calendar.MINUTE, -timeBeforeShabbat);
+
         return notificationTime.getTime();
     }
 

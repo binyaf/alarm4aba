@@ -45,8 +45,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <receiver
-            android:name=".receiver.AlarmReceiver"
+        <receiver android:name=".receiver.AlarmReceiver"
             android:exported="true" />
         <receiver
             android:name=".receiver.NotificationsReceiver"
@@ -72,6 +71,7 @@
                     package="com.banjos.dosalarm" />
             </intent-filter>
         </receiver>
+        <receiver android:name=".receiver.AlarmReceiver$StopSoundReceiver"  android:exported="true"/>
     </application>
 
 </manifest>

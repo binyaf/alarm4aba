@@ -12,10 +12,11 @@ import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.util.Log;
-
+import android.os.Handler;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.preference.PreferenceManager;
 
 import com.banjos.dosalarm.R;
 import com.banjos.dosalarm.tools.DateTimesFormats;
@@ -43,11 +44,15 @@ public class NotificationsReceiver extends BroadcastReceiver {
     private static MediaPlayer mediaPlayer;
 
     private AlarmLocation clientsLocation;
+
+    private static final int NOTIFICATION_ALARM_DURATION_SEC = 120;
+
     @Override
     public void onReceive(Context context, Intent intent) {
         String type = intent.getStringExtra("NOTIFICATION_TYPE");
         preferencesService = new PreferencesService(context);
         clientsLocation = LocationService.getClientLocationDetails(context);
+        settingsPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         showNotification(context, type);
     }
 
@@ -234,6 +239,18 @@ public class NotificationsReceiver extends BroadcastReceiver {
         }
         mediaPlayer.setLooping(true);  // Loop the sound continuously
         mediaPlayer.start();
+
+        Handler  handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+                    mediaPlayer.stop();
+                    mediaPlayer.release();
+                    mediaPlayer = null;
+                }
+            }
+        }, NOTIFICATION_ALARM_DURATION_SEC * 1000);
     }
 
     private void stopNotification(Context context, NotificationType notificationType) {

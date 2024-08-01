@@ -29,7 +29,7 @@ public class IntentCreator {
         } else {
            flags = PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE;
         }
-        return PendingIntent.getBroadcast(context, requestCode, intent,flags);
+        return PendingIntent.getBroadcast(context, requestCode, intent, flags);
     }
 
     public static PendingIntent getNotificationPendingIntent(Context context, NotificationType type) {

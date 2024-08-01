@@ -44,11 +44,6 @@ public class ZmanimService {
 
     public static boolean hasCandleLightingToday(AlarmLocation clientsLocation, Context context) {
 
-        PreferencesService preferencesService = new PreferencesService(context);
-        if (preferencesService.isTestMode()) {
-            return true;
-        }
-
         boolean inIsrael = isInIsrael(clientsLocation);
 
         JewishCalendar jc = new JewishCalendar();
