@@ -9,10 +9,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.media.MediaPlayer;
+import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
+import android.os.SystemClock;
 import android.util.Log;
 import android.os.Handler;
+import android.widget.RemoteViews;
+
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -45,7 +51,7 @@ public class NotificationsReceiver extends BroadcastReceiver {
 
     private AlarmLocation clientsLocation;
 
-    private static final int NOTIFICATION_ALARM_DURATION_SEC = 120;
+    private static final int NOTIFICATION_ALARM_DURATION_SEC = 20;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -97,8 +103,9 @@ public class NotificationsReceiver extends BroadcastReceiver {
             title = context.getString(R.string.prayer_reminder_mincha_title);
             String sunset = DateTimesFormats.timeFormat.format(zCal.getSunset());
             text = context.getString(R.string.prayer_reminder_mincha_text, sunset);
+
             builder = createNotificationBuilder(context, title, text,
-                    NotificationType.STOP_MINCHA_REMINDER, NotificationType.SNOOZE_MINCHA_REMINDER);
+                   NotificationType.STOP_MINCHA_REMINDER, NotificationType.SNOOZE_MINCHA_REMINDER);
         } else if (NotificationType.MAARIV_REMINDER == type && preferencesService.isMaarivReminderSelected()) {
             title = context.getString(R.string.prayer_reminder_maariv_title);
             text = context.getString(R.string.prayer_reminder_maariv_text);
@@ -106,23 +113,20 @@ public class NotificationsReceiver extends BroadcastReceiver {
                     NotificationType.STOP_MAARIV_REMINDER, NotificationType.SNOOZE_MAARIV_REMINDER);
         }
 
-        if (title == null) {
-            Log.e("NotificationsReceiver", "type: " + type.toString() + " | Not sending notification | title is empty");
+        if (title == null || builder == null) {
+            Log.e("NotificationsReceiver", "type: " + type.toString() + " | Not sending notification | " +
+                    "title or builder are null");
             return;
         }
 
-        if (builder != null) {
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            Log.d("NotificationsReceiver", "NO permission | notification-type:" + type);
+        } else {
+            Log.d("NotificationsReceiver", "showing notification  | notification type:" + type  +
+                    " | title: " + title + " | text: " + text + " | notification id:" + type.getId());
             playSound(context);
-
-            // Show the notification
-            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                Log.d("NotificationsReceiver", "NO permission | notification-type:" + type);
-            } else {
-                Log.d("NotificationsReceiver", "showing notification  | notification type:" + type  +
-                        " | title: " + title + " | text: " + text + " | notification id:" + type.getId());
-                notificationManager.notify(type.getId(), builder.build());
-            }
+            notificationManager.notify(type.getId(), builder.build());
         }
     }
 
@@ -200,7 +204,7 @@ public class NotificationsReceiver extends BroadcastReceiver {
         }
     }
 
-    private NotificationCompat.Builder createNotificationBuilder(Context context, String title, String text,
+   /* private NotificationCompat.Builder createNotificationBuilder(Context context, String title, String text,
                                                                  NotificationType stopReminderType, NotificationType snoozeReminderType) {
 
         if (title == null) {
@@ -225,38 +229,102 @@ public class NotificationsReceiver extends BroadcastReceiver {
                 .addAction(R.drawable.ic_dosalarm_notification, context.getString(R.string.stop), stopPendingIntent)
                 .addAction(R.drawable.ic_launcher_foreground, context.getString(R.string.snooze), snoozePendingIntent)
                 .setDeleteIntent(deletePendingIntent)
+                .setColor(Color.GRAY)
                 .setAutoCancel(true);
 
        builder.setStyle(new NotificationCompat.BigTextStyle().bigText(text));
 
         return builder;
 
-    }
+    }*/
 
-    private void playSound(Context context) {
-        if (mediaPlayer == null) {
-            mediaPlayer = MediaPlayer.create(context, Uri.parse("content://settings/system/alarm_alert"));
+    private NotificationCompat.Builder createNotificationBuilder(Context context, String title, String text,
+                                                                    NotificationType stopReminderType,
+                                                                    NotificationType snoozeReminderType) {
+
+        if (title == null) {
+            return null;
         }
-        mediaPlayer.setLooping(true);  // Loop the sound continuously
+
+        RemoteViews notificationLayout = new RemoteViews(context.getPackageName(), R.layout.notification_layout);
+        notificationLayout.setTextViewText(R.id.notification_title, title);
+        notificationLayout.setTextViewText(R.id.notification_text, text);
+
+        // Create intents for the actions
+        PendingIntent stopPendingIntent = IntentCreator.getNotificationPendingIntent(context, stopReminderType);
+        PendingIntent snoozePendingIntent =
+                IntentCreator.getNotificationPendingIntent(context, snoozeReminderType);
+
+        PendingIntent deletePendingIntent = IntentCreator.getNotificationPendingIntent(context, stopReminderType);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NotificationJobScheduler.CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_dosalarm_notification)
+                .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
+                .setCustomContentView(notificationLayout)
+                .setCustomBigContentView(notificationLayout)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setCategory(NotificationCompat.CATEGORY_ALARM)
+                .addAction(R.drawable.ic_dosalarm_notification, context.getString(R.string.stop), stopPendingIntent)
+                .addAction(R.drawable.ic_launcher_foreground, context.getString(R.string.snooze), snoozePendingIntent)
+                .setDeleteIntent(deletePendingIntent)
+                .setColor(Color.GRAY)
+                .setContentTitle(title)
+                .setAutoCancel(true);
+
+        builder.setStyle(new NotificationCompat.BigTextStyle().bigText(text));
+
+        // Set the PendingIntents to the buttons in the custom layout
+        notificationLayout.setOnClickPendingIntent(R.id.notification_stop, stopPendingIntent);
+        notificationLayout.setOnClickPendingIntent(R.id.notification_snooze, snoozePendingIntent);
+
+        return builder;
+
+    }
+    private void playSound(Context context) {
+
+        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+        if (alarmSound == null) {
+            // Fall back to notification sound if alarm sound is not available
+            alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        }
+        mediaPlayer = MediaPlayer.create(context, alarmSound);
+        mediaPlayer.setLooping(true);
         mediaPlayer.start();
 
-        Handler  handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-                    mediaPlayer.stop();
-                    mediaPlayer.release();
-                    mediaPlayer = null;
-                }
-            }
-        }, NOTIFICATION_ALARM_DURATION_SEC * 1000);
+        int flags = 0;
+        // we call broadcast using pendingIntent 33 >= 31
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            flags = PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE;
+        } else {
+            flags = PendingIntent.FLAG_IMMUTABLE;
+        }
+        //the time since last boot + the duration.
+        long stopAlarmAtMillis = SystemClock.elapsedRealtime() + (NOTIFICATION_ALARM_DURATION_SEC * 1000);
+
+        Intent stopAlarmIntent = new Intent(context, NotificationsReceiver.StopSoundReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 444, stopAlarmIntent, flags);
+
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        alarmManager.setExact(AlarmManager.ELAPSED_REALTIME_WAKEUP, stopAlarmAtMillis , pendingIntent);
+
+    }
+
+    public static class StopSoundReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.d("StopSoundReceiver", " Notifications Receiver - STOP ALARM");
+            stopSound();
+        }
     }
 
     private void stopNotification(Context context, NotificationType notificationType) {
         Log.d("NotificationsReceiver", "stopping notification  | notification-type:" + notificationType.getType() +
                 " | notification id:" + notificationType.getId() + " | request-code: " + notificationType.getRequestCode());
-        dismissNotification(context, notificationType);
+       dismissNotification(context, notificationType);
+       stopSound();
+    }
+
+    private static void stopSound() {
         if (mediaPlayer != null) {
             mediaPlayer.stop();
             mediaPlayer.release();
@@ -264,8 +332,6 @@ public class NotificationsReceiver extends BroadcastReceiver {
         }
     }
 
-
-    // Method to dismiss a notification
     private void dismissNotification(Context  context, NotificationType notificationType) {
 
         NotificationManager notificationManager =

@@ -1,0 +1,57 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@drawable/notification_background">
+
+    <TextView
+        android:id="@+id/notification_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Custom Title"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:background="@color/light_grey"
+        android:padding="8dp" />
+
+    <TextView
+        android:id="@+id/notification_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Custom Text"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        android:background="@color/very_light_grey"
+        android:padding="4dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/notification_stop"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/stop"
+            android:background="@drawable/rounded_notification_button"
+            android:textColor="#FFFFFF"
+            android:padding="10dp"
+            android:layout_marginEnd="8dp"/>
+
+        <Button
+            android:id="@+id/notification_snooze"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/snooze"
+            android:background="@drawable/rounded_notification_button"
+            android:textColor="#FFFFFF"
+            android:padding="10dp"
+            android:layout_marginStart="8dp"/>
+    </LinearLayout>
+</LinearLayout>
+

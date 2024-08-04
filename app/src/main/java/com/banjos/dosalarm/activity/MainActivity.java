@@ -163,10 +163,8 @@ public class MainActivity extends AppCompatActivity {
                     clicksOnEmptyTextView = 0;
 
                     //TODO remove
-                   // NotificationWorker nw = new NotificationWorker(context, null);
-                   // nw.scheduleNotifications();
                     PendingIntent pendingIntent =
-                            getNotificationPendingIntent(context, NotificationType.MINCHA_REMINDER);
+                            getNotificationPendingIntent(context, NotificationType.MAARIV_REMINDER);
                     Calendar todayCal = Calendar.getInstance();
                     todayCal.add(Calendar.SECOND, 10);
                     NotificationWorker.scheduleNotification(context, pendingIntent, todayCal.getTime(), NotificationType.MINCHA_REMINDER);
@@ -582,9 +580,6 @@ public class MainActivity extends AppCompatActivity {
                 "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + hebrewDate +
                 "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + time + "</b></font><br>";
 
-        if (alarm.getType() == AlarmType.MINCHA) {
-            text += "<br><font color=" + Color.GRAY + "  size=3 >15 min. before sunset</font><br>";
-        }
         return text;
     }
 
