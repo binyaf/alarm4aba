@@ -1,0 +1,75 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@drawable/notification_background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="5pt"
+        android:background="@drawable/rounded_notification_button">
+
+        <TextView
+            android:id="@+id/notification_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Custom Title"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:padding="8dp"/>
+
+        <TextView
+            android:id="@+id/notification_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Custom Text"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:padding="4dp"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="10pt">
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/notification_stop"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/stop"
+            android:background="@drawable/rounded_notification_button"
+            android:textColor="@color/black"
+            android:padding="10dp"
+            android:layout_marginEnd="8dp"
+            android:minWidth="100dp"
+            android:minHeight="40dp"/>
+
+        <Button
+            android:id="@+id/notification_snooze"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/snooze"
+            android:background="@drawable/rounded_notification_button"
+            android:textColor="@color/black"
+            android:padding="10dp"
+            android:layout_marginStart="8dp"
+            android:minWidth="100dp"
+            android:minHeight="40dp"/>
+    </LinearLayout>
+</LinearLayout>
+

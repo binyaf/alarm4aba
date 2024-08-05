@@ -27,20 +27,14 @@ import java.util.Date;
 public class NotificationWorker extends Worker {
 
     private LocationService locationService;
-    private int CANDLE_LIGHTING_REQUEST_CODE = 10;
-    public static int SHACHARIS_REQUEST_CODE = 11;
-    private int MINCHA_REQUEST_CODE = 12;
-    private int MAARIV_REQUEST_CODE = 13;
 
     private Context context;
 
-    private SharedPreferences settingsPreference;
     private PreferencesService preferencesService;
 
     public NotificationWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
         locationService = new LocationService();
-        settingsPreference = PreferenceManager.getDefaultSharedPreferences(context);
         preferencesService = new PreferencesService(context);
         this.context = context;
     }
@@ -49,7 +43,6 @@ public class NotificationWorker extends Worker {
     @Override
     public Result doWork() {
         Log.d("NotificationWorker", "NotificationWorker was called");
-        Context context = getApplicationContext();
         scheduleNotifications();
         return Result.success();
     }
@@ -58,7 +51,7 @@ public class NotificationWorker extends Worker {
 
         AlarmLocation clientsLocation = locationService.getClientLocationDetails(context);
 
-        ZmanimCalendar zcalToday = ZmanimService.getTodaysZmanimCalendar(clientsLocation);
+        final ZmanimCalendar zcalToday = ZmanimService.getTodaysZmanimCalendar(clientsLocation);
 
         Log.d("NotificationWorker", "Todays Zmanim\n" + zcalToday.toJSON());
         boolean isTestMode = preferencesService.isTestMode();
@@ -95,22 +88,19 @@ public class NotificationWorker extends Worker {
         if (preferencesService.isMinchaReminderSelected()) {
             PendingIntent pendingIntent =
                     getNotificationPendingIntent(context, NotificationType.MINCHA_REMINDER);
-            Calendar todayCal = Calendar.getInstance();
-            Date notificationTime;
 
-            notificationTime = getMinchaNotificationTime(zcalToday);
-
+            Date notificationTime = getMinchaNotificationTime(zcalToday);
             scheduleNotification(context, pendingIntent, notificationTime, NotificationType.MINCHA_REMINDER);
         }
 
         if (preferencesService.isMaarivReminderSelected()) {
             PendingIntent pendingIntent =
                     getNotificationPendingIntent(context, NotificationType.MAARIV_REMINDER);
-            Calendar todayCal = Calendar.getInstance();
+
             Date notificationTime = getMaarivNotificationTime(zcalToday);
 
             //want to avoid sending notifications on Shabbat etc.
-            if (! ZmanimService.isNowAssurBemlacha(clientsLocation)) {
+            if (!ZmanimService.isNowAssurBemlacha(clientsLocation)) {
                 scheduleNotification(context, pendingIntent, notificationTime, NotificationType.MAARIV_REMINDER);
             }
         }
@@ -123,7 +113,6 @@ public class NotificationWorker extends Worker {
         alarmManager.cancel(pendingIntent);
 
         if (notificationTime.after(now)) {
-            PreferencesService preferencesService = new PreferencesService(context);
 
             Log.d("NotificationWorker", "type: " + notificationType + " | Scheduling notification | notification time: " +
                     notificationTime + " | now: " + now);

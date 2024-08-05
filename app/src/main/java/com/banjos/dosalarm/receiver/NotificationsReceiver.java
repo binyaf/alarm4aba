@@ -16,7 +16,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.SystemClock;
 import android.util.Log;
-import android.os.Handler;
 import android.widget.RemoteViews;
 
 import androidx.core.app.ActivityCompat;
@@ -246,9 +245,10 @@ public class NotificationsReceiver extends BroadcastReceiver {
             return null;
         }
 
-        RemoteViews notificationLayout = new RemoteViews(context.getPackageName(), R.layout.notification_layout);
-        notificationLayout.setTextViewText(R.id.notification_title, title);
-        notificationLayout.setTextViewText(R.id.notification_text, text);
+        RemoteViews notificationLayoutExpanded = new RemoteViews(context.getPackageName(), R.layout.notification_layout_expanded);
+
+        notificationLayoutExpanded.setTextViewText(R.id.notification_title, title);
+        notificationLayoutExpanded.setTextViewText(R.id.notification_text, text);
 
         // Create intents for the actions
         PendingIntent stopPendingIntent = IntentCreator.getNotificationPendingIntent(context, stopReminderType);
@@ -260,8 +260,8 @@ public class NotificationsReceiver extends BroadcastReceiver {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NotificationJobScheduler.CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_dosalarm_notification)
                 .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
-                .setCustomContentView(notificationLayout)
-                .setCustomBigContentView(notificationLayout)
+                .setCustomContentView(notificationLayoutExpanded)
+                .setCustomBigContentView(notificationLayoutExpanded)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setCategory(NotificationCompat.CATEGORY_ALARM)
                 .addAction(R.drawable.ic_dosalarm_notification, context.getString(R.string.stop), stopPendingIntent)
@@ -274,8 +274,8 @@ public class NotificationsReceiver extends BroadcastReceiver {
         builder.setStyle(new NotificationCompat.BigTextStyle().bigText(text));
 
         // Set the PendingIntents to the buttons in the custom layout
-        notificationLayout.setOnClickPendingIntent(R.id.notification_stop, stopPendingIntent);
-        notificationLayout.setOnClickPendingIntent(R.id.notification_snooze, snoozePendingIntent);
+        notificationLayoutExpanded.setOnClickPendingIntent(R.id.notification_stop, stopPendingIntent);
+        notificationLayoutExpanded.setOnClickPendingIntent(R.id.notification_snooze, snoozePendingIntent);
 
         return builder;
 
