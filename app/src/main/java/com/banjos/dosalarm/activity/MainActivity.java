@@ -163,12 +163,15 @@ public class MainActivity extends AppCompatActivity {
                     clicksOnEmptyTextView = 0;
 
                     //TODO remove
+                    NotificationType type = NotificationType.CANDLE_LIGHTING_REMINDER;
+
                     PendingIntent pendingIntent =
-                            getNotificationPendingIntent(context, NotificationType.MAARIV_REMINDER);
+                            getNotificationPendingIntent(context, type);
                     Calendar todayCal = Calendar.getInstance();
                     todayCal.add(Calendar.SECOND, 10);
-                    NotificationWorker.scheduleNotification(context, pendingIntent, todayCal.getTime(), NotificationType.MINCHA_REMINDER);
-                    //
+                    NotificationWorker.scheduleNotification(context, pendingIntent, todayCal.getTime(), type);
+
+
                 } else {
                     Log.d("AnimationClick", "number of clicks = " + clicksOnEmptyTextView);
                 }

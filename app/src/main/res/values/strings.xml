@@ -77,7 +77,7 @@
 
     <!-- notification -->
 
-    <string name="notification_candle_lighting_title">Shabbat Candle-Lighting is in %1$s</string>
+    <string name="notification_candle_lighting_title">Shabbat Candle-Lighting\nis in %1$s</string>
     <string name="notification_body">Don\'t forget to finish preparations on time</string>
     <string name="ok">OK</string>
 

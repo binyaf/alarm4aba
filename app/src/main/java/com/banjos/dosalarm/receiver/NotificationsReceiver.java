@@ -35,6 +35,7 @@ import com.banjos.dosalarm.types.NotificationType;
 import com.kosherjava.zmanim.ZmanimCalendar;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -88,7 +89,9 @@ public class NotificationsReceiver extends BroadcastReceiver {
             title = prepareCandleLightingTitle(context);
             text = prepareCandleLightNotificationText(context);
             builder = createNotificationBuilder(context, title, text,
-                    NotificationType.STOP_CANDLE_LIGHTING_REMINDER, NotificationType.SNOOZE_CANDLE_LIGHTING_REMINDER);
+                    NotificationType.STOP_CANDLE_LIGHTING_REMINDER,
+                    NotificationType.SNOOZE_CANDLE_LIGHTING_REMINDER,
+                    R.drawable.candles);
         } else if (NotificationType.SHACHARIT_REMINDER == type && preferencesService.isShacharisReminderSelected()) {
             ZmanimCalendar zCal = ZmanimService.getTodaysZmanimCalendar(clientsLocation);
             title = context.getString(R.string.prayer_reminder_shacharit_title);
@@ -96,7 +99,8 @@ public class NotificationsReceiver extends BroadcastReceiver {
             String szksGra = DateTimesFormats.timeFormat.format( zCal.getSofZmanShmaGRA());
             text = context.getString(R.string.prayer_reminder_shacharit_text,sunrise, szksGra);
             builder = createNotificationBuilder(context, title, text,
-                    NotificationType.STOP_SHACHARIT_REMINDER, NotificationType.SNOOZE_SHACHARIT_REMINDER);
+                    NotificationType.STOP_SHACHARIT_REMINDER, NotificationType.SNOOZE_SHACHARIT_REMINDER,
+                    R.drawable.sunrise);
         } else if (NotificationType.MINCHA_REMINDER == type && preferencesService.isMinchaReminderSelected()) {
             ZmanimCalendar zCal = ZmanimService.getTodaysZmanimCalendar(clientsLocation);
             title = context.getString(R.string.prayer_reminder_mincha_title);
@@ -104,12 +108,14 @@ public class NotificationsReceiver extends BroadcastReceiver {
             text = context.getString(R.string.prayer_reminder_mincha_text, sunset);
 
             builder = createNotificationBuilder(context, title, text,
-                   NotificationType.STOP_MINCHA_REMINDER, NotificationType.SNOOZE_MINCHA_REMINDER);
+                   NotificationType.STOP_MINCHA_REMINDER, NotificationType.SNOOZE_MINCHA_REMINDER,
+                    R.drawable.sunset);
         } else if (NotificationType.MAARIV_REMINDER == type && preferencesService.isMaarivReminderSelected()) {
             title = context.getString(R.string.prayer_reminder_maariv_title);
             text = context.getString(R.string.prayer_reminder_maariv_text);
             builder = createNotificationBuilder(context, title, text,
-                    NotificationType.STOP_MAARIV_REMINDER, NotificationType.SNOOZE_MAARIV_REMINDER);
+                    NotificationType.STOP_MAARIV_REMINDER, NotificationType.SNOOZE_MAARIV_REMINDER,
+                    R.drawable.night);
         }
 
         if (title == null || builder == null) {
@@ -131,7 +137,11 @@ public class NotificationsReceiver extends BroadcastReceiver {
 
     private String prepareCandleLightingTitle(Context context) {
 
-        Date candleLightingTimeToday = ZmanimService.getCandleLightingTimeToday(clientsLocation, context);
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.MINUTE, 30);
+        Date dateForTest = cal.getTime();
+
+        Date candleLightingTimeToday = ZmanimService.getCandleLightingTimeToday(clientsLocation, context); // dateForTest;
 
         if (candleLightingTimeToday == null) {
             return null;
@@ -239,17 +249,21 @@ public class NotificationsReceiver extends BroadcastReceiver {
 
     private NotificationCompat.Builder createNotificationBuilder(Context context, String title, String text,
                                                                     NotificationType stopReminderType,
-                                                                    NotificationType snoozeReminderType) {
+                                                                    NotificationType snoozeReminderType,
+                                                                 int icon) {
 
         if (title == null) {
             return null;
         }
 
         RemoteViews notificationLayoutExpanded = new RemoteViews(context.getPackageName(), R.layout.notification_layout_expanded);
+        RemoteViews notificationLayoutCollapsed = new RemoteViews(context.getPackageName(), R.layout.notification_layout_collapsed);
 
         notificationLayoutExpanded.setTextViewText(R.id.notification_title, title);
         notificationLayoutExpanded.setTextViewText(R.id.notification_text, text);
+        notificationLayoutExpanded.setImageViewResource(R.id.notification_icon, icon);
 
+        notificationLayoutCollapsed.setTextViewText(R.id.notification_collapsed_title, "");
         // Create intents for the actions
         PendingIntent stopPendingIntent = IntentCreator.getNotificationPendingIntent(context, stopReminderType);
         PendingIntent snoozePendingIntent =
@@ -260,7 +274,7 @@ public class NotificationsReceiver extends BroadcastReceiver {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NotificationJobScheduler.CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_dosalarm_notification)
                 .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
-                .setCustomContentView(notificationLayoutExpanded)
+                .setCustomContentView(notificationLayoutCollapsed)
                 .setCustomBigContentView(notificationLayoutExpanded)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setCategory(NotificationCompat.CATEGORY_ALARM)

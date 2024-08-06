@@ -113,7 +113,6 @@ public class NotificationWorker extends Worker {
         alarmManager.cancel(pendingIntent);
 
         if (notificationTime.after(now)) {
-
             Log.d("NotificationWorker", "type: " + notificationType + " | Scheduling notification | notification time: " +
                     notificationTime + " | now: " + now);
             alarmManager.set(AlarmManager.RTC_WAKEUP, notificationTime.getTime(), pendingIntent);

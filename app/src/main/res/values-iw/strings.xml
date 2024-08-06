@@ -76,7 +76,7 @@
     <string name="PAR_FR">פריס, צרפת</string>
 
     <!-- notification -->
-    <string name="notification_candle_lighting_title">הדלקת נרות שבת בעוד %1$s</string>
+    <string name="notification_candle_lighting_title">הדלקת נרות שבת\nבעוד %1$s</string>
     <string name="notification_body">לא לשכוח לסיים את ההכנות בזמן</string>
     <string name="ok">אישור</string>
 
