@@ -1,5 +1,7 @@
 package com.banjos.dosalarm.receiver;
 
+import static com.banjos.dosalarm.tools.IntentCreator.getNotificationPendingIntent;
+
 import android.Manifest;
 import android.app.AlarmManager;
 import android.app.NotificationManager;
@@ -28,10 +30,12 @@ import com.banjos.dosalarm.tools.DateTimesFormats;
 import com.banjos.dosalarm.tools.IntentCreator;
 import com.banjos.dosalarm.tools.LocationService;
 import com.banjos.dosalarm.tools.NotificationJobScheduler;
+import com.banjos.dosalarm.tools.NotificationScheduler;
 import com.banjos.dosalarm.tools.PreferencesService;
 import com.banjos.dosalarm.tools.ZmanimService;
 import com.banjos.dosalarm.types.AlarmLocation;
 import com.banjos.dosalarm.types.NotificationType;
+import com.banjos.dosalarm.worker.NotificationWorker;
 import com.kosherjava.zmanim.ZmanimCalendar;
 
 import java.util.ArrayList;
@@ -51,8 +55,9 @@ public class NotificationsReceiver extends BroadcastReceiver {
 
     private AlarmLocation clientsLocation;
 
-    private static final int NOTIFICATION_ALARM_DURATION_SEC = 20;
+    private static final int NOTIFICATION_ALARM_DURATION_SEC = 10;
 
+    private static final int NOTIFICATION_SNOOZE_DURATION_MIN = 5;
     @Override
     public void onReceive(Context context, Intent intent) {
         String type = intent.getStringExtra("NOTIFICATION_TYPE");
@@ -82,6 +87,10 @@ public class NotificationsReceiver extends BroadcastReceiver {
 
     private void showNotification(Context context, NotificationType type) {
 
+        if (ZmanimService.isNowAssurBemlacha(clientsLocation)) {
+            Log.e("NotificationsReceiver", "type: " + type.toString() + " | Not sending notification | " +
+                    "it's Shabbat/Yom-tov now");
+        }
         String title = null;
         String text = null;
         NotificationCompat.Builder builder = null;
@@ -357,22 +366,36 @@ public class NotificationsReceiver extends BroadcastReceiver {
         }
     }
 
-    private void snoozeNotification(Context context, NotificationType notificationType) {
-        Log.d("NotificationReceiver", "snoozing notification  | notification-type:" + notificationType.getType() +
-                " | notification id:" + notificationType.getId());
+    private void snoozeNotification(Context context, final NotificationType snoozeNotificationType) {
 
-        stopNotification(context, notificationType);
-        // Set the snooze time  5 minutes)
-       long snoozeTimeMillis = System.currentTimeMillis() + 5 * 60 * 1000;
-
-        Intent intent = new Intent(context, NotificationsReceiver.class);
-
-        PendingIntent snoozePendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        if (alarmManager != null) {
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, snoozeTimeMillis, snoozePendingIntent);
+        NotificationType typeToSnooze = null;
+        if (snoozeNotificationType == NotificationType.SNOOZE_MINCHA_REMINDER) {
+            typeToSnooze = NotificationType.MINCHA_REMINDER;
+        } else if (snoozeNotificationType == NotificationType.SNOOZE_MAARIV_REMINDER) {
+            typeToSnooze = NotificationType.MAARIV_REMINDER;
+        } else if (snoozeNotificationType == NotificationType.SNOOZE_SHACHARIT_REMINDER) {
+            typeToSnooze = NotificationType.SHACHARIT_REMINDER;
+        } else if (snoozeNotificationType == NotificationType.SNOOZE_CANDLE_LIGHTING_REMINDER) {
+            typeToSnooze = NotificationType.CANDLE_LIGHTING_REMINDER;
         }
+
+        if (typeToSnooze == null) {
+            Log.e("NotificationReceiver", "can not snooze notification  | notification-type:" + snoozeNotificationType +
+                    " | didn't find any notification to snooze");
+        } else {
+            Log.d("NotificationReceiver", "snoozing notification  | notification-type:" + typeToSnooze +
+                    " | notification id:" + typeToSnooze.getId());
+        }
+
+        stopNotification(context, typeToSnooze);
+
+        PendingIntent pendingIntent =
+                getNotificationPendingIntent(context, typeToSnooze);
+
+        long snoozeTimeMilli = NOTIFICATION_SNOOZE_DURATION_MIN * 60 * 1000;
+        Date notificationTime = new Date(System.currentTimeMillis() + snoozeTimeMilli);
+        NotificationScheduler.scheduleNotification(context, pendingIntent, notificationTime, typeToSnooze);
+
     }
 }
 

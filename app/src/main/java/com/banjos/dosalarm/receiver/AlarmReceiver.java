@@ -55,27 +55,6 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         playSound(context, alarmDurationSec);
 
-      /*  Uri alarmSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-        if (alarmSoundUri == null) {
-            alarmSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
-        }
-
-        Ringtone ringtone = RingtoneManager.getRingtone(context, alarmSoundUri);
-
-        // For versions before Lollipop, there's no need to set audio attributes
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            AudioAttributes audioAttributes = new AudioAttributes.Builder()
-                    .setUsage(AudioAttributes.USAGE_ALARM)
-                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                    .build();
-
-            ringtone.setAudioAttributes(audioAttributes);
-        }
-
-        ringtone.play();
-
-        new Handler().postDelayed(() -> ringtone.stop(), alarmDurationSec * 1000);
-*/
         // go to the main activity
         removeAlarmFromInternalStorage(alarm);
         Intent activityIntent = new Intent(context, MainActivity.class);

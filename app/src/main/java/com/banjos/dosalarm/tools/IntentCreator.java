@@ -33,7 +33,7 @@ public class IntentCreator {
     }
 
     public static PendingIntent getNotificationPendingIntent(Context context, NotificationType type) {
-        // Create an intent for the delete action
+
         Intent intent = new Intent(context, NotificationsReceiver.class);
         intent.putExtra("NOTIFICATION_TYPE", type.toString());
 

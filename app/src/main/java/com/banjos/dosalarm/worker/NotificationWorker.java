@@ -14,6 +14,7 @@ import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 import com.banjos.dosalarm.tools.LocationService;
+import com.banjos.dosalarm.tools.NotificationScheduler;
 import com.banjos.dosalarm.tools.PreferencesService;
 import com.banjos.dosalarm.tools.ZmanimService;
 import com.banjos.dosalarm.types.AlarmLocation;
@@ -59,13 +60,10 @@ public class NotificationWorker extends Worker {
         if (preferencesService.isCandleLightReminderSelected()) {
 
             if (scheduleNotificationForCandleLightingToday(zcalToday, clientsLocation, context)) {
-
-                Date notificationTime = getCandleLightingNotificationTime(zcalToday);
-
                 PendingIntent pendingIntent =
                         getNotificationPendingIntent(context, NotificationType.CANDLE_LIGHTING_REMINDER);
-
-                scheduleNotification(context, pendingIntent, notificationTime, NotificationType.CANDLE_LIGHTING_REMINDER);
+                Date notificationTime = getCandleLightingNotificationTime(zcalToday);
+                NotificationScheduler.scheduleNotification(context, pendingIntent, notificationTime, NotificationType.CANDLE_LIGHTING_REMINDER);
             } else {
                 Log.d("NotificationWorker", "type: " + NotificationType.CANDLE_LIGHTING_REMINDER + " | NOT Scheduling notification | no candle lighting today");
             }
@@ -74,51 +72,23 @@ public class NotificationWorker extends Worker {
         if (preferencesService.isShacharisReminderSelected()) {
             PendingIntent pendingIntent =
                     getNotificationPendingIntent(context, NotificationType.SHACHARIT_REMINDER);
-            Calendar todayCal = Calendar.getInstance();
-            Date notificationTime;
-            if (isTestMode) {
-                todayCal.add(Calendar.SECOND, 10);
-                notificationTime = todayCal.getTime();
-            } else {
-                notificationTime = getShacharitNotificationTime(zcalToday);
-            }
-            scheduleNotification(context, pendingIntent, notificationTime, NotificationType.SHACHARIT_REMINDER);
+            Date notificationTime = getShacharitNotificationTime(zcalToday);
+            NotificationScheduler.scheduleNotification(context, pendingIntent, notificationTime, NotificationType.SHACHARIT_REMINDER);
         }
 
         if (preferencesService.isMinchaReminderSelected()) {
             PendingIntent pendingIntent =
                     getNotificationPendingIntent(context, NotificationType.MINCHA_REMINDER);
-
             Date notificationTime = getMinchaNotificationTime(zcalToday);
-            scheduleNotification(context, pendingIntent, notificationTime, NotificationType.MINCHA_REMINDER);
+            NotificationScheduler.scheduleNotification(context, pendingIntent, notificationTime, NotificationType.MINCHA_REMINDER);
         }
 
         if (preferencesService.isMaarivReminderSelected()) {
             PendingIntent pendingIntent =
                     getNotificationPendingIntent(context, NotificationType.MAARIV_REMINDER);
-
             Date notificationTime = getMaarivNotificationTime(zcalToday);
+            NotificationScheduler.scheduleNotification(context, pendingIntent, notificationTime, NotificationType.MAARIV_REMINDER);
 
-            //want to avoid sending notifications on Shabbat etc.
-            if (!ZmanimService.isNowAssurBemlacha(clientsLocation)) {
-                scheduleNotification(context, pendingIntent, notificationTime, NotificationType.MAARIV_REMINDER);
-            }
-        }
-    }
-
-    public static void scheduleNotification(Context context, PendingIntent pendingIntent,
-                                            Date notificationTime, NotificationType notificationType) {
-        Date now = Calendar.getInstance().getTime();
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        alarmManager.cancel(pendingIntent);
-
-        if (notificationTime.after(now)) {
-            Log.d("NotificationWorker", "type: " + notificationType + " | Scheduling notification | notification time: " +
-                    notificationTime + " | now: " + now);
-            alarmManager.set(AlarmManager.RTC_WAKEUP, notificationTime.getTime(), pendingIntent);
-        } else {
-            Log.d("NotificationWorker", "type: " + notificationType + " | NOT Scheduling notification | notification time " +
-                    notificationTime + " | now: " + now + " | notification is in the past - not Scheduling");
         }
     }
 
@@ -138,7 +108,7 @@ public class NotificationWorker extends Worker {
 
     private Date getCandleLightingNotificationTime(ZmanimCalendar today) {
 
-        int timeBeforeShabbat =  preferencesService.getCandleLightingMinutesBeforeShabbatForReminder();
+        int timeBeforeShabbat = preferencesService.getCandleLightingMinutesBeforeShabbatForReminder();
 
         Calendar notificationTime = Calendar.getInstance();
 

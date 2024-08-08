@@ -42,17 +42,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.ShareCompat;
 import androidx.core.content.ContextCompat;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
 import com.banjos.dosalarm.R;
 import com.banjos.dosalarm.tools.DateTimesFormats;
 import com.banjos.dosalarm.tools.IntentCreator;
 import com.banjos.dosalarm.tools.LocationService;
 import com.banjos.dosalarm.tools.NotificationJobScheduler;
+import com.banjos.dosalarm.tools.NotificationScheduler;
 import com.banjos.dosalarm.tools.PreferencesService;
 import com.banjos.dosalarm.tools.ZmanimService;
 import com.banjos.dosalarm.types.Alarm;
 import com.banjos.dosalarm.types.AlarmLocation;
-import com.banjos.dosalarm.types.AlarmType;
 import com.banjos.dosalarm.types.IntentKeys;
 import com.banjos.dosalarm.types.NotificationType;
 import com.banjos.dosalarm.worker.NotificationWorker;
@@ -163,14 +165,13 @@ public class MainActivity extends AppCompatActivity {
                     clicksOnEmptyTextView = 0;
 
                     //TODO remove
-                    NotificationType type = NotificationType.CANDLE_LIGHTING_REMINDER;
+                    NotificationType type = NotificationType.MINCHA_REMINDER;
 
                     PendingIntent pendingIntent =
                             getNotificationPendingIntent(context, type);
                     Calendar todayCal = Calendar.getInstance();
                     todayCal.add(Calendar.SECOND, 10);
-                    NotificationWorker.scheduleNotification(context, pendingIntent, todayCal.getTime(), type);
-
+                    NotificationScheduler.scheduleNotification(context, pendingIntent, todayCal.getTime(), type);
 
                 } else {
                     Log.d("AnimationClick", "number of clicks = " + clicksOnEmptyTextView);
@@ -200,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
                     if (isChecked) {
                         if (areNotificationsEnabled(context)) {
                             preferencesService.shacharitReminderSwitched(true);
-                            //TODO run from here and from every other 'switch' NotificationWorker.scheduleNotifications - not critical
+                            runSchedulingJob(context);
                         } else {
                             preferencesService.shacharitReminderSwitched(false);
                             shacharitReminderSwitch.setChecked(false);
@@ -214,6 +215,7 @@ public class MainActivity extends AppCompatActivity {
             if (isChecked) {
                 if (areNotificationsEnabled(context)) {
                     preferencesService.minchaReminderSwitched(true);
+                    runSchedulingJob(context);
                 } else {
                     preferencesService.minchaReminderSwitched(false);
                     minchaReminderSwitch.setChecked(false);
@@ -227,6 +229,7 @@ public class MainActivity extends AppCompatActivity {
             if (isChecked) {
                 if (areNotificationsEnabled(context)) {
                     preferencesService.maarivReminderSwitched(true);
+                    runSchedulingJob(context);
                 } else {
                     preferencesService.maarivReminderSwitched(false);
                     maarivReminderSwitch.setChecked(false);
@@ -240,6 +243,7 @@ public class MainActivity extends AppCompatActivity {
             if (isChecked) {
                 if (areNotificationsEnabled(context)) {
                     preferencesService.candleLightReminderSwitched(true);
+                    runSchedulingJob(context);
                 } else {
                     preferencesService.candleLightReminderSwitched(false);
                     candleLightReminderSwitch.setChecked(false);
@@ -248,6 +252,13 @@ public class MainActivity extends AppCompatActivity {
                 preferencesService.candleLightReminderSwitched(false);
             }
         });
+    }
+
+    private void runSchedulingJob(Context context) {
+        OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(NotificationWorker.class)
+                .build();
+
+        WorkManager.getInstance(context).enqueue(oneTimeWorkRequest);
     }
 
     private boolean areNotificationsEnabled(Context context) {
