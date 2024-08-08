@@ -48,13 +48,13 @@ public class NotificationWorker extends Worker {
         return Result.success();
     }
 
-    public void scheduleNotifications() {
+    private void scheduleNotifications() {
 
         AlarmLocation clientsLocation = locationService.getClientLocationDetails(context);
 
         final ZmanimCalendar zcalToday = ZmanimService.getTodaysZmanimCalendar(clientsLocation);
 
-        Log.d("NotificationWorker", "Todays Zmanim\n" + zcalToday.toJSON());
+        //Log.d("NotificationWorker", "Todays Zmanim\n" + zcalToday.toJSON());
         boolean isTestMode = preferencesService.isTestMode();
 
         if (preferencesService.isCandleLightReminderSelected()) {

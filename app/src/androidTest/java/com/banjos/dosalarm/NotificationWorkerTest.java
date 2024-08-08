@@ -1,16 +1,12 @@
 package com.banjos.dosalarm;
 
 import static org.junit.Assert.assertEquals;
-
 import android.content.Context;
-
 import androidx.test.core.app.ApplicationProvider;
 import androidx.work.testing.TestWorkerBuilder;
 import androidx.work.testing.WorkManagerTestInitHelper;
-
 import com.banjos.dosalarm.tools.PreferencesService;
 import com.banjos.dosalarm.worker.NotificationWorker;
-
 import org.junit.Before;
 import org.junit.Test;
 public class NotificationWorkerTest {

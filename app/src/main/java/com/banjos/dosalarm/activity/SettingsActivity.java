@@ -1,5 +1,6 @@
 package com.banjos.dosalarm.activity;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.appcompat.app.ActionBar;
@@ -8,13 +9,17 @@ import androidx.preference.ListPreference;
 import androidx.preference.MultiSelectListPreference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreference;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
 import com.banjos.dosalarm.R;
+import com.banjos.dosalarm.worker.NotificationWorker;
 
 public class SettingsActivity extends AppCompatActivity  {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Context context = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_activity);
         if (savedInstanceState == null) {
@@ -29,33 +34,28 @@ public class SettingsActivity extends AppCompatActivity  {
         }
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(NotificationWorker.class)
+                .build();
+        WorkManager.getInstance(this).enqueue(oneTimeWorkRequest);
+
+    }
+
     public static class SettingsFragment extends PreferenceFragmentCompat {
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
-
             super.onCreate(savedInstanceState);
-
-          /*  ListPreference timeBeforeShabbatList = (ListPreference) findPreference("pref_notification_time_before_shabbat");
-            MultiSelectListPreference multiSelectNotificationDetails =
-                    (MultiSelectListPreference) findPreference("pref_pre_shabbat_notifications_checklist");
-
-            timeBeforeShabbatList.setEnabled(switchPreferenceEnableNotifications.isChecked());
-            multiSelectNotificationDetails.setEnabled(switchPreferenceEnableNotifications.isChecked());
-
-            // Add a listener to SwitchPreference to update CheckBoxPreference state
-            switchPreferenceEnableNotifications.setOnPreferenceChangeListener((preference, newValue) -> {
-                boolean isChecked = (boolean) newValue;
-                timeBeforeShabbatList.setEnabled(isChecked);
-                multiSelectNotificationDetails.setEnabled(isChecked);
-                return true;
-            });*/
         }
 
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey);
         }
+
+
     }
 }
 

@@ -31,8 +31,8 @@ public class NotificationJobScheduler {
         //TODO not sure why this needs to be in the same class with creating the channel
         //there's a minimum interval limit of 15 minutes for PeriodicWorkRequest
         PeriodicWorkRequest notificationWorkRequest =
-                new PeriodicWorkRequest.Builder(NotificationWorker.class, 15, TimeUnit.MINUTES,
-                        15, TimeUnit.MINUTES).addTag(WORKER_TAG).build();
+                new PeriodicWorkRequest.Builder(NotificationWorker.class, 1, TimeUnit.HOURS,
+                        1, TimeUnit.HOURS).addTag(WORKER_TAG).build();
 
         WorkManager.getInstance(context).enqueue(notificationWorkRequest);
 
