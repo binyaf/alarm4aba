@@ -147,9 +147,9 @@ public class NotificationsReceiver extends BroadcastReceiver {
 
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.MINUTE, 30);
-        Date dateForTest = cal.getTime();
+        //Date dateForTest = cal.getTime();
 
-        Date candleLightingTimeToday = dateForTest;//ZmanimService.getCandleLightingTimeToday(clientsLocation, context); // dateForTest;
+        Date candleLightingTimeToday = ZmanimService.getCandleLightingTimeToday(clientsLocation, context); // dateForTest;
 
         if (candleLightingTimeToday == null) {
             return null;
@@ -196,7 +196,9 @@ public class NotificationsReceiver extends BroadcastReceiver {
             int resourceId = context.getResources().getIdentifier(notificationKey, "string", context.getPackageName());
             if (resourceId != 0) {
                 String notificationStr = context.getString(resourceId);
-                notifications.add(notificationStr);
+                if (notificationStr != null) {
+                    notifications.add(notificationStr);
+                }
             }
         }
         return notifications;

@@ -76,8 +76,8 @@
     <string name="PAR_FR">פריס, צרפת</string>
 
     <!-- notification -->
-    <string name="notification_candle_lighting_title">הדלקת נרות שבת\nבעוד %1$s</string>
-    <string name="notification_body">לא לשכוח לסיים את ההכנות בזמן</string>
+    <string name="notification_candle_lighting_title">הדלקת נרות שבת בעוד %1$s</string>
+    <string name="notification_body">לא לשכוח ל</string>
     <string name="ok">אישור</string>
 
     <string name="min_5">5 דקות</string>
@@ -109,7 +109,7 @@
     <string name="notification_checklist_kettle">להרתיח מיחם לשבת</string>
     <string name="notification_checklist_hot_plate">להכין פלטה לשבת</string>
     <string name="notification_checklist_candles">להכין נרות שבת</string>
-    <string name="notification_checklist_phone">להתקשר למשפחה לאחל שבת שלום</string>
+   <!-- <string name="notification_checklist_phone">להתקשר למשפחה לאחל שבת שלום</string>-->
 
     <string name="pref_click_here_for_details">לחץ כאן לערוך את פרטי ההתראה</string>
     <string name="pref_checklist_title">בהתראה ארצה לקבל תזכורת על:</string>
@@ -121,7 +121,7 @@
     <string name="pref_checklist_kettle">מיחם לשבת</string>
     <string name="pref_checklist_hot_plate">פלטה לשבת</string>
     <string name="pref_checklist_candles">נרות שבת</string>
-    <string name="pref_checklist_phone">להתקשר למשפחה לאחל שבת שלום</string>
+    <!--<string name="pref_checklist_phone">להתקשר למשפחה לאחל שבת שלום</string>-->
 
     <string name="reminder_text">תזכורת - לא לשכוח להתפלל %1$s</string>
     <string name="remind_me_about">הזכר לי:</string>

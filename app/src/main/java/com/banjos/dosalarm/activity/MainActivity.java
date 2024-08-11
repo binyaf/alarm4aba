@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
                     clicksOnEmptyTextView = 0;
 
                     //TODO remove
-                    NotificationType type = NotificationType.CANDLE_LIGHTING_REMINDER;
+                    NotificationType type = NotificationType.MINCHA_REMINDER;
 
                     PendingIntent pendingIntent =
                             getNotificationPendingIntent(context, type);
