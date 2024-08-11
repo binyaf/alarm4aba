@@ -128,10 +128,10 @@
     <string name="remind_me_about">Remind me about:</string>
     <string name="reminders_advanced_settings">advanced settings for reminders can be found in the settings page</string>
     <string name="shacharit">Shacharit</string>
-    <string name="shacharit_vatikin">Shacharit \n (Vatikin)</string>
+    <string name="shacharit_vatikin">Shacharit\n(Vatikin)</string>
     <string name="mincha">Mincha\n</string>
     <string name="maariv">Maariv\n</string>
-    <string name="candle_lighting">Candle Lighting</string>
+    <string name="candle_lighting">Candle\nLighting</string>
     <string name="stop">Stop</string>
     <string name="snooze">Snooze</string>
     <string name="prayer_reminder_shacharit_title">Time to Pray Shacharit</string>

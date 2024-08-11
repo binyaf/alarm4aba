@@ -35,7 +35,6 @@ import com.banjos.dosalarm.tools.PreferencesService;
 import com.banjos.dosalarm.tools.ZmanimService;
 import com.banjos.dosalarm.types.AlarmLocation;
 import com.banjos.dosalarm.types.NotificationType;
-import com.banjos.dosalarm.worker.NotificationWorker;
 import com.kosherjava.zmanim.ZmanimCalendar;
 
 import java.util.ArrayList;
@@ -150,7 +149,7 @@ public class NotificationsReceiver extends BroadcastReceiver {
         cal.add(Calendar.MINUTE, 30);
         Date dateForTest = cal.getTime();
 
-        Date candleLightingTimeToday = ZmanimService.getCandleLightingTimeToday(clientsLocation, context); // dateForTest;
+        Date candleLightingTimeToday = dateForTest;//ZmanimService.getCandleLightingTimeToday(clientsLocation, context); // dateForTest;
 
         if (candleLightingTimeToday == null) {
             return null;

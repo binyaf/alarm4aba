@@ -31,7 +31,10 @@
             android:text="@string/add"
             android:textAllCaps="false"
             android:textColor="#897"
-            android:textSize="20sp" />
+            android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="16sp"
+            android:autoSizeMaxTextSize="20sp"
+            android:autoSizeStepGranularity="2sp" />
 
         <Button
             android:id="@+id/editAlarmBtn"
@@ -139,7 +142,9 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="horizontal"
-        android:padding="16dp">
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:paddingTop="8dp">
 
         <LinearLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -147,7 +152,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center_horizontal"
-            android:layout_margin="16dp">
+            android:layout_margin="6dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -168,7 +173,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center_horizontal"
-            android:layout_margin="16dp">
+            android:layout_margin="6dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -189,7 +194,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center_horizontal"
-            android:layout_margin="16dp">
+            android:layout_margin="6dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -210,14 +215,12 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center_horizontal"
-            android:layout_margin="16dp">
+            android:layout_margin="6dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/candle_lighting"
-                android:layout_gravity="center"
-                android:gravity="center"
                 android:layout_marginBottom="4dp"/>
 
             <Switch
