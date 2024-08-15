@@ -63,7 +63,9 @@
     <string name="JLM_IL">Jerusalem, Israel</string>
     <string name="TLV_IL">Tel Aviv, Israel</string>
     <string name="HAF_IL">Haifah, Israel</string>
+    <string name="TVE_IL">Tiberias, Israel</string>
     <string name="GVZ_IL">Givaat Zeev, Israel</string>
+    <string name="LOD_IL">Lod, Israel</string>
     <string name="MBA_IL">Mazkeret Batya, Israel</string>
     <string name="SDR_IL">Sderot, Israel</string>
     <string name="EIL_IL">Eilat, Israel</string>
