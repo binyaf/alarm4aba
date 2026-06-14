@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/alarmDetailsMain"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="16dp"
     android:background="@color/very_light_grey"
     android:orientation="vertical"
     android:textAlignment="center">
+
+    <!-- App bar -->
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar_include" />
 
     <!-- Upper Part (Top Buttons) -->
     <LinearLayout
@@ -16,82 +23,75 @@
         android:orientation="horizontal"
         android:padding="16dp">
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/addAdditionAlarmBtn"
+            android:layout_width="0dp"
+            android:layout_weight="1.5"
+            android:layout_height="48dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:text="@string/add"
+            android:textAllCaps="false"
+            android:background="@drawable/rounded_corner"
+            app:backgroundTint="@color/colorPrimary"
+            app:icon="@drawable/add_icon"
+            app:iconPadding="4dp"
+            app:iconGravity="textStart"
+            android:textColor="@color/white" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/editAlarmBtn"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="48dp"
             android:layout_marginStart="5dp"
             android:layout_marginEnd="5dp"
             android:background="@drawable/rounded_corner"
-            android:backgroundTint="@color/blue"
-            android:drawableLeft="@drawable/add_icon"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:text="@string/add"
-            android:textAllCaps="false"
-            android:textColor="#897"
-            android:autoSizeTextType="uniform"
-            android:autoSizeMinTextSize="16sp"
-            android:autoSizeMaxTextSize="20sp"
-            android:autoSizeStepGranularity="2sp" />
-
-        <Button
-            android:id="@+id/editAlarmBtn"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
-            android:background="@drawable/rounded_corner"
-            android:backgroundTint="@color/grey"
-            android:drawableStart="@drawable/edit_icon"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
+            app:backgroundTint="@color/light_grey"
+            app:icon="@drawable/edit_icon"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
             android:enabled="false"
-            android:text="@string/edit"
             android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="15sp"
-            android:visibility="invisible" />
+            android:textColor="@color/black"
+            android:visibility="gone"
+            android:contentDescription="@string/edit" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/deleteAlarmBtn"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_marginStart="5dp"
             android:layout_marginEnd="5dp"
             android:background="@drawable/rounded_corner"
-            android:backgroundTint="@color/light_red"
-            android:drawableStart="@drawable/delete_icon"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
+            app:backgroundTint="@color/light_red"
+            app:icon="@drawable/delete_icon"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
             android:enabled="false"
-            android:text="@string/delete"
             android:textAllCaps="false"
             android:textColor="@color/white"
-            android:textSize="15sp"
-            android:visibility="invisible" />
+            android:visibility="gone"
+            android:contentDescription="@string/delete" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/shareAlarmButton"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_marginStart="5dp"
             android:layout_marginEnd="5dp"
             android:background="@drawable/rounded_corner"
-            android:backgroundTint="@color/light_green"
-            android:drawableStart="@android:drawable/ic_menu_share"
+            app:backgroundTint="@color/light_green"
+            app:icon="@android:drawable/ic_menu_share"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
             android:enabled="false"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:visibility="invisible"
-            android:text="@string/share"
+            android:visibility="gone"
             android:textAllCaps="false"
             android:textColor="@color/white"
-            android:textSize="15sp" />
+            android:contentDescription="@string/share" />
     </LinearLayout>
 
     <!-- divider -->
@@ -101,12 +101,13 @@
         android:background="@android:color/darker_gray" />
 
     <!-- list of alarms (dynamically) -->
-    <LinearLayout
-        android:id="@+id/alarmsLayout"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/alarmsRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_weight="1"/>
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:paddingVertical="8dp" />
 
     <!-- divider -->
     <View
@@ -147,7 +148,6 @@
         android:paddingTop="8dp">
 
         <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -160,15 +160,15 @@
                 android:text="@string/shacharit_vatikin"
                 android:layout_marginBottom="4dp"/>
 
-            <Switch
+            <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/shacharit_reminder_switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp"/>
+                android:layout_margin="4dp"
+                android:contentDescription="@string/shacharit_switch_desc" />
         </LinearLayout>
 
         <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -181,15 +181,15 @@
                 android:text="@string/mincha"
                 android:layout_marginBottom="4dp"/>
 
-            <Switch
+            <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/mincha_reminder_switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp"/>
+                android:layout_margin="4dp"
+                android:contentDescription="@string/mincha_switch_desc" />
         </LinearLayout>
 
         <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -202,15 +202,15 @@
                 android:text="@string/maariv"
                 android:layout_marginBottom="4dp"/>
 
-            <Switch
+            <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/maariv_reminder_switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp"/>
+                android:layout_margin="4dp"
+                android:contentDescription="@string/maariv_switch_desc" />
         </LinearLayout>
 
         <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -223,11 +223,12 @@
                 android:text="@string/candle_lighting"
                 android:layout_marginBottom="4dp"/>
 
-            <Switch
+            <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/candle_lighting_reminder_switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp"/>
+                android:layout_margin="4dp"
+                android:contentDescription="@string/candle_switch_desc" />
         </LinearLayout>
     </LinearLayout>
 
@@ -249,10 +250,10 @@
         android:id="@+id/timeIconImageView"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_centerInParent="true"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
-        android:src="@drawable/time_icon" />
+        android:src="@drawable/time_icon"
+        android:contentDescription="@string/time_icon_desc" />
 
     <TextView
         android:id="@+id/labelTextView"
@@ -270,7 +271,8 @@
         android:id="@+id/imageView"
         android:layout_width="1dp"
         android:layout_height="1dp"
-        android:gravity="bottom|center" />
+        android:gravity="bottom|center"
+        android:contentDescription="@string/app_icon_desc" />
     </LinearLayout>
 
 </LinearLayout>

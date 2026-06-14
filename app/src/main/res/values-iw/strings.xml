@@ -16,6 +16,9 @@
     <string name="alarm_time_label">שעה</string>
     <string name="alarm_date_label">תאריך</string>
     <string name="alarm_label_label">כותרת</string>
+    <string name="hint_date">בחר תאריך</string>
+    <string name="hint_time">בחר זמן</string>
+    <string name="hint_label">Label (optional)</string>
     <string name="todays_zmanim_short">זמני היום</string>
     <string name="todays_zmanim">זמני היום - %1$s</string>
     <string name="alarm_will_start">ההתראה תופעל ב:</string>
@@ -45,6 +48,7 @@
 
     <!-- Preference Titles -->
     <string name="pref_alarm_duration_title">ברירת המחדל למשך ההתראה בשבת(שניות)</string>
+    <string name="pref_alarm_time_title">ברירת מחדל לשעת שעון המעורר</string>
     <string name="pref_enable_notifications_title">תזכורות מופעלות</string>
     <string name="defaults_header">ברירות מחדל</string>
     <string name="pref_notifications_candle_header">תזכורת להדלקת נרות שבת</string>
@@ -76,6 +80,12 @@
     <string name="TOR_CA">טורונטו, קנדה</string>
     <string name="LON_UK">לונדון, אנגליה</string>
     <string name="PAR_FR">פריס, צרפת</string>
+
+    <string name="country_israel">ישראל</string>
+    <string name="country_usa">ארה"ב</string>
+    <string name="country_canada">קנדה</string>
+    <string name="country_uk">בריטניה</string>
+    <string name="country_france">צרפת</string>
 
     <!-- notification -->
     <string name="notification_candle_lighting_title">הדלקת נרות שבת בעוד %1$s</string>

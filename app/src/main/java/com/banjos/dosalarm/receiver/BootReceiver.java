@@ -44,7 +44,11 @@ public class BootReceiver extends BroadcastReceiver {
         AlarmManager.AlarmClockInfo alarmClockInfo =
                 new AlarmManager.AlarmClockInfo(alarm.getDateAndTime().getTimeInMillis(), pendingIntent);
 
-        alarmManager.setAlarmClock(alarmClockInfo, pendingIntent);
+        try {
+            alarmManager.setAlarmClock(alarmClockInfo, pendingIntent);
+        } catch (SecurityException e) {
+            Log.e("BootReceiver", "SecurityException: cannot schedule exact alarm", e);
+        }
 
     }
 

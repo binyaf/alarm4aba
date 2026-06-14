@@ -158,4 +158,61 @@
      <!--   <item>notification_checklist_phone</item>-->
     </string-array>
 
+    <string-array name="pref_location_israel_entries">
+        <item>@string/JLM_IL</item>
+        <item>@string/TLV_IL</item>
+        <item>@string/HAF_IL</item>
+        <item>@string/TVE_IL</item>
+        <item>@string/GVZ_IL</item>
+        <item>@string/LOD_IL</item>
+        <item>@string/MBA_IL</item>
+        <item>@string/SDR_IL</item>
+        <item>@string/EIL_IL</item>
+    </string-array>
+    <string-array name="pref_location_israel_values">
+        <item>JLM_IL</item>
+        <item>TLV_IL</item>
+        <item>HAF_IL</item>
+        <item>TVE_IL</item>
+        <item>GVZ_IL</item>
+        <item>LOD_IL</item>
+        <item>MBA_IL</item>
+        <item>SDR_IL</item>
+        <item>EIL_IL</item>
+    </string-array>
+
+    <string-array name="pref_location_usa_entries">
+        <item>@string/NYC_US</item>
+        <item>@string/LAX_US</item>
+        <item>@string/MIA_US</item>
+        <item>@string/BOS_US</item>
+    </string-array>
+    <string-array name="pref_location_usa_values">
+        <item>NYC_US</item>
+        <item>LAX_US</item>
+        <item>MIA_US</item>
+        <item>BOS_US</item>
+    </string-array>
+
+    <string-array name="pref_location_canada_entries">
+        <item>@string/TOR_CA</item>
+    </string-array>
+    <string-array name="pref_location_canada_values">
+        <item>TOR_CA</item>
+    </string-array>
+
+    <string-array name="pref_location_uk_entries">
+        <item>@string/LON_UK</item>
+    </string-array>
+    <string-array name="pref_location_uk_values">
+        <item>LON_UK</item>
+    </string-array>
+
+    <string-array name="pref_location_france_entries">
+        <item>@string/PAR_FR</item>
+    </string-array>
+    <string-array name="pref_location_france_values">
+        <item>PAR_FR</item>
+    </string-array>
+
 </resources>

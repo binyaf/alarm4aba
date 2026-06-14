@@ -3,13 +3,53 @@
 
     <PreferenceCategory app:title="@string/defaults_header">
 
-    <ListPreference
-        app:defaultValue="JLM_IL"
-        app:entryValues="@array/pref_location_values"
-        app:entries="@array/pref_location_entries"
-        app:key="location"
-        app:title="@string/pref_location_title"
-        app:useSimpleSummaryProvider="true" />
+        <PreferenceScreen
+            app:key="location_screen"
+            app:title="@string/pref_location_title"
+            app:useSimpleSummaryProvider="true">
+
+            <ListPreference
+                app:defaultValue="JLM_IL"
+                app:entries="@array/pref_location_israel_entries"
+                app:entryValues="@array/pref_location_israel_values"
+                app:key="location"
+                app:summary="%s"
+                app:title="@string/country_israel" />
+
+            <ListPreference
+                app:entries="@array/pref_location_usa_entries"
+                app:entryValues="@array/pref_location_usa_values"
+                app:key="location_usa"
+                app:summary="%s"
+                app:title="@string/country_usa" />
+
+            <ListPreference
+                app:entries="@array/pref_location_canada_entries"
+                app:entryValues="@array/pref_location_canada_values"
+                app:key="location_canada"
+                app:summary="%s"
+                app:title="@string/country_canada" />
+
+            <ListPreference
+                app:entries="@array/pref_location_uk_entries"
+                app:entryValues="@array/pref_location_uk_values"
+                app:key="location_uk"
+                app:summary="%s"
+                app:title="@string/country_uk" />
+
+            <ListPreference
+                app:entries="@array/pref_location_france_entries"
+                app:entryValues="@array/pref_location_france_values"
+                app:key="location_france"
+                app:summary="%s"
+                app:title="@string/country_france" />
+
+        </PreferenceScreen>
+
+        <com.banjos.dosalarm.preference.TimePickerPreference
+        app:key="default_alarm_time"
+        app:title="@string/pref_alarm_time_title"
+        app:defaultValue="08:00" />
 
     <ListPreference
         app:defaultValue="90"

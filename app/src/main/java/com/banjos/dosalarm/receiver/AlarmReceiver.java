@@ -93,7 +93,11 @@ public class AlarmReceiver extends BroadcastReceiver {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 333, stopAlarmIntent, flags);
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        alarmManager.setExact(AlarmManager.ELAPSED_REALTIME_WAKEUP, stopAlarmAtMillis , pendingIntent);
+        try {
+            alarmManager.setExact(AlarmManager.ELAPSED_REALTIME_WAKEUP, stopAlarmAtMillis , pendingIntent);
+        } catch (SecurityException e) {
+            Log.e("AlarmReceiver", "SecurityException: cannot schedule exact alarm", e);
+        }
     }
 
     public static class StopSoundReceiver extends BroadcastReceiver {

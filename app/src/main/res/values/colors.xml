@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
+    <!-- Primary palette -->
+    <color name="colorPrimary">#1565C0</color>
+    <color name="colorPrimaryDark">#0D47A1</color>
+    <color name="colorAccent">#26A69A</color>
+
+    <!-- Common colors -->
+    <color name="white">#FFFFFFFF</color>
     <color name="black">#FF000000</color>
-    <color name="raspberry_pink">#EF1224</color>
-    <color name="red">#e10000</color>
-    <color name="light_red">#ff3d3d</color>
-    <color name="light_blue">#92c9fd</color>
     <color name="grey">#757677</color>
     <color name="light_grey">#A9AEB3</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="colorPrimary">#0F9D58</color>
-    <color name="colorPrimaryDark">#0F4C2E</color>
-    <color name="colorAccent">#9D0F9B</color>
-    <color name="light_green">#a3e8ca</color>
     <color name="very_light_grey">#D0D5D2</color>
-    <color name="very_very_light_grey">#D9DCDA</color>
+    <color name="very_very_light_grey">#F5F7F8</color>
+
+    <!-- Accent / semantic colors -->
+    <color name="light_blue">#92c9fd</color>
+    <color name="light_red">#ff6b6b</color>
+    <color name="red">#e10000</color>
+    <color name="light_green">#a3e8ca</color>
     <color name="blue">#021B67</color>
-    <color name="magenta"></color>
 </resources>

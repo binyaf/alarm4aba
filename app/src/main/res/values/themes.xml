@@ -1,24 +1,23 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    <!-- Material Components theme for a modern look -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Core colors -->
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryDark</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/colorAccent</item>
+        <item name="colorOnSecondary">@color/white</item>
+
+        <!-- Surface / Background -->
+        <item name="colorSurface">@color/very_very_light_grey</item>
+        <item name="colorOnSurface">@color/black</item>
+
+        <!-- Status bar / system UI -->
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="android:windowLightStatusBar">true</item>
+
+        <!-- Use MaterialComponents widgets by default -->
+        <item name="materialButtonStyle">@style/Widget.MaterialComponents.Button</item>
     </style>
 
-    <!-- Base application theme. -->
-    <style name="Theme.DosAlarm" parent="Theme.AppCompat.Light">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/design_default_color_primary</item>
-        <item name="colorPrimaryVariant">@color/teal_200</item>
-        <item name="colorOnPrimary">@color/light_red</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/raspberry_pink</item>
-        <item name="colorSecondaryVariant">@color/magenta</item>
-        <item name="colorOnSecondary">@color/purple_700</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:windowLightStatusBar">true</item>
-    </style>
 </resources>

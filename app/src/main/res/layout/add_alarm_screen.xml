@@ -1,162 +1,195 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:textAlignment="center"
-    android:gravity="center"
-    android:background="@color/very_light_grey"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/addAlarmMain"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/very_very_light_grey"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/addEditAlarmTitle"
-        android:layout_width="392dp"
-        android:layout_height="70dp"
-        android:layout_margin="1sp"
-        android:gravity="top|center"
-        android:hint="@string/edit_alarm"
-        android:text="@string/edit_alarm"
-        android:textColor="@color/blue"
-        android:textSize="32sp"
-        android:textStyle="normal" />
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar_include" />
 
-    <TextView
-        android:id="@+id/alarmDateText"
-        android:layout_width="180dp"
-        android:layout_height="20dp"
-        android:layout_margin="1sp"
-        android:gravity="bottom|center"
-        android:hint="@string/alarm_date_label"
-        android:text="@string/alarm_date_label"
-        android:textColor="@color/black"
-        android:textSize="12sp"
-        android:textStyle="normal" />
-
-    <TextView
-        android:id="@+id/selectDateText"
-        android:layout_width="192dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="25sp"
-        android:layout_marginTop="0sp"
-        android:background="@color/light_blue"
-        android:gravity="center"
-        android:hint="date"
-        android:inputType="none"
-        android:padding="10dp"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/alarmTimeText"
-        android:layout_width="180dp"
-        android:layout_height="20dp"
-        android:layout_margin="1sp"
-        android:gravity="bottom|center"
-        android:hint="@string/alarm_time_label"
-        android:text="@string/alarm_time_label"
-        android:textColor="@color/black"
-        android:textSize="12sp"
-        android:textStyle="normal" />
-
-    <TextView
-        android:id="@+id/selectTimeText"
-        android:layout_width="192dp"
-        android:layout_height="51dp"
-        android:layout_marginBottom="25sp"
-        android:layout_marginTop="0sp"
-        android:background="@color/light_blue"
-        android:gravity="center"
-        android:hint="time"
-        android:inputType="none"
-        android:padding="10dp"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/alarmDurationText"
-        android:layout_width="180dp"
-        android:layout_height="20dp"
-        android:layout_margin="1sp"
-        android:gravity="bottom|center"
-        android:hint="Alarm Duration"
-        android:text="@string/alarm_duration_label"
-        android:textColor="@color/black"
-        android:textSize="12sp"
-        android:textStyle="normal" />
-
-    <NumberPicker
-        android:id="@+id/numberPicker"
-        android:background="@color/light_blue"
-        android:padding="10dp"
-        android:textSize="20sp"
-        android:textColor="@color/black"
-        android:layout_width="192dp"
-        android:layout_marginBottom="25sp"
-        android:layout_marginTop="0sp"
-        android:layout_height="71dp"/>
-
-    <TextView
-        android:id="@+id/labelText"
-        android:layout_width="180dp"
-        android:layout_height="20dp"
-        android:layout_margin="1sp"
-        android:gravity="bottom|center"
-        android:hint="@string/alarm_label_label"
-        android:text="@string/alarm_label_label"
-        android:textColor="@color/black"
-        android:textSize="12sp"
-        android:textStyle="normal" />
-
-    <EditText
-        android:id="@+id/alarmLabelTextView"
-        android:layout_width="192dp"
-        android:layout_height="51dp"
-        android:gravity="center"
-        android:textColor="@color/black"
-        android:inputType="text"
-        android:hint="label"
-        android:imeOptions="actionDone"
-        android:textColorHint="@color/grey"/>
-
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_marginTop="30dp"
-        android:orientation="horizontal">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
-        <Button
-            android:id="@+id/addAlarmCancel"
-            android:layout_width="90dp"
-            android:layout_height="40dp"
-            android:layout_margin="5sp"
-            android:background="@drawable/rounded_corner"
-            android:backgroundTint="@color/grey"
-            android:drawableLeft="@drawable/cancel_icon"
-            android:gravity="center"
-            android:padding="5dp"
-            android:text="@string/cancel"
-            android:textAllCaps="false"
-            android:textColor="#897"
-            android:textSize="15sp"
-            android:textStyle="bold" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
 
-        <Button
-            android:id="@+id/addAlarmOk"
-            android:layout_width="90dp"
-            android:layout_height="40dp"
-            android:layout_margin="5sp"
-            android:background="@drawable/rounded_corner"
-            android:backgroundTint="@color/blue"
-            android:drawableLeft="@drawable/save_icon"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="@string/save"
-            android:textAllCaps="false"
-            android:textColor="#897"
-            android:textSize="15sp"
-            android:textStyle="bold" />
-    </LinearLayout>
+            <!-- Time Selection Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/alarm_time_label"
+                        android:textColor="?attr/colorPrimary"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/selectTimeText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="?attr/selectableItemBackground"
+                        android:drawablePadding="12dp"
+                        android:gravity="center_vertical"
+                        android:hint="@string/hint_time"
+                        android:paddingVertical="12dp"
+                        android:textColor="@color/black"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        app:drawableStartCompat="@drawable/time_icon"
+                        app:drawableTint="?attr/colorPrimary" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Date Selection Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/alarm_date_label"
+                        android:textColor="?attr/colorPrimary"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/selectDateText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="?attr/selectableItemBackground"
+                        android:drawablePadding="12dp"
+                        android:gravity="center_vertical"
+                        android:hint="@string/hint_date"
+                        android:paddingVertical="12dp"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        app:drawableStartCompat="@drawable/add_icon"
+                        app:drawableTint="?attr/colorPrimary" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Duration Selection Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/alarm_duration_label"
+                        android:textColor="?attr/colorPrimary"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <NumberPicker
+                        android:id="@+id/numberPicker"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Label Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp"
+                app:strokeWidth="0dp">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    app:boxBackgroundMode="none"
+                    app:hintEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/alarmLabelTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/alarm_label_label"
+                        android:inputType="text"
+                        android:imeOptions="actionDone"
+                        android:textColor="@color/black" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Action Buttons -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/addAlarmCancel"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="56dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:text="@string/cancel"
+                    android:textAllCaps="false"
+                    app:cornerRadius="12dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/addAlarmOk"
+                    android:layout_width="0dp"
+                    android:layout_height="56dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:text="@string/save"
+                    android:textAllCaps="false"
+                    app:cornerRadius="12dp" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 </LinearLayout>
