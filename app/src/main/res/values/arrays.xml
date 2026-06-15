@@ -100,8 +100,10 @@
         <item>JLM_IL</item>
         <item>TLV_IL</item>
         <item>HAF_IL</item>
+        <item>KSM_IL</item>
         <item>TVE_IL</item>
         <item>GVZ_IL</item>
+        <item>EFR_IL</item>
         <item>LOD_IL</item>
         <item>MBA_IL</item>
         <item>SDR_IL</item>
@@ -119,8 +121,10 @@
         <item>@string/JLM_IL</item>
         <item>@string/TLV_IL</item>
         <item>@string/HAF_IL</item>
+        <item>@string/KSM_IL</item>
         <item>@string/TVE_IL</item>
         <item>@string/GVZ_IL</item>
+        <item>@string/EFR_IL</item>
         <item>@string/LOD_IL</item>
         <item>@string/MBA_IL</item>
         <item>@string/SDR_IL</item>
@@ -162,8 +166,10 @@
         <item>@string/JLM_IL</item>
         <item>@string/TLV_IL</item>
         <item>@string/HAF_IL</item>
+        <item>@string/KSM_IL</item>
         <item>@string/TVE_IL</item>
         <item>@string/GVZ_IL</item>
+        <item>@string/EFR_IL</item>
         <item>@string/LOD_IL</item>
         <item>@string/MBA_IL</item>
         <item>@string/SDR_IL</item>
@@ -173,8 +179,10 @@
         <item>JLM_IL</item>
         <item>TLV_IL</item>
         <item>HAF_IL</item>
+        <item>KSM_IL</item>
         <item>TVE_IL</item>
         <item>GVZ_IL</item>
+        <item>EFR_IL</item>
         <item>LOD_IL</item>
         <item>MBA_IL</item>
         <item>SDR_IL</item>

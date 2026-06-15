@@ -4,6 +4,7 @@
     <PreferenceCategory app:title="@string/defaults_header">
 
         <PreferenceScreen
+            android:id="@+id/location_preference_screen"
             app:key="location_screen"
             app:title="@string/pref_location_title"
             app:useSimpleSummaryProvider="true">

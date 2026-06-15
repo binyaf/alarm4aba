@@ -69,6 +69,13 @@
     "latitude": 32.7940,
     "timeZone": "Asia/Jerusalem"
   },
+  "KSM_IL": {
+    "cityCode": "KSM_IL",
+    "altitude": 124,
+    "longitude": 35.57212,
+    "latitude": 33.20733,
+    "timeZone": "Asia/Jerusalem"
+  },
   "TVE_IL": {
     "cityCode": "LOD_IL",
     "altitude": -97,
@@ -92,9 +99,16 @@
   },
   "GVZ_IL": {
     "cityCode": "GVZ_IL",
-    "altitude": 731,
+    "altitude": 900,
     "longitude": 34.840785,
     "latitude": 31.853828,
+    "timeZone": "Asia/Jerusalem"
+  },
+  "EFR_IL": {
+    "cityCode": "EFR_IL",
+    "altitude": 731,
+    "longitude": 35.151000,
+    "latitude": 31.655555,
     "timeZone": "Asia/Jerusalem"
   },
   "SDR_IL": {

@@ -64,22 +64,24 @@
 
     <!-- Preference locations -->
     <string name="pref_location_title">המיקום שלך</string>
-    <string name="JLM_IL">ירושלים, ישראל</string>
-    <string name="TLV_IL">תל אביב, ישראל</string>
-    <string name="HAF_IL">חיפה, ישראל</string>
-    <string name="TVE_IL">טבריה, ישראל</string>
-    <string name="GVZ_IL">גבעת זאב, ישראל</string>
-    <string name="LOD_IL">לוד, ישראל</string>
-    <string name="MBA_IL">מזכרת בתיה, ישראל</string>
-    <string name="SDR_IL">שדרות, ישראל</string>
-    <string name="EIL_IL">אילת, ישראל</string>
-    <string name="NYC_US">ניו יורק, ארה\"ב</string>
-    <string name="BOS_US">בוסטון, ארה\"ב</string>
-    <string name="LAX_US">לוס אנג\'לס, ארה\"ב</string>
-    <string name="MIA_US">מיאמי, ארה\"ב</string>
-    <string name="TOR_CA">טורונטו, קנדה</string>
-    <string name="LON_UK">לונדון, אנגליה</string>
-    <string name="PAR_FR">פריס, צרפת</string>
+    <string name="JLM_IL">ירושלים</string>
+    <string name="TLV_IL">תל אביב</string>
+    <string name="HAF_IL">חיפה</string>
+    <string name="TVE_IL">טבריה</string>
+    <string name="KSM_IL">קריית שמונה</string>
+    <string name="GVZ_IL">גבעת זאב</string>
+    <string name="EFR_IL">אפרת</string>
+    <string name="LOD_IL">לוד</string>
+    <string name="MBA_IL">מזכרת בתיה</string>
+    <string name="SDR_IL">שדרות</string>
+    <string name="EIL_IL">אילת</string>
+    <string name="NYC_US">ניו יורק</string>
+    <string name="BOS_US">בוסטון</string>
+    <string name="LAX_US">לוס אנג\'לס</string>
+    <string name="MIA_US">מיאמי</string>
+    <string name="TOR_CA">טורונטו</string>
+    <string name="LON_UK">לונדון</string>
+    <string name="PAR_FR">פריז</string>
 
     <string name="country_israel">ישראל</string>
     <string name="country_usa">ארה"ב</string>

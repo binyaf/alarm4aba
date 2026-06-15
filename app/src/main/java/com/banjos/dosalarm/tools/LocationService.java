@@ -47,20 +47,19 @@ public class LocationService {
  get the default location, set one if there is no default location
   */
     private static String getDefaultCityCode(Context context) {
-
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        Map<String, ?> all = sharedPreferences.getAll();
-        Object location = all.get(LOCATION_KEY);
-        //want to check that the location is in the correct format
-        if (location != null) {
-            String locationStr = (String) all.get("location");
-            if (locationStr.endsWith("_IL") || locationStr.endsWith("_US")
-                    || locationStr.endsWith("_UK") || locationStr.endsWith("_CA")
-                    || locationStr.endsWith("_FR")) {
+        String locationStr = sharedPreferences.getString(LOCATION_KEY, null);
+        
+        // If we found a location, return it immediately if it's valid
+        if (locationStr != null && !locationStr.isEmpty()) {
+            // Check if it's a known city code suffix or if it's just a valid non-empty string
+            // We'll broaden the check to ensure we don't accidentally reject valid international cities
+            if (locationStr.length() >= 6 && locationStr.contains("_")) {
                 return locationStr;
             }
         }
-        sharedPreferences.edit().putString("location", "JLM_IL").apply();
+        
+        // Only if there is absolutely no location set, we return JLM_IL
         return "JLM_IL";
     }
 

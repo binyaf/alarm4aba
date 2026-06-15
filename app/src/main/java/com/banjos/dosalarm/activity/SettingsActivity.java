@@ -1,5 +1,6 @@
 package com.banjos.dosalarm.activity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 
@@ -8,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.preference.ListPreference;
 import androidx.preference.MultiSelectListPreference;
+import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
@@ -55,9 +57,18 @@ public class SettingsActivity extends AppCompatActivity implements PreferenceFra
     }
 
     @Override
+    public void onBackPressed() {
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            getSupportFragmentManager().popBackStack();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
     public boolean onOptionsItemSelected(@NonNull android.view.MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            finish();
+            onBackPressed();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -80,14 +91,96 @@ public class SettingsActivity extends AppCompatActivity implements PreferenceFra
         }
 
         @Override
+        public void onResume() {
+            super.onResume();
+            updateLocationSummaries();
+            updateMainLocationSummary();
+        }
+
+        @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey);
 
-            String[] locationKeys = {"location", "location_usa", "location_canada", "location_uk", "location_france"};
-            for (String key : locationKeys) {
+            String[] countryKeys = {"location", "location_usa", "location_canada", "location_uk", "location_france"};
+            
+            // Only attach listeners to country preferences that exist in the current root
+            for (String key : countryKeys) {
                 Preference pref = findPreference(key);
                 if (pref != null) {
                     pref.setOnPreferenceChangeListener(this);
+                }
+            }
+            
+            // Refresh summaries based on the MASTER location
+            updateLocationSummaries();
+            updateMainLocationSummary();
+        }
+
+        private void updateMainLocationSummary() {
+            Preference screen = findPreference("location_screen");
+            if (screen != null) {
+                String activeLocationCode = getPreferenceManager().getSharedPreferences().getString("location", "JLM_IL");
+                int resId = getResources().getIdentifier(activeLocationCode, "string", getContext().getPackageName());
+                if (resId != 0) {
+                    screen.setSummary(getResources().getString(resId));
+                } else {
+                    screen.setSummary(activeLocationCode);
+                }
+            }
+        }
+
+        private void updateLocationSummaries() {
+            String activeLocation = getPreferenceManager().getSharedPreferences().getString("location", "JLM_IL");
+            String[] countryKeys = {"location", "location_usa", "location_canada", "location_uk", "location_france"};
+
+            for (String key : countryKeys) {
+                ListPreference pref = findPreference(key);
+                if (pref == null) continue;
+
+                // Always ensure the master "location" preference reflects the active location
+                if ("location".equals(key)) {
+                    // The master 'location' preference holds the active location value.
+                    // For display, show the selected city when it belongs to the Israel list;
+                    // otherwise display "Not selected" (without clearing the master value).
+                    CharSequence[] israelValues = pref.getEntryValues();
+                    boolean inIsrael = false;
+                    if (israelValues != null) {
+                        for (CharSequence v : israelValues) {
+                            if (v != null && v.toString().equals(activeLocation)) {
+                                inIsrael = true;
+                                break;
+                            }
+                        }
+                    }
+                    // Keep the master value in sync, but adjust the summary for display
+                    pref.setValue(activeLocation);
+                    if (inIsrael) {
+                        pref.setSummary("%s");
+                    } else {
+                        pref.setSummary("Not selected");
+                    }
+                    continue;
+                }
+
+                // For per-country lists, mark the one that contains the activeLocation as selected
+                boolean isActive = false;
+                CharSequence[] values = pref.getEntryValues();
+                if (values != null) {
+                    for (CharSequence val : values) {
+                        if (val != null && val.toString().equals(activeLocation)) {
+                            isActive = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (isActive) {
+                    pref.setValue(activeLocation);
+                    pref.setSummary("%s");
+                } else {
+                    // Clear the per-country preference so it doesn't show as selected
+                    pref.setValue(null);
+                    pref.setSummary("Not selected");
                 }
             }
         }
@@ -95,18 +188,38 @@ public class SettingsActivity extends AppCompatActivity implements PreferenceFra
         @Override
         public boolean onPreferenceChange(Preference preference, Object newValue) {
             String key = preference.getKey();
-            if (key.startsWith("location")) {
-                // Update the main "location" key that the app uses for zmanim
-                preference.getSharedPreferences().edit().putString("location", (String) newValue).apply();
+            if (key != null && key.startsWith("location")) {
+                String newLocationValue = (String) newValue;
                 
-                // Optional: Clear selection from other countries to keep it clean
-                String[] allKeys = {"location", "location_usa", "location_canada", "location_uk", "location_france"};
-                for (String otherKey : allKeys) {
-                    if (!otherKey.equals(key)) {
-                        // We don't necessarily want to clear the values, but we want the app to know which one is "active".
-                        // For simplicity, your app reads "location", so we just updated it above.
+                // Save the new master location and clear only the per-country keys
+                SharedPreferences prefs = getPreferenceManager().getSharedPreferences();
+                if (prefs != null) {
+                    SharedPreferences.Editor editor = prefs.edit();
+                    // 1. Set the master location to the newly selected value
+                    editor.putString("location", newLocationValue);
+
+                    // 2. Clear other country-specific location keys (but do NOT clear the master "location")
+                    String[] countryKeys = {"location_usa", "location_canada", "location_uk", "location_france"};
+                    for (String cKey : countryKeys) {
+                        if (!cKey.equals(key)) {
+                            editor.putString(cKey, null);
+                        }
                     }
+                    editor.apply();
                 }
+
+                // 3. We return true to allow the current preference (e.g., location_usa) 
+                // to save its own value normally.
+                
+                // 4. Update the summaries on the next frame to ensure they show the new state
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(() -> {
+                        updateLocationSummaries();
+                        updateMainLocationSummary();
+                    });
+                }
+                
+                return true;
             }
             return true;
         }

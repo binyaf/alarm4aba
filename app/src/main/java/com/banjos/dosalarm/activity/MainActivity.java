@@ -161,6 +161,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        
+        // Refresh location and city name every time we return to this screen
+        alarmLocation = locationService.getClientLocationDetails(this);
+        if (alarmLocation != null) {
+            cityNameForPresentation = getCityNameByCityCode(alarmLocation.getCityCode());
+        } else {
+            // Fallback to Jerusalem if loading fails
+            cityNameForPresentation = getResources().getString(R.string.JLM_IL);
+        }
+        
         loadAlarms();
         hideActionButtons();
     }
@@ -363,8 +373,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private String getCityNameByCityCode(String cityCode) {
+        if (cityCode == null) return "";
         int resourceId = getResources().getIdentifier(cityCode, "string", getPackageName());
-        return getResources().getString(resourceId);
+        if (resourceId != 0) {
+            return getResources().getString(resourceId);
+        }
+        return cityCode;
     }
 
     @Override
