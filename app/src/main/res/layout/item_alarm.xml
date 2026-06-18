@@ -6,8 +6,8 @@
     android:layout_marginHorizontal="16dp"
     android:layout_marginVertical="8dp"
     app:cardCornerRadius="12dp"
-    app:cardElevation="2dp"
-    app:strokeWidth="1dp"
+    app:cardElevation="4dp"
+    app:strokeWidth="0dp"
     app:strokeColor="@color/very_light_grey">
 
     <LinearLayout

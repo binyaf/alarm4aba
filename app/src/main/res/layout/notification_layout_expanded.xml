@@ -5,89 +5,83 @@
     android:padding="16dp"
     android:background="@drawable/notification_background">
 
+    <!-- Header Section (Similar to Card) -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:gravity="center"
-        android:padding="3pt"
-        android:background="@drawable/rounded_notification_button">
+        android:background="@drawable/rounded_corner"
+        android:backgroundTint="@color/very_very_light_grey"
+        android:padding="12dp"
+        android:layout_marginBottom="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="center">
-            <TextView
-                android:id="@+id/notification_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Custom Title"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:paddingLeft="1dp"
-                android:paddingTop="3dp"
-                android:paddingRight="1dp"/>
+            android:gravity="center_vertical"
+            android:layout_marginBottom="4dp"
+            xmlns:app="http://schemas.android.com/apk/res-auto">
+
             <ImageView
                 android:id="@+id/notification_icon"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:src="@drawable/ic_dosalarm_notification"
-                android:contentDescription="@string/candle_lighting"
-                android:layout_marginTop="3dp"
-                android:layout_marginEnd="4dp"
-                android:layout_marginStart="4dp"/>
+                app:tint="@color/colorPrimary"
+                android:contentDescription="@string/app_name" />
+
+            <TextView
+                android:id="@+id/notification_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:text="@string/app_name"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16sp"
+                android:textStyle="bold" />
         </LinearLayout>
+
         <TextView
             android:id="@+id/notification_text"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Custom Text"
+            android:text="Alarm description goes here"
             android:textColor="@color/black"
-            android:textSize="14sp"
-            android:paddingLeft="4dp"
-            android:paddingRight="4dp"/>
-
+            android:textSize="14sp" />
     </LinearLayout>
+
+    <!-- Buttons Section -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="4pt">
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center">
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/notification_stop"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_weight="1"
             android:text="@string/stop"
-            android:background="@drawable/rounded_notification_button"
-            android:textColor="@color/black"
-            android:padding="10dp"
+            android:background="@drawable/rounded_corner"
+            android:backgroundTint="@color/light_red"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
             android:layout_marginEnd="8dp"
-            android:minWidth="100dp"
-            android:minHeight="40dp"
             android:contentDescription="@string/notification_stop_desc"/>
 
         <Button
             android:id="@+id/notification_snooze"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_weight="1"
             android:text="@string/snooze"
-            android:background="@drawable/rounded_notification_button"
-            android:textColor="@color/black"
-            android:padding="10dp"
+            android:background="@drawable/rounded_corner"
+            android:backgroundTint="@color/colorPrimary"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
             android:layout_marginStart="8dp"
-            android:minWidth="100dp"
-            android:minHeight="40dp"
             android:contentDescription="@string/notification_snooze_desc"/>
     </LinearLayout>
 </LinearLayout>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">DosAlarm</string>
+    <string name="deprecated_main_layout">Deprecated main layout</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
     <string name="create">Create Alarm</string>
