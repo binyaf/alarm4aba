@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginBottom="24dp"
-        android:src="@mipmap/ic_launcher_1"
+        android:src="@mipmap/ic_launcher"
         android:contentDescription="@string/app_icon_desc" />
 
     <!-- Title -->
