@@ -23,9 +23,11 @@ import android.widget.RemoteViews;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
 
 import com.banjos.dosalarm.R;
+import com.banjos.dosalarm.service.AlarmService;
 import com.banjos.dosalarm.tools.DateTimesFormats;
 import com.banjos.dosalarm.tools.IntentCreator;
 import com.banjos.dosalarm.tools.LocationService;
@@ -49,8 +51,6 @@ public class NotificationsReceiver extends BroadcastReceiver {
     private SharedPreferences settingsPreferences;
 
     private PreferencesService preferencesService;
-
-    private static MediaPlayer mediaPlayer;
 
     private AlarmLocation clientsLocation;
 
@@ -87,8 +87,9 @@ public class NotificationsReceiver extends BroadcastReceiver {
     private void showNotification(Context context, NotificationType type) {
 
         if (ZmanimService.isNowAssurBemlacha(clientsLocation)) {
-            Log.e("NotificationsReceiver", "type: " + type.toString() + " | Not sending notification | " +
+            Log.d("NotificationsReceiver", "type: " + type.toString() + " | Not sending notification | " +
                     "it's Shabbat/Yom-tov now");
+            return;
         }
         String title = null;
         String text = null;
@@ -138,7 +139,12 @@ public class NotificationsReceiver extends BroadcastReceiver {
         } else {
             Log.d("NotificationsReceiver", "showing notification  | notification type:" + type  +
                     " | title: " + title + " | text: " + text + " | notification id:" + type.getId());
-            playSound(context);
+            
+            // Start Foreground Service to handle the sound and auto-stop
+            Intent serviceIntent = new Intent(context, AlarmService.class);
+            serviceIntent.putExtra("duration", NOTIFICATION_ALARM_DURATION_SEC);
+            ContextCompat.startForegroundService(context, serviceIntent);
+
             notificationManager.notify(type.getId(), builder.build());
         }
     }
@@ -304,44 +310,12 @@ public class NotificationsReceiver extends BroadcastReceiver {
         return builder;
 
     }
-    private void playSound(Context context) {
-
-        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-        if (alarmSound == null) {
-            // Fall back to notification sound if alarm sound is not available
-            alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        }
-        mediaPlayer = MediaPlayer.create(context, alarmSound);
-        mediaPlayer.setLooping(true);
-        mediaPlayer.start();
-
-        int flags = 0;
-        // we call broadcast using pendingIntent 33 >= 31
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            flags = PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE;
-        } else {
-            flags = PendingIntent.FLAG_IMMUTABLE;
-        }
-        //the time since last boot + the duration.
-        long stopAlarmAtMillis = SystemClock.elapsedRealtime() + (NOTIFICATION_ALARM_DURATION_SEC * 1000);
-
-        Intent stopAlarmIntent = new Intent(context, NotificationsReceiver.StopSoundReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 444, stopAlarmIntent, flags);
-
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        try {
-            alarmManager.setExact(AlarmManager.ELAPSED_REALTIME_WAKEUP, stopAlarmAtMillis , pendingIntent);
-        } catch (SecurityException e) {
-            Log.e("NotificationsReceiver", "SecurityException: cannot schedule exact alarm", e);
-        }
-
-    }
-
     public static class StopSoundReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.d("StopSoundReceiver", " Notifications Receiver - STOP ALARM");
-            stopSound();
+            Intent serviceIntent = new Intent(context, AlarmService.class);
+            context.stopService(serviceIntent);
         }
     }
 
@@ -349,15 +323,9 @@ public class NotificationsReceiver extends BroadcastReceiver {
         Log.d("NotificationsReceiver", "stopping notification  | notification-type:" + notificationType.getType() +
                 " | notification id:" + notificationType.getId() + " | request-code: " + notificationType.getRequestCode());
        dismissNotification(context, notificationType);
-       stopSound();
-    }
-
-    private static void stopSound() {
-        if (mediaPlayer != null) {
-            mediaPlayer.stop();
-            mediaPlayer.release();
-            mediaPlayer = null;
-        }
+       
+       Intent serviceIntent = new Intent(context, AlarmService.class);
+       context.stopService(serviceIntent);
     }
 
     private void dismissNotification(Context  context, NotificationType notificationType) {
