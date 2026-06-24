@@ -140,7 +140,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/reminders_advanced_settings"
-                    android:alpha="0.7"
+                    android:textColor="?android:attr/textColorSecondary"
                     android:textSize="11sp" />
             </LinearLayout>
 
@@ -164,6 +164,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/shacharit_vatikin"
                         android:textSize="12sp"
+                        android:textColor="?android:attr/textColorPrimary"
                         android:gravity="center"
                         android:layout_marginBottom="2dp"/>
 
@@ -188,6 +189,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/mincha"
                         android:textSize="12sp"
+                        android:textColor="?android:attr/textColorPrimary"
                         android:gravity="center"
                         android:layout_marginBottom="2dp"/>
 
@@ -212,6 +214,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/maariv"
                         android:textSize="12sp"
+                        android:textColor="?android:attr/textColorPrimary"
                         android:gravity="center"
                         android:layout_marginBottom="2dp"/>
 
@@ -236,6 +239,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/candle_lighting"
                         android:textSize="12sp"
+                        android:textColor="?android:attr/textColorPrimary"
                         android:gravity="center"
                         android:layout_marginBottom="2dp"/>
 
