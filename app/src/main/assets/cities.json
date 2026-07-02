@@ -77,7 +77,7 @@
     "timeZone": "Asia/Jerusalem"
   },
   "TVE_IL": {
-    "cityCode": "LOD_IL",
+    "cityCode": "TVE_IL",
     "altitude": -97,
     "longitude": 35.5310,
     "latitude": 32.7959,
@@ -88,6 +88,13 @@
     "altitude": 64,
     "longitude": 34.8881,
     "latitude": 31.9510,
+    "timeZone": "Asia/Jerusalem"
+  },
+  "MNF_IL": {
+    "cityCode": "MNF_IL",
+    "altitude": 396,
+    "longitude": 35.3829,
+    "latitude": 32.8029,
     "timeZone": "Asia/Jerusalem"
   },
   "MBA_IL": {

@@ -13,9 +13,9 @@ import java.util.Date;
 
 public class ZmanimService {
 
-    private static int CANDLE_LIGHTING_OFFSET_JERUSALEM = 40;
+    private static final int CANDLE_LIGHTING_OFFSET_JERUSALEM = 40;
 
-    private static int CANDLE_LIGHTING_OFFSET = 20;
+    private static final int CANDLE_LIGHTING_OFFSET = 20;
 
 
     public static ZmanimCalendar getTodaysZmanimCalendar(AlarmLocation clientsLocation) {
@@ -61,9 +61,7 @@ public class ZmanimService {
         JewishDate jd = new JewishDate(alarmDate);
         HebrewDateFormatter hdf = new HebrewDateFormatter();
         hdf.setHebrewFormat(true);
-        String hebrewDate = hdf.format(jd);
-
-        return hebrewDate;
+        return hdf.format(jd);
     }
 
     public static boolean isNowAssurBemlacha(AlarmLocation alarmLocation) {

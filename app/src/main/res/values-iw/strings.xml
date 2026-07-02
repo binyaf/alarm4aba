@@ -33,6 +33,8 @@
     <string name="latest_shacharis_mga">סוף זמן תפילה מגן אברהם: %1$s</string>
     <string name="latest_shacharis_gra">סוף זמן תפילה גרא: %1$s</string>
     <string name="midday">חצות: %1$s</string>
+    <string name="minchaGedola">%1$s :מנחה גדולה</string>
+    <string name="plag">%1$s :פלג המנחה</string>
     <string name="sunset">שקיעה: %1$s</string>
     <string name="nightfall">צאת הכוכבים: %1$s</string>
     <string name="about">אודות</string>
@@ -67,8 +69,9 @@
     <string name="JLM_IL">ירושלים</string>
     <string name="TLV_IL">תל אביב</string>
     <string name="HAF_IL">חיפה</string>
-    <string name="TVE_IL">טבריה</string>
     <string name="KSM_IL">קריית שמונה</string>
+    <string name="MNF_IL">מצפה נטופה</string>
+    <string name="TVE_IL">טבריה</string>
     <string name="GVZ_IL">גבעת זאב</string>
     <string name="EFR_IL">אפרת</string>
     <string name="LOD_IL">לוד</string>

@@ -18,10 +18,12 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.text.Html;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -411,10 +413,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private AlertDialog createTodayZmanimAlertDialog() {
-        String msg = getTodaysZmanim();
+        View customView = getLayoutInflater().inflate(R.layout.dialog_today_zmanim, null);
+        TextView hebrewDateView = customView.findViewById(R.id.dialogHebrewDate);
+        TextView zmanimListView = customView.findViewById(R.id.dialogZmanimList);
+
+        String hebrewDate = ZmanimService.getHebrewDateStringFromDate(new Date());
+        String zmanimListHtml = getTodaysZmanim();
+
+        hebrewDateView.setText(hebrewDate);
+        zmanimListView.setText(Html.fromHtml(zmanimListHtml, Html.FROM_HTML_MODE_LEGACY));
+
         return new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.todays_zmanim, cityNameForPresentation))
-                .setMessage(Html.fromHtml(msg, Html.FROM_HTML_MODE_LEGACY))
+                .setView(customView)
                 .setIcon(R.drawable.time_icon)
                 .setPositiveButton(R.string.ok, (dialog, which) -> dialog.dismiss())
                 .create();
@@ -428,15 +439,15 @@ public class MainActivity extends AppCompatActivity {
         ZmanimCalendar zcal = new ZmanimCalendar(gl);
         ComplexZmanimCalendar czc = new ComplexZmanimCalendar(gl);
 
-        String hebrewDate = ZmanimService.getHebrewDateStringFromDate(new Date());
-        return "<br><center>" + hebrewDate + "</center> <br><br><br>" +
-                getString(R.string.dawn, timeFormat.format(zcal.getAlosHashachar())) + " <br><br>" +
+        return getString(R.string.dawn, timeFormat.format(zcal.getAlosHashachar())) + " <br><br>" +
                 getString(R.string.sunrise, timeFormat.format(zcal.getSunrise())) + " <br><br>" +
                 getString(R.string.latest_shma_mga, timeFormat.format(zcal.getSofZmanShmaMGA())) + " <br><br>" +
                 getString(R.string.latest_shma_gra, timeFormat.format(zcal.getSofZmanShmaGRA())) + " <br><br>" +
                 getString(R.string.latest_shacharis_mga, timeFormat.format(zcal.getSofZmanTfilaMGA())) + " <br><br>" +
                 getString(R.string.latest_shacharis_gra, timeFormat.format(zcal.getSofZmanTfilaGRA())) + " <br><br>" +
                 getString(R.string.midday, timeFormat.format(zcal.getChatzos())) + " <br><br>" +
+                getString(R.string.minchaGedola, timeFormat.format(zcal.getMinchaGedola())) + " <br><br>" +
+                getString(R.string.plag, timeFormat.format(zcal.getPlagHamincha())) + " <br><br>" +
                 getString(R.string.sunset, timeFormat.format(zcal.getSunset())) + " <br><br>" +
                 getString(R.string.nightfall, timeFormat.format(czc.getTzaisBaalHatanya())) + " <br><br>";
     }
