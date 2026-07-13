@@ -29,6 +29,7 @@ import androidx.preference.PreferenceManager;
 import com.banjos.dosalarm.R;
 import com.banjos.dosalarm.databinding.AddAlarmScreenBinding;
 import com.banjos.dosalarm.tools.IntentCreator;
+import com.banjos.dosalarm.tools.LanguageContextWrapper;
 import com.banjos.dosalarm.tools.PreferencesService;
 import com.banjos.dosalarm.types.Alarm;
 import com.banjos.dosalarm.types.AlarmType;
@@ -49,6 +50,16 @@ public class SetAlarmActivity extends AppCompatActivity {
     private final DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
     private final DateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.US);
     private int testModeClicks = 0;
+
+    @Override
+    protected void attachBaseContext(android.content.Context newBase) {
+        PreferencesService prefs = new PreferencesService(newBase);
+        String lang = prefs.getAppLanguage();
+        if (!lang.equals("iw") && !lang.equals("en") && !lang.equals("fr") && !lang.equals("es")) {
+            lang = "en";
+        }
+        super.attachBaseContext(LanguageContextWrapper.wrap(newBase, lang));
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

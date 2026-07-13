@@ -3,6 +3,14 @@
 
     <PreferenceCategory app:title="@string/defaults_header">
 
+        <ListPreference
+            app:defaultValue="en"
+            app:entries="@array/pref_language_entries"
+            app:entryValues="@array/pref_language_values"
+            app:key="language"
+            app:title="@string/pref_language_title"
+            app:useSimpleSummaryProvider="true" />
+
         <PreferenceScreen
             android:id="@+id/location_preference_screen"
             app:key="location_screen"

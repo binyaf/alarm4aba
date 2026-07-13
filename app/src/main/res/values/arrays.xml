@@ -168,8 +168,8 @@
         <item>@string/JLM_IL</item>
         <item>@string/TLV_IL</item>
         <item>@string/HAF_IL</item>
-        <item>@string/MNF_IL</item>
         <item>@string/KSM_IL</item>
+        <item>@string/MNF_IL</item>
         <item>@string/TVE_IL</item>
         <item>@string/GVZ_IL</item>
         <item>@string/EFR_IL</item>
@@ -182,8 +182,8 @@
         <item>JLM_IL</item>
         <item>TLV_IL</item>
         <item>HAF_IL</item>
-        <item>MNF_IL</item>
         <item>KSM_IL</item>
+        <item>MNF_IL</item>
         <item>TVE_IL</item>
         <item>GVZ_IL</item>
         <item>EFR_IL</item>
@@ -225,6 +225,20 @@
     </string-array>
     <string-array name="pref_location_france_values">
         <item>PAR_FR</item>
+    </string-array>
+
+    <string-array name="pref_language_entries">
+        <item>@string/lang_en</item>
+        <item>@string/lang_iw</item>
+        <item>@string/lang_fr</item>
+        <item>@string/lang_es</item>
+    </string-array>
+
+    <string-array name="pref_language_values">
+        <item>en</item>
+        <item>iw</item>
+        <item>fr</item>
+        <item>es</item>
     </string-array>
 
 </resources>

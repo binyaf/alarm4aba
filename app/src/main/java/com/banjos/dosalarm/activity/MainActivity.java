@@ -45,6 +45,7 @@ import com.banjos.dosalarm.adapter.AlarmAdapter;
 import com.banjos.dosalarm.databinding.AlarmDetailsBinding;
 import com.banjos.dosalarm.tools.DateTimesFormats;
 import com.banjos.dosalarm.tools.IntentCreator;
+import com.banjos.dosalarm.tools.LanguageContextWrapper;
 import com.banjos.dosalarm.tools.LocationService;
 import com.banjos.dosalarm.tools.NotificationJobScheduler;
 import com.banjos.dosalarm.tools.NotificationScheduler;
@@ -75,9 +76,21 @@ public class MainActivity extends AppCompatActivity {
     private AlarmLocation alarmLocation;
     private String cityNameForPresentation;
     private LocationService locationService;
+    private String currentLanguage;
 
     private static final String NOTIFICATIONS_WORK_SCHEDULED_KEY = "notificationsWorkScheduled";
     private static final int NOTIFICATION_PERMISSION_REQUEST_CODE = 1;
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        PreferencesService prefs = new PreferencesService(newBase);
+        String lang = prefs.getAppLanguage();
+        // Support iw, en, fr, es
+        if (!lang.equals("iw") && !lang.equals("en") && !lang.equals("fr") && !lang.equals("es")) {
+            lang = "en";
+        }
+        super.attachBaseContext(LanguageContextWrapper.wrap(newBase, lang));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
         Context context = getApplicationContext();
         locationService = new LocationService();
         preferencesService = new PreferencesService(context);
+        currentLanguage = preferencesService.getAppLanguage();
 
         SharedPreferences myPrefs = preferencesService.getMyPreferences();
 
@@ -164,7 +178,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         
-        // Refresh location and city name every time we return to this screen
+        // 1. Check if language has changed while we were away
+        String lang = preferencesService.getAppLanguage();
+        if (!lang.equals(currentLanguage)) {
+            recreate();
+            return;
+        }
+        
+        // 2. Refresh location and city name every time we return to this screen
         alarmLocation = locationService.getClientLocationDetails(this);
         if (alarmLocation != null) {
             cityNameForPresentation = getCityNameByCityCode(alarmLocation.getCityCode());

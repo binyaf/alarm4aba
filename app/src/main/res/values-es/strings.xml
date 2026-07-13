@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DosAlarm</string>
+    <string name="save">Guardar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="create">Crear alarma</string>
+    <string name="createMincha">Recordatorio de Minjá</string>
+    <string name="delete">Eliminar</string>
+    <string name="edit_alarm">Editar alarma</string>
+    <string name="edit">Editar</string>
+    <string name="share">Compartir</string>
+    <string name="warning">Advertencia</string>
+    <string name="add_alarm">Añadir alarma</string>
+    <string name="add">Añadir</string>
+    <string name="alarm_duration_label">Duración de la alarma (seg.)</string>
+    <string name="alarm_time_label">Hora de la alarma</string>
+    <string name="alarm_date_label">Fecha de la alarma</string>
+    <string name="alarm_label_label">Etiqueta de la alarma</string>
+    <string name="hint_date">Seleccionar fecha</string>
+    <string name="hint_time">Seleccionar hora</string>
+    <string name="hint_label">Etiqueta (opcional)</string>
+    <string name="todays_zmanim_short">Zmanim de hoy</string>
+    <string name="todays_zmanim">Zmanim de hoy - %1$s</string>
+    <string name="alarm_will_start">La alarma comenzará a las:</string>
+    <string name="alarm_will_start_with_label">La alarma (%1$s) comenzará a las:</string>
+    <string name="alarm_after_shma">Su alarma es después de Sof Zman Shma</string>
+    <string name="alarm_after_tfilah">Su alarma es después de Sof Zman Tfila</string>
+    <string name="sunrise">Amanecer: %1$s</string>
+    <string name="dawn">Alba: %1$s</string>
+    <string name="talit_and_tefilin">Talit y Tefilín más temprano: %1$s</string>
+    <string name="latest_shma_mga">Último Shemá M"A: %1$s</string>
+    <string name="latest_shma_gra">Último Shemá GR"A: %1$s</string>
+    <string name="latest_shacharis_mga">Último Shajarit M"A: %1$s</string>
+    <string name="latest_shacharis_gra">Último Shajarit GR"A: %1$s</string>
+    <string name="midday">Mediodía (Jatzot): %1$s</string>
+    <string name="minchaGedola">Minjá Guedolá: %1$s</string>
+    <string name="plag">Plag Haminjá: %1$s</string>
+    <string name="sunset">Atardecer: %1$s</string>
+    <string name="nightfall">Salida de las estrellas: %1$s</string>
+    <string name="about">Acerca de</string>
+    <string name="settings">Ajustes</string>
+    <string name="title_activity_settings">Ajustes</string>
+
+    <string name="pref_language_title">Idioma de la aplicación</string>
+    <string name="lang_en">Inglés</string>
+    <string name="lang_iw">Hebreo</string>
+    <string name="lang_fr">Francés</string>
+    <string name="lang_es">Español</string>
+    <string name="not_selected">No seleccionado</string>
+
+    <string name="shabbat_shalom">Shabat Shalom</string>
+    <string name="less_than_a_minute">menos de un minuto</string>
+    <string name="one_minute">1 minuto</string>
+    <string name="minutes">%d minutos</string>
+    <string name="one_hour">1 hora</string>
+    <string name="hours">%d horas</string>
+    <string name="and_minutes">y %1$d minutos</string>
+
+    <!-- Preference Titles -->
+    <string name="pref_alarm_duration_title">Duración de alarma predeterminada para Shabat (seg.)</string>
+    <string name="pref_alarm_time_title">Hora de alarma predeterminada</string>
+    <string name="pref_enable_notifications_title">Recordatorios activados</string>
+    <string name="defaults_header">Valores predeterminados</string>
+    <string name="pref_notifications_candle_header">Recordatorio de encendido de velas de Shabat</string>
+    <string name="pref_notifications_shacharit_header">Recordatorio de Shajarit (excepto Shabat)</string>
+    <string name="pref_notifications_mincha_header">Recordatorio de Minjá (excepto Shabat)</string>
+    <string name="pref_notifications_maariv_header">Recordatorio de Maariv (excepto Shabat)</string>
+    <string name="pref_notifications_shacharit_sunrise_text">minutos antes del amanecer</string>
+    <string name="pref_notifications_mincha_sunset_text">Minutos antes del atardecer</string>
+    <string name="pref_notifications_maariv_sunset_text">Minutos después del atardecer</string>
+    <string name="pref_notifications_shacharit_szks_text">Minutos antes de Sof Zman Kryiat Sma</string>
+    <string name="pref_notifications_shacharit_fixed_text">hora fija</string>
+    <string name="pref_notifications_candle_minutes_text">Tiempo antes de Shabat</string>
+
+    <!-- Preference locations -->
+    <string name="pref_location_title">Tu ubicación</string>
+    <string name="JLM_IL">Jerusalén</string>
+    <string name="TLV_IL">Tel Aviv</string>
+    <string name="HAF_IL">Haifa</string>
+    <string name="KSM_IL">Kiryat Shmona</string>
+    <string name="MNF_IL">Mitzpe Netofa</string>
+    <string name="TVE_IL">Tiberíades</string>
+    <string name="GVZ_IL">Guivat Ze\'ev</string>
+    <string name="EFR_IL">Efrat</string>
+    <string name="LOD_IL">Lod</string>
+    <string name="MBA_IL">Mazkeret Batya</string>
+    <string name="SDR_IL">Sderot</string>
+    <string name="EIL_IL">Eilat</string>
+    <string name="NYC_US">Nueva York</string>
+    <string name="LAX_US">Los Ángeles</string>
+    <string name="MIA_US">Miami</string>
+    <string name="BOS_US">Boston</string>
+    <string name="TOR_CA">Toronto</string>
+    <string name="LON_UK">Londres</string>
+    <string name="PAR_FR">París</string>
+
+    <string name="country_israel">Israel</string>
+    <string name="country_usa">EE. UU.</string>
+    <string name="country_canada">Canadá</string>
+    <string name="country_uk">Reino Unido</string>
+    <string name="country_france">Francia</string>
+
+    <!-- notification -->
+    <string name="notification_candle_lighting_title">El encendido de velas de Shabat es en\n%1$s</string>
+    <string name="notification_body">No olvides</string>
+    <string name="ok">Aceptar</string>
+
+   <string name="min_5">5 min.</string>
+   <string name="min_10">10 min.</string>
+   <string name="min_15">15 min.</string>
+   <string name="min_20">20 min.</string>
+   <string name="min_25">25 min.</string>
+   <string name="min_30">30 min.</string>
+   <string name="min_35">45 min.</string>
+   <string name="min_40">40 min.</string>
+   <string name="min_45">45 min.</string>
+   <string name="min_50">50 min.</string>
+   <string name="min_55">55 min.</string>
+   <string name="min_60">1 hora</string>
+   <string name="min_75">1:15 horas</string>
+   <string name="min_90">1.5 horas</string>
+   <string name="min_105">1:45 horas</string>
+   <string name="min_120">2 horas</string>
+   <string name="min_150">2.5 horas</string>
+   <string name="min_180">3 horas</string>
+   <string name="min_210">3.5 horas</string>
+   <string name="min_240">4 horas</string>
+
+   <string name="notification_checklist_dosalarm">Configurar una alarma (DosAlarm)</string>
+   <string name="notification_checklist_refrigerator">Configurar la luz del refrigerador</string>
+   <string name="notification_checklist_dishwasher">Configurar el temporizador del lavavajillas</string>
+   <string name="notification_checklist_electricity">Configurar el temporizador de electricidad</string>
+   <string name="notification_checklist_air_conditioner">Configurar el temporizador del aire acondicionado</string>
+   <string name="notification_checklist_kettle">Preparar el hervidor de Shabat</string>
+   <string name="notification_checklist_hot_plate">Preparar la placa de Shabat</string>
+   <string name="notification_checklist_candles">Preparar las velas</string>
+
+    <string name="pref_click_here_for_details">Haga clic aquí para especificar recordatorios</string>
+    <string name="pref_checklist_title">En la notificación recordarme sobre:</string>
+    <string name="pref_checklist_dosalarm">Despertador (DosAlarm)</string>
+    <string name="pref_checklist_refrigerator">Luz del refrigerador</string>
+    <string name="pref_checklist_dishwasher">Temporizador de lavavajillas</string>
+    <string name="pref_checklist_electricity">Reloj de Shabat</string>
+    <string name="pref_checklist_air_conditioner">Temporizador de aire acondicionado</string>
+    <string name="pref_checklist_kettle">Urna de Shabat</string>
+    <string name="pref_checklist_hot_plate">Placa caliente</string>
+    <string name="pref_checklist_candles">Velas de Shabat</string>
+
+    <string name="reminder_text">Recordatorio - no olvides %1$s</string>
+    <string name="reminder_activity_title">DosAlarm - Recordatorio</string>
+    <string name="time_icon_desc">Icono de reloj</string>
+    <string name="app_icon_desc">Icono de la aplicación</string>
+    <string name="shacharit_switch_desc">Interruptor de recordatorio de Shajarit</string>
+    <string name="mincha_switch_desc">Interruptor de recordatorio de Minjá</string>
+    <string name="maariv_switch_desc">Interruptor de recordatorio de Maariv</string>
+    <string name="candle_switch_desc">Interruptor de recordatorio de encendido de velas</string>
+    <string name="notification_stop_desc">Detener alarma</string>
+    <string name="notification_snooze_desc">Posponer alarma</string>
+    <string name="notification_collapsed_title">DosAlarm</string>
+    <string name="remind_me_about">Recordarme sobre:</string>
+    <string name="reminders_advanced_settings">los ajustes avanzados para los recordatorios están en ajustes</string>
+    <string name="shacharit">Shajarit</string>
+    <string name="shacharit_vatikin">Shajarit\n(Vatikin)</string>
+    <string name="mincha">Minjá\n</string>
+    <string name="maariv">Maariv\n</string>
+    <string name="candle_lighting">Encendido\nde velas</string>
+    <string name="stop">Parar</string>
+    <string name="snooze">Posponer</string>
+    <string name="prayer_reminder_shacharit_title">Hora de rezar Shajarit</string>
+    <string name="prayer_reminder_shacharit_text">¡Despierte! Es hora de rezar Shajarit.\nEl amanecer es a las %1$s \nSof Zman Kryiat Sehma (gr"a) es a las %2$s</string>
+    <string name="prayer_reminder_mincha_title">Hora de rezar Minjá</string>
+    <string name="prayer_reminder_mincha_text">Recordatorio - Es hora de rezar Minjá\nEl atardecer es a las %1$s</string>
+    <string name="prayer_reminder_maariv_title">Hora de rezar Maariv</string>
+    <string name="prayer_reminder_maariv_text">¡Maariv! No se duerma, es hora de rezar Maariv</string>
+    <string name="swipe_to_dismiss">deslizar para detener</string>
+
+    <string name="share_msg">¡No estoy seguro de por qué te interesará esto, pero me despierto el %1$s a las %2$s con DosAlarm! \n\n¿Aún no tienes dos-alarm? descárgalo aquí: https://tinyurl.com/52esu8dx</string>
+
+</resources>

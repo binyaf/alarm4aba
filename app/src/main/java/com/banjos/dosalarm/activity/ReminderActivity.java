@@ -16,9 +16,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.media.Ringtone;
 import com.banjos.dosalarm.R;
+import com.banjos.dosalarm.tools.LanguageContextWrapper;
+import com.banjos.dosalarm.tools.PreferencesService;
 
 public class ReminderActivity extends AppCompatActivity {
     private Ringtone ringtone;
+
+    @Override
+    protected void attachBaseContext(android.content.Context newBase) {
+        PreferencesService prefs = new PreferencesService(newBase);
+        String lang = prefs.getAppLanguage();
+        if (!lang.equals("iw") && !lang.equals("en") && !lang.equals("fr") && !lang.equals("es")) {
+            lang = "en";
+        }
+        super.attachBaseContext(LanguageContextWrapper.wrap(newBase, lang));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

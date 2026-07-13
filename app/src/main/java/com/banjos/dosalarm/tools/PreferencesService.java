@@ -39,6 +39,7 @@ public class PreferencesService {
     private static final String REMINDERS_MINCHA_MINUTES_BEFORE_SUNSET = "pref_mincha_notification_time_before_sunset";
     private static final String REMINDERS_MAARIV_MINUTES_AFTER_SUNSET = "pref_maariv_notification_time_after_sunset";
     private static final String REMINDERS_CANDLE_MINUTES_BEFORE_SHABBAT = "pref_notification_time_before_shabbat";
+    private static final String LANGUAGE_KEY = "language";
 
     public PreferencesService(Context context) {
         this.context = context;
@@ -171,7 +172,13 @@ public class PreferencesService {
         sharedPreferencesSettings.edit().putInt(REMINDERS_CANDLE_MINUTES_BEFORE_SHABBAT, min);
     }
 
+    public String getAppLanguage() {
+        return sharedPreferencesSettings.getString(LANGUAGE_KEY, java.util.Locale.getDefault().getLanguage());
+    }
 
+    public void setAppLanguage(String language) {
+        sharedPreferencesSettings.edit().putString(LANGUAGE_KEY, language).apply();
+    }
 }
 
 

@@ -40,6 +40,14 @@
     <string name="about">אודות</string>
     <string name="settings">הגדרות</string>
     <string name="title_activity_settings">הגדרות</string>
+
+    <string name="pref_language_title">שפת האפליקציה</string>
+    <string name="lang_en">אנגלית</string>
+    <string name="lang_iw">עברית</string>
+    <string name="lang_fr">צרפתית</string>
+    <string name="lang_es">ספרדית</string>
+    <string name="not_selected">לא נבחר</string>
+
     <string name="shabbat_shalom">שבת שלום</string>
     <string name="less_than_a_minute">פחות מדקה</string>
     <string name="one_minute">דקה</string>
@@ -141,6 +149,16 @@
     <!--<string name="pref_checklist_phone">להתקשר למשפחה לאחל שבת שלום</string>-->
 
     <string name="reminder_text">תזכורת - לא לשכוח להתפלל %1$s</string>
+    <string name="reminder_activity_title">DosAlarm - תזכורת</string>
+    <string name="time_icon_desc">סמל שעון</string>
+    <string name="app_icon_desc">סמל אפליקציה</string>
+    <string name="shacharit_switch_desc">מתג תזכורת שחרית</string>
+    <string name="mincha_switch_desc">מתג תזכורת מנחה</string>
+    <string name="maariv_switch_desc">מתג תזכורת ערבית</string>
+    <string name="candle_switch_desc">מתג תזכורת הדלקת נרות</string>
+    <string name="notification_stop_desc">עצור התראה</string>
+    <string name="notification_snooze_desc">נודניק התראה</string>
+    <string name="notification_collapsed_title">DosAlarm</string>
     <string name="remind_me_about">הזכר לי:</string>
     <string name="reminders_advanced_settings">הגדרות מתקדמות לתזכורות נמצאות במסך ההגדרות</string>
     <string name="shacharit">שחרית</string>

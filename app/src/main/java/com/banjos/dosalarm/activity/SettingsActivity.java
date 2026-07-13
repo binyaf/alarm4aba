@@ -22,9 +22,21 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import com.banjos.dosalarm.R;
+import com.banjos.dosalarm.tools.LanguageContextWrapper;
+import com.banjos.dosalarm.tools.PreferencesService;
 import com.banjos.dosalarm.worker.NotificationWorker;
 
 public class SettingsActivity extends AppCompatActivity implements PreferenceFragmentCompat.OnPreferenceStartScreenCallback {
+
+    @Override
+    protected void attachBaseContext(android.content.Context newBase) {
+        PreferencesService prefs = new PreferencesService(newBase);
+        String lang = prefs.getAppLanguage();
+        if (!lang.equals("iw") && !lang.equals("en") && !lang.equals("fr") && !lang.equals("es")) {
+            lang = "en";
+        }
+        super.attachBaseContext(LanguageContextWrapper.wrap(newBase, lang));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +117,9 @@ public class SettingsActivity extends AppCompatActivity implements PreferenceFra
         @Override
         public void onResume() {
             super.onResume();
+            if (getActivity() != null) {
+                getActivity().setTitle(R.string.title_activity_settings);
+            }
             updateLocationSummaries();
             updateMainLocationSummary();
         }
@@ -112,6 +127,18 @@ public class SettingsActivity extends AppCompatActivity implements PreferenceFra
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey);
+
+            Preference langPref = findPreference("language");
+            if (langPref != null) {
+                langPref.setOnPreferenceChangeListener((preference, newValue) -> {
+                    // Update language and restart activity to apply changes
+                    if (getActivity() != null) {
+                        new PreferencesService(getActivity()).setAppLanguage((String) newValue);
+                        getActivity().recreate();
+                    }
+                    return true;
+                });
+            }
 
             String[] countryKeys = {"location", "location_usa", "location_canada", "location_uk", "location_france"};
             
@@ -190,9 +217,8 @@ public class SettingsActivity extends AppCompatActivity implements PreferenceFra
                     pref.setValue(activeLocation);
                     pref.setSummary("%s");
                 } else {
-                    // Clear the per-country preference so it doesn't show as selected
                     pref.setValue(null);
-                    pref.setSummary("Not selected");
+                    pref.setSummary(R.string.not_selected);
                 }
             }
         }
