@@ -46,6 +46,12 @@ public class BootReceiver extends BroadcastReceiver {
 
         try {
             alarmManager.setAlarmClock(alarmClockInfo, pendingIntent);
+            // Also set an exact alarm allowed while idle as a fallback to improve firing under Doze.
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, alarm.getDateAndTime().getTimeInMillis(), pendingIntent);
+            } else {
+                alarmManager.set(AlarmManager.RTC_WAKEUP, alarm.getDateAndTime().getTimeInMillis(), pendingIntent);
+            }
         } catch (SecurityException e) {
             Log.e("BootReceiver", "SecurityException: cannot schedule exact alarm", e);
         }

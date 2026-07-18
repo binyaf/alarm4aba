@@ -21,7 +21,12 @@ public class NotificationScheduler {
         if (notificationTime.after(now)) {
             Log.d("NotificationWorker", "type: " + notificationType + " | Scheduling notification | notification time: " +
                     notificationTime + " | now: " + now);
-            alarmManager.set(AlarmManager.RTC_WAKEUP, notificationTime.getTime(), pendingIntent);
+            // Use exact alarm and allow while idle on API >= M to better survive Doze/airplane mode
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, notificationTime.getTime(), pendingIntent);
+            } else {
+                alarmManager.set(AlarmManager.RTC_WAKEUP, notificationTime.getTime(), pendingIntent);
+            }
         } else {
             Log.d("NotificationWorker", "type: " + notificationType + " | NOT Scheduling notification | notification time " +
                     notificationTime + " | now: " + now + " | notification is in the past - not Scheduling");
