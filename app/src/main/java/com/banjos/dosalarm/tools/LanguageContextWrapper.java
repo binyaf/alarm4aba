@@ -18,7 +18,17 @@ public class LanguageContextWrapper extends ContextWrapper {
     public static ContextWrapper wrap(Context context, String language) {
         Resources res = context.getResources();
         Configuration configuration = res.getConfiguration();
-        Locale newLocale = new Locale(language);
+        Locale newLocale;
+        if (language.equals("iw")) {
+            newLocale = new Locale("iw", "IL");
+        } else if (language.equals("fr")) {
+            newLocale = Locale.FRENCH;
+        } else if (language.equals("es")) {
+            newLocale = new Locale("es", "ES");
+        } else {
+            newLocale = Locale.ENGLISH;
+        }
+        Locale.setDefault(newLocale);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             configuration.setLocale(newLocale);
