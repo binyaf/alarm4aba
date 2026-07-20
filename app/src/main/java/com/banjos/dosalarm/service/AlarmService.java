@@ -118,26 +118,15 @@ public class AlarmService extends Service {
                 this, 0, stopIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
         );
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("ALARM")
-                .setContentText("Tap to dismiss")
+        return new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setContentTitle("Alarm")
+                .setContentText("Ringing...")
                 .setSmallIcon(R.drawable.ic_dosalarm_notification)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setCategory(NotificationCompat.CATEGORY_ALARM)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .addAction(0, "Stop", stopPendingIntent);
-
-        // Add full-screen intent for Android 10+ to show alarm even in lock screen during Doze
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            Intent fullScreenIntent = new Intent(this, MainActivity.class);
-            fullScreenIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            PendingIntent fullScreenPendingIntent = PendingIntent.getActivity(
-                    this, 0, fullScreenIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
-            );
-            builder.setFullScreenIntent(fullScreenPendingIntent, true);
-        }
-
-        return builder.build();
+                .addAction(0, "Stop", stopPendingIntent)
+                .build();
     }
 
     @Override

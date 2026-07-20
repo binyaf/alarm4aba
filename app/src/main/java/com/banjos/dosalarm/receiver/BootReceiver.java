@@ -7,10 +7,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.banjos.dosalarm.tools.DualAlarmScheduler;
 import com.banjos.dosalarm.tools.IntentCreator;
 import com.banjos.dosalarm.tools.PreferencesService;
 import com.banjos.dosalarm.types.Alarm;
 
+import java.util.Calendar;
 import java.util.Map;
 
 
@@ -20,42 +22,24 @@ public class BootReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d("BootReceiver", "onReceive");
+        Log.d("BootReceiver", "onReceive: " + (intent.getAction() != null ? intent.getAction() : "null"));
+        
         if (intent.getAction() != null && intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
             preferencesService = new PreferencesService(context);
             Map<Integer, Alarm> alarms = preferencesService.getAlarms();
 
-            for (int alarmId:alarms.keySet()) {
-                Alarm alarm = alarms.get(alarmId);
-                createActualAlarm(alarm, context);
+            Log.d("BootReceiver", "Device restarted, rescheduling " + alarms.size() + " alarms");
+            
+            Calendar now = Calendar.getInstance();
+            for (Alarm alarm : alarms.values()) {
+                if (alarm != null && alarm.getDateAndTime().after(now)) {
+                    Log.d("BootReceiver", "Rescheduling alarm ID: " + alarm.getId());
+                    // Use dual scheduler for maximum reliability after boot
+                    DualAlarmScheduler.scheduleAlarmDual(context, alarm);
+                }
             }
             preferencesService.saveAlarms(alarms);
-
-            Log.d("BootReceiver", "device restarted, all alarms are back in place");
+            Log.d("BootReceiver", "All alarms rescheduled after boot");
         }
     }
-
-    private void createActualAlarm(Alarm alarm, Context context) {
-
-        PendingIntent pendingIntent = IntentCreator.getAlarmPendingIntent(context, alarm);
-
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-
-        AlarmManager.AlarmClockInfo alarmClockInfo =
-                new AlarmManager.AlarmClockInfo(alarm.getDateAndTime().getTimeInMillis(), pendingIntent);
-
-        try {
-            alarmManager.setAlarmClock(alarmClockInfo, pendingIntent);
-            // Also set an exact alarm allowed while idle as a fallback to improve firing under Doze.
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, alarm.getDateAndTime().getTimeInMillis(), pendingIntent);
-            } else {
-                alarmManager.set(AlarmManager.RTC_WAKEUP, alarm.getDateAndTime().getTimeInMillis(), pendingIntent);
-            }
-        } catch (SecurityException e) {
-            Log.e("BootReceiver", "SecurityException: cannot schedule exact alarm", e);
-        }
-
-    }
-
 }

@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.PowerManager;
 import android.provider.Settings;
+import android.util.Log;
 
 public class BatteryOptimizationHelper {
 
@@ -23,26 +24,33 @@ public class BatteryOptimizationHelper {
 
     private static void showBatteryOptimizationDialog(Context context, String packageName) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context)
-                .setTitle("Battery Optimization")
-                .setMessage("For reliable alarm scheduling, please disable battery optimization for this app. " +
-                        "Without this, alarms may not trigger reliably on long delays.")
-                .setPositiveButton("Disable", (dialog, which) -> {
+                .setTitle("CRITICAL: Battery Optimization")
+                .setMessage("For alarms to work reliably 24+ hours in advance while idle, " +
+                        "you MUST disable battery optimization for this app. " +
+                        "Without this step, alarms WILL NOT FIRE.\n\n" +
+                        "Tap \"Disable Now\" to proceed.")
+                .setPositiveButton("Disable Now", (dialog, which) -> {
                     Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
                     intent.setData(Uri.parse("package:" + packageName));
                     try {
                         context.startActivity(intent);
+                        Log.d("BatteryOptimization", "Opened battery optimization dialog");
                     } catch (Exception e) {
-                        // If the system cannot handle this intent, open battery settings
-                        context.startActivity(new Intent(Settings.ACTION_BATTERY_SAVER_SETTINGS));
+                        Log.e("BatteryOptimization", "Failed to open battery optimization", e);
+                        try {
+                            context.startActivity(new Intent(Settings.ACTION_BATTERY_SAVER_SETTINGS));
+                        } catch (Exception e2) {
+                            Log.e("BatteryOptimization", "Failed to open battery settings", e2);
+                        }
                     }
                 })
-                .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
-                .setCancelable(true);
+                .setCancelable(false); // Force user to make a choice
         
         try {
             builder.show();
         } catch (Exception e) {
-            // Activity might not be available, silently fail
+            Log.e("BatteryOptimization", "Could not show dialog", e);
         }
     }
 }
+

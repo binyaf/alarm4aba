@@ -32,6 +32,7 @@ import com.banjos.dosalarm.tools.IntentCreator;
 import com.banjos.dosalarm.tools.LanguageContextWrapper;
 import com.banjos.dosalarm.tools.PreferencesService;
 import com.banjos.dosalarm.tools.BatteryOptimizationHelper;
+import com.banjos.dosalarm.tools.DualAlarmScheduler;
 import com.banjos.dosalarm.types.Alarm;
 import com.banjos.dosalarm.types.AlarmType;
 import com.banjos.dosalarm.types.IntentKeys;
@@ -261,20 +262,8 @@ public class SetAlarmActivity extends AppCompatActivity {
             return;
         }
 
-        PendingIntent pendingIntent = IntentCreator.getAlarmPendingIntent(getApplicationContext(), alarm);
-        AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(alarm.getDateAndTime().getTimeInMillis(), pendingIntent);
-
-        try {
-            alarmManager.setAlarmClock(alarmClockInfo, pendingIntent);
-            // Also schedule an exact alarm that is allowed while idle so it is more likely to fire under Doze.
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, alarm.getDateAndTime().getTimeInMillis(), pendingIntent);
-            } else {
-                alarmManager.set(AlarmManager.RTC_WAKEUP, alarm.getDateAndTime().getTimeInMillis(), pendingIntent);
-            }
-        } catch (SecurityException e) {
-            Log.e("setAlarmClock", "Couldn't set alarm, security issue", e);
-        }
+        // Use dual scheduler for maximum 100% reliability
+        DualAlarmScheduler.scheduleAlarmDual(getApplicationContext(), alarm);
     }
 
     private void saveAlarmToSharePreferences(Alarm alarm) {
