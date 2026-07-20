@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Vibrator;
+import android.os.PowerManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -25,6 +26,14 @@ public class AlarmReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Log.d("AlarmReceiver", "Alarm received!");
         preferencesService = new PreferencesService(context);
+
+        // Acquire WakeLock immediately to prevent CPU from going back to sleep
+        PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+        PowerManager.WakeLock wakeLock = pm.newWakeLock(
+                PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP,
+                "DosAlarm:AlarmReceived"
+        );
+        wakeLock.acquire(10000); // 10 seconds should be enough to start the service
 
         int alarmDurationSec = 10;
         Alarm alarm = null;

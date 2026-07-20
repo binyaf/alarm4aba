@@ -3,6 +3,7 @@ package com.banjos.dosalarm.service;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -21,6 +22,8 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
 import com.banjos.dosalarm.R;
+import com.banjos.dosalarm.activity.MainActivity;
+import com.banjos.dosalarm.receiver.AlarmReceiver;
 
 public class AlarmService extends Service {
 
@@ -40,12 +43,15 @@ public class AlarmService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d("AlarmService", "AlarmService started");
 
-        int durationSec = intent.getIntExtra("duration", 10);
+        int durationSec = intent != null ? intent.getIntExtra("duration", 10) : 10;
         
-        // Keep CPU awake while playing
+        // Keep CPU fully awake while alarm is playing - use the most aggressive wake lock
         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "DosAlarm:ActiveAlarm");
-        wakeLock.acquire( (durationSec + 5) * 1000L); // Safety timeout
+        wakeLock = pm.newWakeLock(
+                PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP,
+                "DosAlarm:AlarmService"
+        );
+        wakeLock.acquire((durationSec + 5) * 1000L);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             startForeground(NOTIFICATION_ID, createNotification(),
@@ -93,11 +99,11 @@ public class AlarmService extends Service {
             NotificationChannel channel = new NotificationChannel(
                     CHANNEL_ID,
                     "Active Alarm",
-                    NotificationManager.IMPORTANCE_LOW
+                    NotificationManager.IMPORTANCE_HIGH
             );
             channel.setSound(null, null);
             channel.enableVibration(false);
-            channel.setDescription("Background service to ensure the alarm plays and stops correctly");
+            channel.setDescription("Alarm is ringing");
             NotificationManager manager = getSystemService(NotificationManager.class);
             if (manager != null) {
                 manager.createNotificationChannel(channel);
@@ -106,14 +112,32 @@ public class AlarmService extends Service {
     }
 
     private Notification createNotification() {
-        return new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("Alarm System Active")
-                .setContentText("Managing alarm playback...")
+        // Create intent for the stop action
+        Intent stopIntent = new Intent(this, AlarmReceiver.StopSoundReceiver.class);
+        PendingIntent stopPendingIntent = PendingIntent.getBroadcast(
+                this, 0, stopIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+        );
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setContentTitle("ALARM")
+                .setContentText("Tap to dismiss")
                 .setSmallIcon(R.drawable.ic_dosalarm_notification)
-                .setPriority(NotificationCompat.PRIORITY_LOW)
-                .setCategory(NotificationCompat.CATEGORY_SERVICE)
-                .setVisibility(NotificationCompat.VISIBILITY_PRIVATE)
-                .build();
+                .setPriority(NotificationCompat.PRIORITY_MAX)
+                .setCategory(NotificationCompat.CATEGORY_ALARM)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .addAction(0, "Stop", stopPendingIntent);
+
+        // Add full-screen intent for Android 10+ to show alarm even in lock screen during Doze
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            Intent fullScreenIntent = new Intent(this, MainActivity.class);
+            fullScreenIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            PendingIntent fullScreenPendingIntent = PendingIntent.getActivity(
+                    this, 0, fullScreenIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+            );
+            builder.setFullScreenIntent(fullScreenPendingIntent, true);
+        }
+
+        return builder.build();
     }
 
     @Override

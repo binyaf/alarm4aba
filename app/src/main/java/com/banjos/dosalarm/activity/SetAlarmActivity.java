@@ -31,6 +31,7 @@ import com.banjos.dosalarm.databinding.AddAlarmScreenBinding;
 import com.banjos.dosalarm.tools.IntentCreator;
 import com.banjos.dosalarm.tools.LanguageContextWrapper;
 import com.banjos.dosalarm.tools.PreferencesService;
+import com.banjos.dosalarm.tools.BatteryOptimizationHelper;
 import com.banjos.dosalarm.types.Alarm;
 import com.banjos.dosalarm.types.AlarmType;
 import com.banjos.dosalarm.types.IntentKeys;
@@ -249,6 +250,9 @@ public class SetAlarmActivity extends AppCompatActivity {
         }
         createActualAlarm(alarm);
         saveAlarmToSharePreferences(alarm);
+        
+        // Prompt user to disable battery optimization for reliable alarm scheduling
+        BatteryOptimizationHelper.promptDisableBatteryOptimization(getApplicationContext());
     }
 
     private void createActualAlarm(Alarm alarm) {
