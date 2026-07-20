@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
 
-import androidx.work.ExpeditedWorkRequest;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
@@ -71,10 +70,10 @@ public class DualAlarmScheduler {
             Log.e("DualAlarmScheduler", "setAndAllowWhileIdle() failed", e);
         }
 
-        // ===== FALLBACK: WorkManager with ExpeditedWorkRequest =====
+        // ===== FALLBACK: WorkManager with OneTimeWorkRequest =====
         try {
             long delaySeconds = TimeUnit.MILLISECONDS.toSeconds(delayMs);
-            ExpeditedWorkRequest workRequest = new ExpeditedWorkRequest.Builder(AlarmReminderWorker.class)
+            OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(AlarmReminderWorker.class)
                     .setInitialDelay(delaySeconds, TimeUnit.SECONDS)
                     .addTag("alarm_" + alarm.getId())
                     .build();
