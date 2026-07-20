@@ -80,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String NOTIFICATIONS_WORK_SCHEDULED_KEY = "notificationsWorkScheduled";
     private static final int NOTIFICATION_PERMISSION_REQUEST_CODE = 1;
+    private static final int SCHEDULE_EXACT_ALARM_PERMISSION_REQUEST_CODE = 2;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -299,6 +300,11 @@ public class MainActivity extends AppCompatActivity {
             preferencesService.minchaReminderSwitched(false);
             preferencesService.maarivReminderSwitched(false);
         }
+        
+        // Request SCHEDULE_EXACT_ALARM permission on Android 12+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            requestScheduleExactAlarmPermissionIfNeeded();
+        }
 
         binding.candleLightingReminderSwitch.setChecked(preferencesService.isCandleLightReminderSelected());
         binding.maarivReminderSwitch.setChecked(preferencesService.isMaarivReminderSelected());
@@ -367,6 +373,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void requestNotificationPermission() {
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, NOTIFICATION_PERMISSION_REQUEST_CODE);
+    }
+
+    private void requestScheduleExactAlarmPermissionIfNeeded() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.SCHEDULE_EXACT_ALARM) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SCHEDULE_EXACT_ALARM}, SCHEDULE_EXACT_ALARM_PERMISSION_REQUEST_CODE);
+            }
+        }
     }
 
     private void openNotificationSettings(Context context) {
@@ -489,6 +503,12 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "Notification permission approved", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(this, "Notification permission denied", Toast.LENGTH_SHORT).show();
+            }
+        } else if (requestCode == SCHEDULE_EXACT_ALARM_PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Exact alarm permission approved", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Exact alarm permission denied - alarms may not be reliable", Toast.LENGTH_SHORT).show();
             }
         }
     }
