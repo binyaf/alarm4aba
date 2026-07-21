@@ -25,6 +25,14 @@ public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.d("AlarmReceiver", "Alarm received!");
+
+        if (intent.getBooleanExtra("is_guardian", false)) {
+            Log.d("AlarmReceiver", "Guardian alarm fired. Pre-warming system...");
+            // Job is done, process was woken up. 
+            // This prevents the OS from considering the app "stale" or "deep-sleeping".
+            return;
+        }
+
         preferencesService = new PreferencesService(context);
 
         // Acquire WakeLock immediately to prevent CPU from going back to sleep
