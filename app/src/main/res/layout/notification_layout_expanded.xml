@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -10,8 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@drawable/rounded_corner"
-        android:backgroundTint="@color/very_very_light_grey"
+        android:background="@drawable/notification_card_header"
         android:padding="12dp"
         android:layout_marginBottom="16dp">
 
@@ -20,15 +20,13 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:layout_marginBottom="4dp"
-            xmlns:app="http://schemas.android.com/apk/res-auto">
+            android:layout_marginBottom="4dp">
 
             <ImageView
                 android:id="@+id/notification_icon"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_dosalarm_notification"
-                app:tint="@color/colorPrimary"
                 android:contentDescription="@string/app_name" />
 
             <TextView
@@ -38,7 +36,7 @@
                 android:layout_weight="1"
                 android:layout_marginStart="8dp"
                 android:text="@string/app_name"
-                android:textColor="@color/colorPrimary"
+                android:textColor="#1565C0"
                 android:textSize="16sp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -47,7 +45,7 @@
             android:id="@+id/notification_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Alarm description goes here"
+            android:text="Alarm description"
             android:textColor="@color/black"
             android:textSize="14sp" />
     </LinearLayout>
@@ -58,31 +56,30 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <Button
+        <TextView
             android:id="@+id/notification_stop"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_weight="1"
             android:text="@string/stop"
-            android:background="@drawable/rounded_corner"
-            android:backgroundTint="@color/light_red"
-            android:textColor="@color/white"
-            android:textAllCaps="false"
+            android:background="@drawable/notification_button_cancel"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:textStyle="bold"
             android:layout_marginEnd="8dp"
             android:contentDescription="@string/notification_stop_desc"/>
 
-        <Button
+        <TextView
             android:id="@+id/notification_snooze"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_weight="1"
             android:text="@string/snooze"
-            android:background="@drawable/rounded_corner"
-            android:backgroundTint="@color/colorPrimary"
+            android:background="@drawable/notification_button_primary"
             android:textColor="@color/white"
-            android:textAllCaps="false"
+            android:gravity="center"
+            android:textStyle="bold"
             android:layout_marginStart="8dp"
             android:contentDescription="@string/notification_snooze_desc"/>
     </LinearLayout>
 </LinearLayout>
-

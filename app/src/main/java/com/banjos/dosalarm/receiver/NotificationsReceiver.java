@@ -3,7 +3,6 @@ package com.banjos.dosalarm.receiver;
 import static com.banjos.dosalarm.tools.IntentCreator.getNotificationPendingIntent;
 
 import android.Manifest;
-import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -11,18 +10,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
-import android.os.SystemClock;
 import android.util.Log;
-import android.widget.RemoteViews;
 
 import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
 
@@ -31,7 +24,6 @@ import com.banjos.dosalarm.service.AlarmService;
 import com.banjos.dosalarm.tools.DateTimesFormats;
 import com.banjos.dosalarm.tools.IntentCreator;
 import com.banjos.dosalarm.tools.LocationService;
-import com.banjos.dosalarm.tools.NotificationJobScheduler;
 import com.banjos.dosalarm.tools.NotificationScheduler;
 import com.banjos.dosalarm.tools.PreferencesService;
 import com.banjos.dosalarm.tools.ZmanimService;
@@ -49,14 +41,12 @@ import java.util.Set;
 public class NotificationsReceiver extends BroadcastReceiver {
 
     private SharedPreferences settingsPreferences;
-
     private PreferencesService preferencesService;
-
     private AlarmLocation clientsLocation;
 
-    private static final int NOTIFICATION_ALARM_DURATION_SEC = 10;
-
+    private static final int NOTIFICATION_ALARM_DURATION_SEC = 20;
     private static final int NOTIFICATION_SNOOZE_DURATION_MIN = 5;
+
     @Override
     public void onReceive(Context context, Intent intent) {
         String type = intent.getStringExtra("NOTIFICATION_TYPE");
@@ -67,310 +57,148 @@ public class NotificationsReceiver extends BroadcastReceiver {
     }
 
     private void showNotification(Context context, String type) {
-
         NotificationType notificationType = NotificationType.valueOf(type);
-
-        if (notificationType == null) {
-            Log.e("NotificationsReceiver", "couldn't send notification, unknown type | type: " + type + " | Not sending notification | ");
-            return;
-        }
 
         if (notificationType.toString().startsWith("STOP_")) {
             stopNotification(context, notificationType);
         } else if (notificationType.toString().startsWith("SNOOZE_")) {
             snoozeNotification(context, notificationType);
         } else {
-           showNotification(context, notificationType);
+            showNotification(context, notificationType);
         }
     }
 
     private void showNotification(Context context, NotificationType type) {
-
         if (ZmanimService.isNowAssurBemlacha(clientsLocation)) {
-            Log.d("NotificationsReceiver", "type: " + type.toString() + " | Not sending notification | " +
-                    "it's Shabbat/Yom-tov now");
+            Log.d("NotificationsReceiver", "type: " + type.toString() + " | Not sending notification - Shabbat/Yom-tov");
             return;
         }
+
         String title = null;
         String text = null;
-        NotificationCompat.Builder builder = null;
+        int icon = 0;
+
         if (NotificationType.CANDLE_LIGHTING_REMINDER == type && preferencesService.isCandleLightReminderSelected()) {
             title = prepareCandleLightingTitle(context);
             text = prepareCandleLightNotificationText(context);
-            builder = createNotificationBuilder(context, title, text,
-                    NotificationType.STOP_CANDLE_LIGHTING_REMINDER,
-                    NotificationType.SNOOZE_CANDLE_LIGHTING_REMINDER,
-                    R.drawable.candles);
+            icon = R.drawable.candles;
         } else if (NotificationType.SHACHARIT_REMINDER == type && preferencesService.isShacharisReminderSelected()) {
             ZmanimCalendar zCal = ZmanimService.getTodaysZmanimCalendar(clientsLocation);
             title = context.getString(R.string.prayer_reminder_shacharit_title);
-            String sunrise = DateTimesFormats.timeFormat.format( zCal.getSunrise());
-            String szksGra = DateTimesFormats.timeFormat.format( zCal.getSofZmanShmaGRA());
-            text = context.getString(R.string.prayer_reminder_shacharit_text,sunrise, szksGra);
-            builder = createNotificationBuilder(context, title, text,
-                    NotificationType.STOP_SHACHARIT_REMINDER, NotificationType.SNOOZE_SHACHARIT_REMINDER,
-                    R.drawable.sunrise);
+            String sunrise = DateTimesFormats.timeFormat.format(zCal.getSunrise());
+            String szksGra = DateTimesFormats.timeFormat.format(zCal.getSofZmanShmaGRA());
+            text = context.getString(R.string.prayer_reminder_shacharit_text, sunrise, szksGra);
+            icon = R.drawable.sunrise;
         } else if (NotificationType.MINCHA_REMINDER == type && preferencesService.isMinchaReminderSelected()) {
             ZmanimCalendar zCal = ZmanimService.getTodaysZmanimCalendar(clientsLocation);
             title = context.getString(R.string.prayer_reminder_mincha_title);
             String sunset = DateTimesFormats.timeFormat.format(zCal.getSunset());
             text = context.getString(R.string.prayer_reminder_mincha_text, sunset);
-
-            builder = createNotificationBuilder(context, title, text,
-                   NotificationType.STOP_MINCHA_REMINDER, NotificationType.SNOOZE_MINCHA_REMINDER,
-                    R.drawable.sunset);
+            icon = R.drawable.sunset;
         } else if (NotificationType.MAARIV_REMINDER == type && preferencesService.isMaarivReminderSelected()) {
             title = context.getString(R.string.prayer_reminder_maariv_title);
             text = context.getString(R.string.prayer_reminder_maariv_text);
-            builder = createNotificationBuilder(context, title, text,
-                    NotificationType.STOP_MAARIV_REMINDER, NotificationType.SNOOZE_MAARIV_REMINDER,
-                    R.drawable.night);
+            icon = R.drawable.night;
         }
 
-        if (title == null || builder == null) {
-            Log.e("NotificationsReceiver", "type: " + type.toString() + " | Not sending notification | " +
-                    "title or builder are null");
-            return;
-        }
+        if (title == null) return;
 
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-            Log.d("NotificationsReceiver", "NO permission | notification-type:" + type);
-        } else {
-            Log.d("NotificationsReceiver", "showing notification  | notification type:" + type  +
-                    " | title: " + title + " | text: " + text + " | notification id:" + type.getId());
-            
-            // Start Foreground Service to handle the sound and auto-stop
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+            // Create Snooze Intent
+            NotificationType snoozeType = null;
+            if (type == NotificationType.CANDLE_LIGHTING_REMINDER) snoozeType = NotificationType.SNOOZE_CANDLE_LIGHTING_REMINDER;
+            else if (type == NotificationType.SHACHARIT_REMINDER) snoozeType = NotificationType.SNOOZE_SHACHARIT_REMINDER;
+            else if (type == NotificationType.MINCHA_REMINDER) snoozeType = NotificationType.SNOOZE_MINCHA_REMINDER;
+            else if (type == NotificationType.MAARIV_REMINDER) snoozeType = NotificationType.SNOOZE_MAARIV_REMINDER;
+
+            PendingIntent snoozePI = null;
+            if (snoozeType != null) {
+                snoozePI = IntentCreator.getNotificationPendingIntent(context, snoozeType);
+            }
+
             Intent serviceIntent = new Intent(context, AlarmService.class);
             serviceIntent.putExtra("duration", NOTIFICATION_ALARM_DURATION_SEC);
+            serviceIntent.putExtra("notificationId", type.getId());
+            serviceIntent.putExtra("title", title);
+            serviceIntent.putExtra("text", text);
+            serviceIntent.putExtra("icon", icon);
+            serviceIntent.putExtra("snoozePI", snoozePI);
+            serviceIntent.putExtra("isAlarm", false);
             ContextCompat.startForegroundService(context, serviceIntent);
-
-            notificationManager.notify(type.getId(), builder.build());
         }
     }
 
     private String prepareCandleLightingTitle(Context context) {
+        Date candleLightingTimeToday = ZmanimService.getCandleLightingTimeToday(clientsLocation, context);
+        if (candleLightingTimeToday == null) return null;
 
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.MINUTE, 30);
-        //Date dateForTest = cal.getTime();
-
-        Date candleLightingTimeToday = ZmanimService.getCandleLightingTimeToday(clientsLocation, context); // dateForTest;
-
-        if (candleLightingTimeToday == null) {
-            return null;
-        }
-
-        // Calculate the difference in minutes
         long timeDifferenceMillis = candleLightingTimeToday.getTime() - System.currentTimeMillis();
+        if (timeDifferenceMillis < 0) return null;
 
-        if (timeDifferenceMillis < 0) {
-            Log.d("NotificationsReceiver", "wanted to send a notification after shabbat candle lighting for some reason");
-            return null;
-        }
         long minutesDifference = timeDifferenceMillis / (60 * 1000);
-
-        // Present the difference in a human-readable format
-        String formattedDifference = formatTimeDifference(minutesDifference, context);
-
-        return context.getString(R.string.notification_candle_lighting_title, formattedDifference);
+        return context.getString(R.string.notification_candle_lighting_title, formatTimeDifference(minutesDifference, context));
     }
 
     private String prepareCandleLightNotificationText(Context context) {
-
         List<String> checkList = getCandleLightingChecklist(context);
-
-        if (checkList == null || checkList.size() == 0) {
-            return "";
-        }
+        if (checkList == null || checkList.isEmpty()) return "";
         StringBuilder sb = new StringBuilder();
         sb.append("\n").append(context.getString(R.string.notification_body)).append(":");
-        for (String str:checkList) {
-            if (str != null && !str.equals("")) {
-                sb.append("\n* " + str);
-            }
+        for (String str : checkList) {
+            if (str != null && !str.isEmpty()) sb.append("\n* ").append(str);
         }
-
         return sb.toString();
     }
 
     private List<String> getCandleLightingChecklist(Context context) {
-        List notifications = new ArrayList();
+        List<String> notifications = new ArrayList<>();
         Set<String> values = settingsPreferences.getStringSet("pref_pre_shabbat_notifications_checklist", new HashSet<>());
-
         for (String notificationKey : values) {
             int resourceId = context.getResources().getIdentifier(notificationKey, "string", context.getPackageName());
             if (resourceId != 0) {
                 String notificationStr = context.getString(resourceId);
-                if (notificationStr != null) {
-                    notifications.add(notificationStr);
-                }
+                if (notificationStr != null) notifications.add(notificationStr);
             }
         }
         return notifications;
     }
 
     private static String formatTimeDifference(long minutesDifference, Context context) {
-        if (minutesDifference < 1) {
-            return context.getString(R.string.less_than_a_minute);
-        } else if (minutesDifference == 1) {
-            return context.getString(R.string.one_minute);
-        } else if (minutesDifference < 60) {
-            return context.getString(R.string.minutes, minutesDifference);
-        } else {
-            long hours = minutesDifference / 60;
-            long remainingMinutes = minutesDifference % 60;
-
-            if (remainingMinutes == 0) {
-                return hours == 1 ? context.getString(R.string.one_hour) : context.getString(R.string.hours, hours);
-            } else {
-                return context.getString(R.string.hours, hours) + " " + context.getString(R.string.and_minutes, remainingMinutes);
-            }
-        }
-    }
-
-   /* private NotificationCompat.Builder createNotificationBuilder(Context context, String title, String text,
-                                                                 NotificationType stopReminderType, NotificationType snoozeReminderType) {
-
-        if (title == null) {
-            return null;
-        }
-        // Create intents for the actions
-        PendingIntent stopPendingIntent = IntentCreator.getNotificationPendingIntent(context, stopReminderType);
-        PendingIntent snoozePendingIntent =
-                IntentCreator.getNotificationPendingIntent(context, snoozeReminderType);
-
-        PendingIntent deletePendingIntent = IntentCreator.getNotificationPendingIntent(context, stopReminderType);
-
-        // Build the notification
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context,
-                NotificationJobScheduler.CHANNEL_ID)
-                .setSmallIcon(R.drawable.app_icon)
-                .setContentTitle(title)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setSound(Uri.parse("content://settings/system/alarm_alert"))
-                .setSmallIcon(R.drawable.ic_dosalarm_notification)
-                .setCategory(NotificationCompat.CATEGORY_ALARM)
-                .addAction(R.drawable.ic_dosalarm_notification, context.getString(R.string.stop), stopPendingIntent)
-                .addAction(R.drawable.ic_launcher_foreground, context.getString(R.string.snooze), snoozePendingIntent)
-                .setDeleteIntent(deletePendingIntent)
-                .setColor(Color.GRAY)
-                .setAutoCancel(true);
-
-       builder.setStyle(new NotificationCompat.BigTextStyle().bigText(text));
-
-        return builder;
-
-    }*/
-
-    private NotificationCompat.Builder createNotificationBuilder(Context context, String title, String text,
-                                                                    NotificationType stopReminderType,
-                                                                    NotificationType snoozeReminderType,
-                                                                 int icon) {
-
-        if (title == null) {
-            return null;
-        }
-
-        RemoteViews notificationLayoutExpanded = new RemoteViews(context.getPackageName(), R.layout.notification_layout_expanded);
-        RemoteViews notificationLayoutCollapsed = new RemoteViews(context.getPackageName(), R.layout.notification_layout_collapsed);
-
-        notificationLayoutExpanded.setTextViewText(R.id.notification_title, title);
-        notificationLayoutExpanded.setTextViewText(R.id.notification_text, text);
-        notificationLayoutExpanded.setImageViewResource(R.id.notification_icon, icon);
-
-        notificationLayoutCollapsed.setTextViewText(R.id.notification_collapsed_title, "");
-        // Create intents for the actions
-        PendingIntent stopPendingIntent = IntentCreator.getNotificationPendingIntent(context, stopReminderType);
-        PendingIntent snoozePendingIntent =
-                IntentCreator.getNotificationPendingIntent(context, snoozeReminderType);
-
-        PendingIntent deletePendingIntent = IntentCreator.getNotificationPendingIntent(context, stopReminderType);
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NotificationJobScheduler.CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_dosalarm_notification)
-                .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
-                .setCustomContentView(notificationLayoutCollapsed)
-                .setCustomBigContentView(notificationLayoutExpanded)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setCategory(NotificationCompat.CATEGORY_ALARM)
-                .addAction(R.drawable.ic_dosalarm_notification, context.getString(R.string.stop), stopPendingIntent)
-                .addAction(R.drawable.ic_launcher_foreground, context.getString(R.string.snooze), snoozePendingIntent)
-                .setDeleteIntent(deletePendingIntent)
-                .setColor(Color.GRAY)
-                .setContentTitle(title)
-                .setAutoCancel(true);
-
-        builder.setStyle(new NotificationCompat.BigTextStyle().bigText(text));
-
-        // Set the PendingIntents to the buttons in the custom layout
-        notificationLayoutExpanded.setOnClickPendingIntent(R.id.notification_stop, stopPendingIntent);
-        notificationLayoutExpanded.setOnClickPendingIntent(R.id.notification_snooze, snoozePendingIntent);
-
-        return builder;
-
-    }
-    public static class StopSoundReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Log.d("StopSoundReceiver", " Notifications Receiver - STOP ALARM");
-            Intent serviceIntent = new Intent(context, AlarmService.class);
-            context.stopService(serviceIntent);
-        }
+        if (minutesDifference < 1) return context.getString(R.string.less_than_a_minute);
+        if (minutesDifference == 1) return context.getString(R.string.one_minute);
+        if (minutesDifference < 60) return context.getString(R.string.minutes, minutesDifference);
+        long hours = minutesDifference / 60;
+        long remainingMinutes = minutesDifference % 60;
+        if (remainingMinutes == 0) return hours == 1 ? context.getString(R.string.one_hour) : context.getString(R.string.hours, (int)hours);
+        return context.getString(R.string.hours, (int)hours) + " " + context.getString(R.string.and_minutes, (int)remainingMinutes);
     }
 
     private void stopNotification(Context context, NotificationType notificationType) {
-        Log.d("NotificationsReceiver", "stopping notification  | notification-type:" + notificationType.getType() +
-                " | notification id:" + notificationType.getId() + " | request-code: " + notificationType.getRequestCode());
-       dismissNotification(context, notificationType);
-       
-       Intent serviceIntent = new Intent(context, AlarmService.class);
-       context.stopService(serviceIntent);
+        dismissNotification(context, notificationType);
+        Intent serviceIntent = new Intent(context, AlarmService.class);
+        context.stopService(serviceIntent);
     }
 
-    private void dismissNotification(Context  context, NotificationType notificationType) {
-
-        NotificationManager notificationManager =
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
-        // Dismiss the notification
+    private void dismissNotification(Context context, NotificationType notificationType) {
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         if (notificationManager != null) {
             notificationManager.cancel(notificationType.getId());
         }
     }
 
     private void snoozeNotification(Context context, final NotificationType snoozeNotificationType) {
-
         NotificationType typeToSnooze = null;
-        if (snoozeNotificationType == NotificationType.SNOOZE_MINCHA_REMINDER) {
-            typeToSnooze = NotificationType.MINCHA_REMINDER;
-        } else if (snoozeNotificationType == NotificationType.SNOOZE_MAARIV_REMINDER) {
-            typeToSnooze = NotificationType.MAARIV_REMINDER;
-        } else if (snoozeNotificationType == NotificationType.SNOOZE_SHACHARIT_REMINDER) {
-            typeToSnooze = NotificationType.SHACHARIT_REMINDER;
-        } else if (snoozeNotificationType == NotificationType.SNOOZE_CANDLE_LIGHTING_REMINDER) {
-            typeToSnooze = NotificationType.CANDLE_LIGHTING_REMINDER;
+        if (snoozeNotificationType == NotificationType.SNOOZE_MINCHA_REMINDER) typeToSnooze = NotificationType.MINCHA_REMINDER;
+        else if (snoozeNotificationType == NotificationType.SNOOZE_MAARIV_REMINDER) typeToSnooze = NotificationType.MAARIV_REMINDER;
+        else if (snoozeNotificationType == NotificationType.SNOOZE_SHACHARIT_REMINDER) typeToSnooze = NotificationType.SHACHARIT_REMINDER;
+        else if (snoozeNotificationType == NotificationType.SNOOZE_CANDLE_LIGHTING_REMINDER) typeToSnooze = NotificationType.CANDLE_LIGHTING_REMINDER;
+
+        if (typeToSnooze != null) {
+            stopNotification(context, typeToSnooze);
+            PendingIntent pendingIntent = getNotificationPendingIntent(context, typeToSnooze);
+            long snoozeTimeMilli = NOTIFICATION_SNOOZE_DURATION_MIN * 60 * 1000;
+            Date notificationTime = new Date(System.currentTimeMillis() + snoozeTimeMilli);
+            NotificationScheduler.scheduleNotification(context, pendingIntent, notificationTime, typeToSnooze);
         }
-
-        if (typeToSnooze == null) {
-            Log.e("NotificationReceiver", "can not snooze notification  | notification-type:" + snoozeNotificationType +
-                    " | didn't find any notification to snooze");
-        } else {
-            Log.d("NotificationReceiver", "snoozing notification  | notification-type:" + typeToSnooze +
-                    " | notification id:" + typeToSnooze.getId());
-        }
-
-        stopNotification(context, typeToSnooze);
-
-        PendingIntent pendingIntent =
-                getNotificationPendingIntent(context, typeToSnooze);
-
-        long snoozeTimeMilli = NOTIFICATION_SNOOZE_DURATION_MIN * 60 * 1000;
-        Date notificationTime = new Date(System.currentTimeMillis() + snoozeTimeMilli);
-        NotificationScheduler.scheduleNotification(context, pendingIntent, notificationTime, typeToSnooze);
-
     }
 }
-
-
-

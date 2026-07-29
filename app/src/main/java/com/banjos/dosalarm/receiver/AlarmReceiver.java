@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 
+import com.banjos.dosalarm.R;
 import com.banjos.dosalarm.activity.MainActivity;
 import com.banjos.dosalarm.service.AlarmService;
 import com.banjos.dosalarm.tools.PreferencesService;
@@ -35,13 +36,13 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         preferencesService = new PreferencesService(context);
 
-        // Acquire WakeLock immediately to prevent CPU from going back to sleep
+        // Acquire PARTIAL WakeLock to keep CPU alive but allow screen to stay off
         PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
         PowerManager.WakeLock wakeLock = pm.newWakeLock(
-                PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP,
+                PowerManager.PARTIAL_WAKE_LOCK,
                 "DosAlarm:AlarmReceived"
         );
-        wakeLock.acquire(10000); // 10 seconds should be enough to start the service
+        wakeLock.acquire(10000);
 
         int alarmDurationSec = 10;
         Alarm alarm = null;
@@ -63,6 +64,12 @@ public class AlarmReceiver extends BroadcastReceiver {
         // This is the "Aggressive" way to ensure it stays alive and stops correctly
         Intent serviceIntent = new Intent(context, AlarmService.class);
         serviceIntent.putExtra("duration", alarmDurationSec);
+        serviceIntent.putExtra("title", context.getString(R.string.app_name));
+        serviceIntent.putExtra("text", alarm != null && alarm.getLabel() != null && !alarm.getLabel().isEmpty() ? 
+                alarm.getLabel() : "Alarm Ringing");
+        serviceIntent.putExtra("isAlarm", true);
+        serviceIntent.putExtra("icon", R.drawable.ic_dosalarm_notification);
+
         ContextCompat.startForegroundService(context, serviceIntent);
 
         // 3. UI and Persistence
