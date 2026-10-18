@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +23,8 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import com.banjos.dosalarm.R;
+import com.banjos.dosalarm.preference.RemindersDialogFragment;
+import com.banjos.dosalarm.preference.RemindersPreference;
 import com.banjos.dosalarm.tools.LanguageContextWrapper;
 import com.banjos.dosalarm.tools.PreferencesService;
 import com.banjos.dosalarm.worker.NotificationWorker;
@@ -65,6 +68,18 @@ public class SettingsActivity extends AppCompatActivity implements PreferenceFra
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                    getSupportFragmentManager().popBackStack();
+                } else {
+                    setEnabled(false);
+                    getOnBackPressedDispatcher().onBackPressed();
+                }
+            }
+        });
     }
 
     @Override
@@ -81,18 +96,9 @@ public class SettingsActivity extends AppCompatActivity implements PreferenceFra
     }
 
     @Override
-    public void onBackPressed() {
-        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-            getSupportFragmentManager().popBackStack();
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    @Override
     public boolean onOptionsItemSelected(@NonNull android.view.MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
+            getOnBackPressedDispatcher().onBackPressed();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -153,6 +159,17 @@ public class SettingsActivity extends AppCompatActivity implements PreferenceFra
             // Refresh summaries based on the MASTER location
             updateLocationSummaries();
             updateMainLocationSummary();
+        }
+
+        @Override
+        public void onDisplayPreferenceDialog(@NonNull Preference preference) {
+            if (preference instanceof RemindersPreference) {
+                androidx.fragment.app.DialogFragment dialogFragment = RemindersDialogFragment.newInstance(preference.getKey());
+                dialogFragment.setTargetFragment(this, 0);
+                dialogFragment.show(getParentFragmentManager(), "RemindersDialogFragment");
+            } else {
+                super.onDisplayPreferenceDialog(preference);
+            }
         }
 
         private void updateMainLocationSummary() {

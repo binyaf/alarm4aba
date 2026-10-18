@@ -80,13 +80,11 @@
             android:defaultValue="60"
             app:useSimpleSummaryProvider="true"/>
 
-        <MultiSelectListPreference
+        <com.banjos.dosalarm.preference.RemindersPreference
             app:summary="@string/pref_click_here_for_details"
             android:key="pref_pre_shabbat_notifications_checklist"
             android:title="@string/pref_checklist_title"
-            android:dialogTitle="Choose options"
-            android:entries="@array/pref_pre_shabbat_notification_entries"
-            android:entryValues="@array/pref_pre_shabbat_notification_values"
+            android:dialogTitle="@string/pref_checklist_title"
             android:defaultValue="@array/pref_pre_shabbat_notification_values" />
     </PreferenceCategory>
 

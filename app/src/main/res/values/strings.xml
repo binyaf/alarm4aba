@@ -105,6 +105,16 @@
     <string name="notification_body">Don\'t forget to</string>
     <string name="ok">OK</string>
 
+    <string name="add_reminder">Add reminder</string>
+    <string name="edit_reminder">Edit reminder</string>
+    <string name="delete_reminder">Delete reminder</string>
+    <string name="hint_new_reminder">New reminder (max 25 chars)</string>
+    <string name="error_max_reminders">You can only add up to 10 personal reminders</string>
+    <string name="personal_reminders_header">My Reminders</string>
+    <string name="personal_reminders_header_empty">My Reminders (Click + to add)</string>
+    <string name="general_reminders_header">General Reminders</string>
+    <string name="add_item_tooltip">Add item</string>
+
    <string name="min_5">5 min.</string>
    <string name="min_10">10 min.</string>
    <string name="min_15">15 min.</string>

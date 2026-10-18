@@ -154,10 +154,23 @@ public class NotificationsReceiver extends BroadcastReceiver {
         List<String> notifications = new ArrayList<>();
         Set<String> values = settingsPreferences.getStringSet("pref_pre_shabbat_notifications_checklist", new HashSet<>());
         for (String notificationKey : values) {
-            int resourceId = context.getResources().getIdentifier(notificationKey, "string", context.getPackageName());
-            if (resourceId != 0) {
-                String notificationStr = context.getString(resourceId);
-                if (notificationStr != null) notifications.add(notificationStr);
+            if (notificationKey != null && notificationKey.startsWith("notification_checklist_")) {
+                int resourceId = context.getResources().getIdentifier(notificationKey, "string", context.getPackageName());
+                if (resourceId != 0) {
+                    try {
+                        String notificationStr = context.getString(resourceId);
+                        if (notificationStr != null) {
+                            notifications.add(notificationStr);
+                            continue;
+                        }
+                    } catch (Exception e) {
+                        // Fallback to key if string lookup fails
+                    }
+                }
+            }
+            // It's a custom reminder text or fallback
+            if (notificationKey != null && !notificationKey.isEmpty()) {
+                notifications.add(notificationKey);
             }
         }
         return notifications;

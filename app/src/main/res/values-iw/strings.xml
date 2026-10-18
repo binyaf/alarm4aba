@@ -105,6 +105,16 @@
     <string name="notification_body">לא לשכוח ל</string>
     <string name="ok">אישור</string>
 
+    <string name="add_reminder">הוספת תזכורת</string>
+    <string name="edit_reminder">עריכת תזכורת</string>
+    <string name="delete_reminder">מחיקת תזכורת</string>
+    <string name="hint_new_reminder">תזכורת חדשה (עד 25 תווים)</string>
+    <string name="error_max_reminders">ניתן להוסיף עד 10 תזכורות אישיות</string>
+    <string name="personal_reminders_header">התזכורות שלי</string>
+    <string name="personal_reminders_header_empty">התזכורות שלי (לחץ על + להוספה)</string>
+    <string name="general_reminders_header">תזכורות כלליות</string>
+    <string name="add_item_tooltip">הוסף פריט</string>
+
     <string name="min_5">5 דקות</string>
     <string name="min_10">10 דקות</string>
     <string name="min_15">15 דקות</string>

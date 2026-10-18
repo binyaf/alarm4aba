@@ -105,6 +105,16 @@
     <string name="notification_body">No olvides</string>
     <string name="ok">Aceptar</string>
 
+    <string name="add_reminder">Agregar recordatorio</string>
+    <string name="edit_reminder">Editar recordatorio</string>
+    <string name="delete_reminder">Eliminar recordatorio</string>
+    <string name="hint_new_reminder">Nuevo recordatorio (máx. 25 caracteres)</string>
+    <string name="error_max_reminders">Solo puedes agregar hasta 10 recordatorios personales</string>
+    <string name="personal_reminders_header">Mis Recordatorios</string>
+    <string name="personal_reminders_header_empty">Mis Recordatorios (Haga clic en + para agregar)</string>
+    <string name="general_reminders_header">Recordatorios Generales</string>
+    <string name="add_item_tooltip">Agregar artículo</string>
+
    <string name="min_5">5 min.</string>
    <string name="min_10">10 min.</string>
    <string name="min_15">15 min.</string>

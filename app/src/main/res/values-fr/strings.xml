@@ -105,6 +105,16 @@
     <string name="notification_body">N\'oubliez pas de</string>
     <string name="ok">OK</string>
 
+    <string name="add_reminder">Ajouter un rappel</string>
+    <string name="edit_reminder">Modifier le rappel</string>
+    <string name="delete_reminder">Supprimer le rappel</string>
+    <string name="hint_new_reminder">Nouveau rappel (max 25 caractères)</string>
+    <string name="error_max_reminders">Vous ne pouvez ajouter que jusqu\'à 10 rappels personnels</string>
+    <string name="personal_reminders_header">Mes Rappels</string>
+    <string name="personal_reminders_header_empty">Mes Rappels (Cliquez sur + pour ajouter)</string>
+    <string name="general_reminders_header">Rappels Généraux</string>
+    <string name="add_item_tooltip">Ajouter l\'article</string>
+
    <string name="min_5">5 min.</string>
    <string name="min_10">10 min.</string>
    <string name="min_15">15 min.</string>

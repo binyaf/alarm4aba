@@ -11,14 +11,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.text.Html;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -186,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
         }
         
         // 2. Refresh location and city name every time we return to this screen
-        alarmLocation = locationService.getClientLocationDetails(this);
+        alarmLocation = LocationService.getClientLocationDetails(this);
         if (alarmLocation != null) {
             cityNameForPresentation = getCityNameByCityCode(alarmLocation.getCityCode());
         } else {
@@ -469,7 +467,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private String getTodaysZmanim() {
-        GeoLocation gl = locationService.getGeoLocationFromAlarmLocation(alarmLocation);
+        GeoLocation gl = LocationService.getGeoLocationFromAlarmLocation(alarmLocation);
         DateFormat timeFormat = DateTimesFormats.timeFormat;
         timeFormat.setTimeZone(gl.getTimeZone());
 
