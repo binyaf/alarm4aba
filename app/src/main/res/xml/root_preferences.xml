@@ -68,6 +68,11 @@
         app:title="@string/pref_alarm_duration_title"
         app:useSimpleSummaryProvider="true" />
 
+    <com.banjos.dosalarm.preference.MeatDairyTimePickerPreference
+        app:defaultValue="06:00"
+        app:key="pref_meat_dairy_hours"
+        app:title="@string/pref_meat_dairy_title" />
+
     </PreferenceCategory>
 
     <!-- Candle -->

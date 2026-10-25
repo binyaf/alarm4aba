@@ -35,7 +35,7 @@ public class SettingsActivity extends AppCompatActivity implements PreferenceFra
     protected void attachBaseContext(android.content.Context newBase) {
         PreferencesService prefs = new PreferencesService(newBase);
         String lang = prefs.getAppLanguage();
-        if (!lang.equals("iw") && !lang.equals("en") && !lang.equals("fr") && !lang.equals("es")) {
+        if (!lang.equals("iw") && !lang.equals("en") && !lang.equals("fr") && !lang.equals("es") && !lang.equals("yi")) {
             lang = "en";
         }
         super.attachBaseContext(LanguageContextWrapper.wrap(newBase, lang));
@@ -280,4 +280,3 @@ public class SettingsActivity extends AppCompatActivity implements PreferenceFra
         }
     }
 }
-

@@ -232,6 +232,7 @@
         <item>@string/lang_iw</item>
         <item>@string/lang_fr</item>
         <item>@string/lang_es</item>
+        <item>@string/lang_yi</item>
     </string-array>
 
     <string-array name="pref_language_values">
@@ -239,6 +240,7 @@
         <item>iw</item>
         <item>fr</item>
         <item>es</item>
+        <item>yi</item>
     </string-array>
 
 </resources>

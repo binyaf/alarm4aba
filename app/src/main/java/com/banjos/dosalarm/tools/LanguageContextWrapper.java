@@ -21,6 +21,8 @@ public class LanguageContextWrapper extends ContextWrapper {
         Locale newLocale;
         if (language.equals("iw")) {
             newLocale = new Locale("iw", "IL");
+        } else if (language.equals("yi")) {
+            newLocale = new Locale("yi");
         } else if (language.equals("fr")) {
             newLocale = Locale.FRENCH;
         } else if (language.equals("es")) {

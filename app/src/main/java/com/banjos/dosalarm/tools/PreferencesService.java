@@ -40,6 +40,10 @@ public class PreferencesService {
     private static final String REMINDERS_MAARIV_MINUTES_AFTER_SUNSET = "pref_maariv_notification_time_after_sunset";
     private static final String REMINDERS_CANDLE_MINUTES_BEFORE_SHABBAT = "pref_notification_time_before_shabbat";
     private static final String LANGUAGE_KEY = "language";
+    private static final String MEAT_DAIRY_HOURS_KEY = "pref_meat_dairy_hours";
+    private static final String MEAT_TIMER_END_TIMESTAMP = "meat_timer_end_timestamp";
+    private static final String MEAT_TIMER_FIRST_RUN = "meat_timer_first_run";
+    private static final String REMINDERS_SECTION_EXPANDED = "reminders_section_expanded";
 
     public PreferencesService(Context context) {
         this.context = context;
@@ -178,6 +182,42 @@ public class PreferencesService {
 
     public void setAppLanguage(String language) {
         sharedPreferencesSettings.edit().putString(LANGUAGE_KEY, language).apply();
+    }
+
+    public String getMeatDairyHours() {
+        return sharedPreferencesSettings.getString(MEAT_DAIRY_HOURS_KEY, "06:00");
+    }
+
+    public void setMeatDairyHours(String hours) {
+        sharedPreferencesSettings.edit().putString(MEAT_DAIRY_HOURS_KEY, hours).apply();
+    }
+
+    public long getMeatTimerEndTime() {
+        return sharedPreferencesSettings.getLong(MEAT_TIMER_END_TIMESTAMP, 0L);
+    }
+
+    public void setMeatTimerEndTime(long endTime) {
+        sharedPreferencesSettings.edit().putLong(MEAT_TIMER_END_TIMESTAMP, endTime).apply();
+    }
+
+    public void clearMeatTimer() {
+        sharedPreferencesSettings.edit().remove(MEAT_TIMER_END_TIMESTAMP).apply();
+    }
+
+    public boolean isMeatTimerFirstRun() {
+        return sharedPreferencesSettings.getBoolean(MEAT_TIMER_FIRST_RUN, true);
+    }
+
+    public void setMeatTimerFirstRun(boolean firstRun) {
+        sharedPreferencesSettings.edit().putBoolean(MEAT_TIMER_FIRST_RUN, firstRun).apply();
+    }
+
+    public boolean isRemindersSectionExpanded() {
+        return sharedPreferencesSettings.getBoolean(REMINDERS_SECTION_EXPANDED, true);
+    }
+
+    public void setRemindersSectionExpanded(boolean expanded) {
+        sharedPreferencesSettings.edit().putBoolean(REMINDERS_SECTION_EXPANDED, expanded).apply();
     }
 }
 

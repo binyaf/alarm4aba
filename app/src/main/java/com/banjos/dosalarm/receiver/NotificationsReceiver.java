@@ -99,6 +99,11 @@ public class NotificationsReceiver extends BroadcastReceiver {
             title = context.getString(R.string.prayer_reminder_maariv_title);
             text = context.getString(R.string.prayer_reminder_maariv_text);
             icon = R.drawable.night;
+        } else if (NotificationType.MEAT_DAIRY_REMINDER == type) {
+            title = context.getString(R.string.meat_timer_notification_title);
+            text = context.getString(R.string.meat_timer_notification_text);
+            icon = R.drawable.time_icon;
+            preferencesService.clearMeatTimer();
         }
 
         if (title == null) return;

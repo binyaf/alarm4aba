@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DosAlarm</string>
+    <string name="save">ספארן</string>
+    <string name="cancel">אפשאפן</string>
+    <string name="create">באשאפן אלארם</string>
+    <string name="createMincha">מנחה דערמאנונג</string>
+    <string name="delete">אוועקנעמען</string>
+    <string name="edit_alarm">ענדערן אלארם</string>
+    <string name="edit">ענדערן</string>
+    <string name="share">טיילן</string>
+    <string name="warning">ווארנונג</string>
+    <string name="add_alarm">צולייגן אלארם</string>
+    <string name="add">צולייגן</string>
+    <string name="alarm_duration_label">אלארם דויער (סעקונדעס)</string>
+    <string name="alarm_time_label">אלארם צייט</string>
+    <string name="alarm_date_label">אלארם דאטע</string>
+    <string name="alarm_label_label">אלארם נאָמען</string>
+    <string name="hint_date">אויסוועלן דאטע</string>
+    <string name="hint_time">אויסוועלן צייט</string>
+    <string name="hint_label">נאָמען (רשות)</string>
+    <string name="todays_zmanim_short">היינטיגע זמנים</string>
+    <string name="todays_zmanim">היינטיגע זמנים - %1$s</string>
+    <string name="alarm_will_start">אלארם וועט זיך אנהייבן:</string>
+    <string name="alarm_will_start_with_label">אלארם (%1$s) וועט זיך אנהייבן:</string>
+    <string name="alarm_after_shma">אייער אלארם איז נאך סוף זמן קריאת שמע</string>
+    <string name="alarm_after_tfilah">אייער אלארם איז נאך סוף זמן תפילה</string>
+    <string name="sunrise">הנץ החמה: %1$s</string>
+    <string name="dawn">עלות השחר: %1$s</string>
+    <string name="talit_and_tefilin">משיכיר ציצית ותפילין: %1$s</string>
+    <string name="latest_shma_mga">סוף זמן שמע מג"א: %1$s</string>
+    <string name="latest_shma_gra">סוף זמן שמע גר"א: %1$s</string>
+    <string name="latest_shacharis_mga">סוף זמן תפילה מג"א: %1$s</string>
+    <string name="latest_shacharis_gra">סוף זמן תפילה גר"א: %1$s</string>
+    <string name="midday">חצות: %1$s</string>
+    <string name="minchaGedola">מנחה גדולה: %1$s</string>
+    <string name="plag">פלג המנחה: %1$s</string>
+    <string name="sunset">שקיעה: %1$s</string>
+    <string name="nightfall">צאת הכוכבים: %1$s</string>
+    <string name="about">וועגן</string>
+    <string name="settings">אינסטעלונגען</string>
+    <string name="title_activity_settings">אינסטעלונגען</string>
+
+    <string name="pref_language_title">אפליקאציע שפראך</string>
+    <string name="lang_en">ענגליש</string>
+    <string name="lang_iw">עברית</string>
+    <string name="lang_fr">פראנצויזיש</string>
+    <string name="lang_es">שפאניש</string>
+    <string name="lang_yi">יידיש</string>
+    <string name="not_selected">נישט אויסגעוויילט</string>
+
+    <string name="shabbat_shalom">גוט שבת</string>
+    <string name="less_than_a_minute">ווייניגער פון א מינוט</string>
+    <string name="one_minute">איינציגע מינוט</string>
+    <string name="minutes">%d מינוטן</string>
+    <string name="one_hour">איינציגע שעה</string>
+    <string name="hours">%d שעה</string>
+    <string name="and_minutes">און %1$d מינוטן</string>
+    <string name="and_one_minute">און א מינוט</string>
+
+    <!-- Preference Titles -->
+    <string name="pref_alarm_duration_title">אלארם דויער שבת (סעקונדעס)</string>
+    <string name="pref_meat_dairy_title">שעהן צווישן פליישיג און מילכיג</string>
+    <string name="hours_label">שעהן</string>
+    <string name="minutes_label">מינוטן</string>
+    <string name="pref_alarm_time_title">געוויינטלעכע אלארם צייט</string>
+    <string name="pref_enable_notifications_title">דערמאנונגען אנגעצינדן</string>
+    <string name="defaults_header">געוויינטלעכע</string>
+    <string name="pref_notifications_candle_header">ליכט צינדן דערמאנונג</string>
+    <string name="pref_notifications_shacharit_header">שחרית דערמאנונג (חוץ שבת)</string>
+    <string name="pref_notifications_mincha_header">מנחה דערמאנונג (חוץ שבת)</string>
+    <string name="pref_notifications_maariv_header">מעריב דערמאנונג (חוץ שבת)</string>
+    <string name="pref_notifications_shacharit_sunrise_text">מינוטן פאר הנץ החמה</string>
+    <string name="pref_notifications_mincha_sunset_text">מינוטן פאר שקיעה</string>
+    <string name="pref_notifications_maariv_sunset_text">מינוטן נאך שקיעה</string>
+    <string name="pref_notifications_shacharit_szks_text">מינוטן פאר סוף זמן קריאת שמע</string>
+    <string name="pref_notifications_shacharit_fixed_text">קאפ צייט</string>
+    <string name="pref_notifications_candle_minutes_text">צייט פאר שבת</string>
+
+    <!-- Preference locations -->
+    <string name="pref_location_title">אייער ארט</string>
+    <string name="JLM_IL">ירושלים</string>
+    <string name="TLV_IL">תל אביב</string>
+    <string name="HAF_IL">חיפה</string>
+    <string name="KSM_IL">קרית שמונה</string>
+    <string name="MNF_IL">מצפה נטופה</string>
+    <string name="TVE_IL">טבריה</string>
+    <string name="GVZ_IL">גבעת זאב</string>
+    <string name="EFR_IL">אפרת</string>
+    <string name="LOD_IL">לוד</string>
+    <string name="MBA_IL">מזכרת בתיה</string>
+    <string name="SDR_IL">שדרות</string>
+    <string name="EIL_IL">אילת</string>
+    <string name="NYC_US">ניו יארק</string>
+    <string name="LAX_US">לאס אנדזשעלעס</string>
+    <string name="MIA_US">מיאמי</string>
+    <string name="BOS_US">באסטאן</string>
+    <string name="TOR_CA">טאראנטא</string>
+    <string name="LON_UK">לאנדאן</string>
+    <string name="PAR_FR">פאריז</string>
+
+    <string name="country_israel">ארץ ישראל</string>
+    <string name="country_usa">אמעריקע</string>
+    <string name="country_canada">קאנאדע</string>
+    <string name="country_uk">ענגלאנד</string>
+    <string name="country_france">פראנקרייך</string>
+
+    <!-- notification -->
+    <string name="notification_candle_lighting_title">ליכט צינדן שבת איז אין\n%1$s</string>
+    <string name="notification_body">פארגעסט נישט צו</string>
+    <string name="ok">גוט</string>
+
+    <string name="add_reminder">צולייגן דערמאנונג</string>
+    <string name="edit_reminder">ענדערן דערמאנונג</string>
+    <string name="delete_reminder">אוועקנעמען דערמאנונג</string>
+    <string name="hint_new_reminder">נייע דערמאנונג (ביז 25 אותיות)</string>
+    <string name="error_max_reminders">איער קענט נאר צולייגן ביז 10 אייגענע דערמאנונגען</string>
+    <string name="personal_reminders_header">מיינע דערמאנונגען</string>
+    <string name="personal_reminders_header_empty">מיינע דערמאנונגען (קליקט + צו צולייגן)</string>
+    <string name="general_reminders_header">אלגעמיינע דערמאנונגען</string>
+    <string name="add_item_tooltip">צולייגן פאק</string>
+
+    <string name="min_5">5 מינוט</string>
+    <string name="min_10">10 מינוט</string>
+    <string name="min_15">15 מינוט</string>
+    <string name="min_20">20 מינוט</string>
+    <string name="min_25">25 מינוט</string>
+    <string name="min_30">30 מינוט</string>
+    <string name="min_35">35 מינוט</string>
+    <string name="min_40">40 מינוט</string>
+    <string name="min_45">45 מינוט</string>
+    <string name="min_50">50 מינוט</string>
+    <string name="min_55">55 מינוט</string>
+    <string name="min_60">1 שעה</string>
+    <string name="min_75">1:15 שעהן</string>
+    <string name="min_90">1.5 שעהן</string>
+    <string name="min_105">1:45 שעהן</string>
+    <string name="min_120">2 שעהן</string>
+    <string name="min_150">2.5 שעהן</string>
+    <string name="min_180">3 שעהן</string>
+    <string name="min_210">3.5 שעהן</string>
+    <string name="min_240">4 שעהן</string>
+
+    <string name="notification_checklist_dosalarm">אנשטעלן אלארם (דאס-אלארם)</string>
+    <string name="notification_checklist_refrigerator">אפשטעלן דעם פרידזשידער ליכט</string>
+    <string name="notification_checklist_dishwasher">אנשטעלן ספודזשקע טיימער</string>
+    <string name="notification_checklist_electricity">אנשטעלן שבת זייגער</string>
+    <string name="notification_checklist_air_conditioner">אנשטעלן קאנדישאנער טיימער</string>
+    <string name="notification_checklist_kettle">אנשטעלן שבת מייחם</string>
+    <string name="notification_checklist_hot_plate">אנשטעלן שבת בלעך</string>
+    <string name="notification_checklist_candles">אנגרייטן שבת ליכט</string>
+
+    <string name="pref_click_here_for_details">קליקט דא פאר פרטים</string>
+    <string name="pref_checklist_title">אין דערמאנונג דערמאן מיר וועגן:</string>
+    <string name="pref_checklist_dosalarm">אלארם זייגער (דאס-אלארם)</string>
+    <string name="pref_checklist_refrigerator">פרידזשידער ליכט</string>
+    <string name="pref_checklist_dishwasher">ספודזשקע טיימער</string>
+    <string name="pref_checklist_electricity">שבת זייגער</string>
+    <string name="pref_checklist_air_conditioner">קאנדישאנער טיימער</string>
+    <string name="pref_checklist_kettle">שבת מייחם</string>
+    <string name="pref_checklist_hot_plate">שבת בלעך</string>
+    <string name="pref_checklist_candles">שבת ליכט</string>
+
+    <string name="reminder_text">דערמאנונג - פארגעסט נישט צו %1$s</string>
+    <string name="remind_me_about">דערמאן מיר וועגן:</string>
+    <string name="reminders_advanced_settings">ווייטערדיגע אינסטעלונגען פאר דערמאנונגען זענען אין די אינסטעלונגען בלאט</string>
+    <string name="shacharit">שחרית</string>
+    <string name="shacharit_vatikin">שחרית\n(ותיקין)</string>
+    <string name="mincha">מנחה\n</string>
+    <string name="maariv">מעריב\n</string>
+    <string name="candle_lighting">ליכט\nצינדן</string>
+    <string name="stop">אפשטעלן</string>
+    <string name="snooze">נודניק</string>
+    <string name="prayer_reminder_shacharit_title">זמן תפילת שחרית</string>
+    <string name="prayer_reminder_shacharit_text">שטייט אויף! עס איז זמן פאר תפילת שחרית.\nהנץ החמה איז %1$s \nסוף זמן קריאת שמע (גר"א) איז %2$s</string>
+    <string name="prayer_reminder_mincha_title">זמן תפילת מנחה</string>
+    <string name="prayer_reminder_mincha_text">דערמאנונג - עס איז זמן פאר תפילת מנחה\nשקיעה איז %1$s</string>
+    <string name="prayer_reminder_maariv_title">זמן תפילת מעריב</string>
+    <string name="prayer_reminder_maariv_text">מעריב! שלאפט נישט, עס איז זמן תפילת מעריב</string>
+    <string name="swipe_to_dismiss">שלעפט צו אפשטעלן</string>
+
+    <string name="share_msg">איך וויס נישט פאר וואס דאס אינטערעסירט אייך, אבער איך שטיי אויף %1$s אום %2$s מיט DosAlarm! \n\nאיר האט נאך נישט דאס-אלארם? לאדנט דא אראפ: https://tinyurl.com/52esu8dx</string>
+
+    <!-- Meat/Dairy Timer -->
+    <string name="meat_timer_btn_text">איך האב עקראסט געענדיגט עסן פליישיג</string>
+    <string name="meat_timer_time_until_coffee">צייט ביז קאווע</string>
+    <string name="meat_timer_notification_title">מזל טוב! מען מעג שוין עסן מילכיג</string>
+    <string name="meat_timer_notification_text">איר קענט שוין עסן מילכיג אדער טרינקען קאווע!</string>
+    <string name="meat_timer_reset">צוריקשטעלן</string>
+    <string name="meat_timer_settings_hint">ווארט צייט: %1$s (קליקט צו ענדערן ⚙)</string>
+    <string name="meat_timer_first_run_toast">טיימער אנגעהויבן פאר %1$s. איר קענט ענדערן די צייט אין אינסטעלונגען.</string>
+
+</resources>

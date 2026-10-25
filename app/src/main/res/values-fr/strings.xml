@@ -46,6 +46,7 @@
     <string name="lang_iw">Hébreu</string>
     <string name="lang_fr">Français</string>
     <string name="lang_es">Espagnol</string>
+    <string name="lang_yi">Yiddish</string>
     <string name="not_selected">Non sélectionné</string>
 
     <string name="shabbat_shalom">Chabbat Shalom</string>
@@ -55,9 +56,13 @@
     <string name="one_hour">1 heure</string>
     <string name="hours">%d heures</string>
     <string name="and_minutes">et %1$d minutes</string>
+    <string name="and_one_minute">et 1 minute</string>
 
     <!-- Preference Titles -->
     <string name="pref_alarm_duration_title">Durée d\'alarme par défaut pour Chabbat (sec.)</string>
+    <string name="pref_meat_dairy_title">Heures entre viande et lait</string>
+    <string name="hours_label">Heures</string>
+    <string name="minutes_label">Minutes</string>
     <string name="pref_alarm_time_title">Heure d\'alarme par défaut</string>
     <string name="pref_enable_notifications_title">Rappels activés</string>
     <string name="defaults_header">Valeurs par défaut</string>
@@ -185,5 +190,14 @@
     <string name="swipe_to_dismiss">glisser pour arrêter</string>
 
     <string name="share_msg">Je ne sais pas si cela vous intéressera, mais je me réveille le %1$s à %2$s avec DosAlarm ! \n\nVous n\'avez pas encore dos-alarm ? téléchargez-le ici : https://tinyurl.com/52esu8dx</string>
+
+    <!-- Meat/Dairy Timer -->
+    <string name="meat_timer_btn_text">Je viens de manger de la viande</string>
+    <string name="meat_timer_time_until_coffee">temps avant le café</string>
+    <string name="meat_timer_notification_title">Temps pour le lait !</string>
+    <string name="meat_timer_notification_text">Vous pouvez maintenant consommer du lait ou du café !</string>
+    <string name="meat_timer_reset">Réinitialiser</string>
+    <string name="meat_timer_settings_hint">Temps d\'attente : %1$s (Appuyez pour modifier ⚙)</string>
+    <string name="meat_timer_first_run_toast">Minuteur démarré pour %1$s. Vous pouvez modifier la durée dans les Paramètres.</string>
 
 </resources>

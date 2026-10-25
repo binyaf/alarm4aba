@@ -14,8 +14,11 @@ import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.Settings;
 import android.text.Html;
+import android.transition.TransitionManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -41,6 +44,7 @@ import androidx.work.WorkManager;
 import com.banjos.dosalarm.R;
 import com.banjos.dosalarm.adapter.AlarmAdapter;
 import com.banjos.dosalarm.databinding.AlarmDetailsBinding;
+import com.banjos.dosalarm.preference.MeatDairyTimePickerPreference;
 import com.banjos.dosalarm.tools.DateTimesFormats;
 import com.banjos.dosalarm.tools.IntentCreator;
 import com.banjos.dosalarm.tools.LanguageContextWrapper;
@@ -63,6 +67,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -76,6 +81,9 @@ public class MainActivity extends AppCompatActivity {
     private LocationService locationService;
     private String currentLanguage;
 
+    private final Handler meatTimerHandler = new Handler(Looper.getMainLooper());
+    private Runnable meatTimerRunnable;
+
     private static final String NOTIFICATIONS_WORK_SCHEDULED_KEY = "notificationsWorkScheduled";
     private static final int NOTIFICATION_PERMISSION_REQUEST_CODE = 1;
 
@@ -83,8 +91,8 @@ public class MainActivity extends AppCompatActivity {
     protected void attachBaseContext(Context newBase) {
         PreferencesService prefs = new PreferencesService(newBase);
         String lang = prefs.getAppLanguage();
-        // Support iw, en, fr, es
-        if (!lang.equals("iw") && !lang.equals("en") && !lang.equals("fr") && !lang.equals("es")) {
+        // Support iw, en, fr, es, yi
+        if (!lang.equals("iw") && !lang.equals("en") && !lang.equals("fr") && !lang.equals("es") && !lang.equals("yi")) {
             lang = "en";
         }
         super.attachBaseContext(LanguageContextWrapper.wrap(newBase, lang));
@@ -163,6 +171,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         setupReminders(context);
+        setupRemindersSectionToggle();
+        setupMeatTimer();
 
         getOnBackPressedDispatcher().addCallback(this, new androidx.activity.OnBackPressedCallback(true) {
             @Override
@@ -194,6 +204,13 @@ public class MainActivity extends AppCompatActivity {
         
         loadAlarms();
         hideActionButtons();
+        updateMeatTimerUI();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        meatTimerHandler.removeCallbacks(meatTimerRunnable);
     }
 
     private void setupRecyclerView() {
@@ -501,9 +518,141 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == NOTIFICATION_PERMISSION_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(this, "Notification permission approved", Toast.LENGTH_SHORT).show();
+                startMeatTimer();
             } else {
                 Toast.makeText(this, "Notification permission denied", Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+
+    private void setupRemindersSectionToggle() {
+        boolean isExpanded = preferencesService.isRemindersSectionExpanded();
+        setRemindersSectionVisibility(isExpanded, false);
+
+        binding.remindMeHeaderLayout.setOnClickListener(v -> {
+            boolean currentlyExpanded = binding.remindMeContentLayout.getVisibility() == View.VISIBLE;
+            boolean newExpanded = !currentlyExpanded;
+            setRemindersSectionVisibility(newExpanded, true);
+            preferencesService.setRemindersSectionExpanded(newExpanded);
+        });
+    }
+
+    private void setRemindersSectionVisibility(boolean expanded, boolean animate) {
+        if (animate) {
+            TransitionManager.beginDelayedTransition(binding.alarmDetailsMain);
+        }
+        if (expanded) {
+            binding.remindMeContentLayout.setVisibility(View.VISIBLE);
+            binding.remindMeToggleImageView.setImageResource(R.drawable.ic_expand_less);
+        } else {
+            binding.remindMeContentLayout.setVisibility(View.GONE);
+            binding.remindMeToggleImageView.setImageResource(R.drawable.ic_expand_more);
+        }
+    }
+
+    private void setupMeatTimer() {
+        meatTimerRunnable = this::updateMeatTimerUI;
+
+        binding.meatTimerBtn.setOnClickListener(v -> {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+                    ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, NOTIFICATION_PERMISSION_REQUEST_CODE);
+            } else {
+                startMeatTimer();
+            }
+        });
+
+        binding.meatTimerSettingsHintTextView.setOnClickListener(v -> {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+        });
+
+        binding.meatTimerCancelBtn.setOnClickListener(v -> cancelMeatTimer());
+    }
+
+    private void startMeatTimer() {
+        String durationStr = preferencesService.getMeatDairyHours();
+        int hour = 6;
+        int minute = 0;
+        try {
+            String[] parts = durationStr.split(":");
+            hour = Integer.parseInt(parts[0]);
+            minute = Integer.parseInt(parts[1]);
+        } catch (Exception ignored) {
+        }
+
+        long durationMs = (hour * 3600L + minute * 60L) * 1000L;
+        long endTime = System.currentTimeMillis() + durationMs;
+
+        preferencesService.setMeatTimerEndTime(endTime);
+
+        PendingIntent pendingIntent = IntentCreator.getNotificationPendingIntent(this, NotificationType.MEAT_DAIRY_REMINDER);
+        NotificationScheduler.scheduleNotification(this, pendingIntent, new Date(endTime), NotificationType.MEAT_DAIRY_REMINDER);
+
+        if (preferencesService.isMeatTimerFirstRun()) {
+            String formattedDuration = MeatDairyTimePickerPreference.formatSummary(this, durationStr);
+            Toast.makeText(this, getString(R.string.meat_timer_first_run_toast, formattedDuration), Toast.LENGTH_LONG).show();
+            preferencesService.setMeatTimerFirstRun(false);
+        }
+
+        updateMeatTimerUI();
+    }
+
+    private void cancelMeatTimer() {
+        preferencesService.clearMeatTimer();
+
+        PendingIntent pendingIntent = IntentCreator.getNotificationPendingIntent(this, NotificationType.MEAT_DAIRY_REMINDER);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        if (alarmManager != null) {
+            alarmManager.cancel(pendingIntent);
+        }
+
+        meatTimerHandler.removeCallbacks(meatTimerRunnable);
+        updateMeatTimerUI();
+    }
+
+    private void updateMeatTimerUI() {
+        long endTime = preferencesService.getMeatTimerEndTime();
+        long remainingMs = endTime - System.currentTimeMillis();
+
+        String durationStr = preferencesService.getMeatDairyHours();
+        String formattedDuration = MeatDairyTimePickerPreference.formatSummary(this, durationStr);
+        binding.meatTimerSettingsHintTextView.setText(getString(R.string.meat_timer_settings_hint, formattedDuration));
+
+        if (endTime > 0 && remainingMs > 0) {
+            binding.meatTimerBtn.setVisibility(View.GONE);
+            binding.meatTimerSettingsHintTextView.setVisibility(View.GONE);
+            binding.meatTimerActiveLayout.setVisibility(View.VISIBLE);
+
+            int h = 6, m = 0;
+            try {
+                String[] parts = durationStr.split(":");
+                h = Integer.parseInt(parts[0]);
+                m = Integer.parseInt(parts[1]);
+            } catch (Exception ignored) {
+            }
+            long totalDurationMs = Math.max(1, (h * 3600L + m * 60L) * 1000L);
+            long elapsedMs = totalDurationMs - remainingMs;
+            int progress = (int) Math.min(100, Math.max(0, (elapsedMs * 100) / totalDurationMs));
+            binding.meatTimerProgressIndicator.setProgress(progress);
+
+            long hours = remainingMs / (1000 * 60 * 60);
+            long minutes = (remainingMs % (1000 * 60 * 60)) / (1000 * 60);
+            long seconds = (remainingMs % (1000 * 60)) / 1000;
+
+            String timeText = String.format(Locale.US, "%02d:%02d:%02d", hours, minutes, seconds);
+            binding.meatTimerCountdownTextView.setText(timeText);
+
+            meatTimerHandler.removeCallbacks(meatTimerRunnable);
+            meatTimerHandler.postDelayed(meatTimerRunnable, 1000);
+        } else {
+            if (endTime > 0) {
+                preferencesService.clearMeatTimer();
+            }
+            binding.meatTimerBtn.setVisibility(View.VISIBLE);
+            binding.meatTimerSettingsHintTextView.setVisibility(View.VISIBLE);
+            binding.meatTimerActiveLayout.setVisibility(View.GONE);
+            meatTimerHandler.removeCallbacks(meatTimerRunnable);
         }
     }
 }

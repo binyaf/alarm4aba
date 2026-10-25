@@ -46,6 +46,7 @@
     <string name="lang_iw">עברית</string>
     <string name="lang_fr">צרפתית</string>
     <string name="lang_es">ספרדית</string>
+    <string name="lang_yi">יידיש</string>
     <string name="not_selected">לא נבחר</string>
 
     <string name="shabbat_shalom">שבת שלום</string>
@@ -55,9 +56,13 @@
     <string name="one_hour">שעה אחת</string>
     <string name="hours">%d שעות</string>
     <string name="and_minutes">ו %1$d דקות</string>
+    <string name="and_one_minute">ודקה</string>
 
     <!-- Preference Titles -->
     <string name="pref_alarm_duration_title">ברירת המחדל למשך ההתראה בשבת(שניות)</string>
+    <string name="pref_meat_dairy_title">שעות בין בשר לחלב</string>
+    <string name="hours_label">שעות</string>
+    <string name="minutes_label">דקות</string>
     <string name="pref_alarm_time_title">ברירת מחדל לשעת שעון המעורר</string>
     <string name="pref_enable_notifications_title">תזכורות מופעלות</string>
     <string name="defaults_header">ברירות מחדל</string>
@@ -187,5 +192,14 @@
     <string name="swipe_to_dismiss">החלק ימינה\שמאלה לעצור</string>
 
     <string name="share_msg">אני לא בטוח למה זה אמור לעניין אותך, אבל אני מתעורר ב %1$s ב %2$s בעזרת Dos Alarm.   מגניב, לא?  \n\n אין לך עדיין את האפליקציה? הורד אותה מכאן: https://tinyurl.com/52esu8dx</string>
+
+    <!-- Meat/Dairy Timer -->
+    <string name="meat_timer_btn_text">הרגע סיימתי לאכול בשר</string>
+    <string name="meat_timer_time_until_coffee">זמן עד לקפה</string>
+    <string name="meat_timer_notification_title">מזל טוב! הגיע זמן חלבי</string>
+    <string name="meat_timer_notification_text">אפשר כבר לאכול חלבי / לשתות קפה!</string>
+    <string name="meat_timer_reset">איפוס</string>
+    <string name="meat_timer_settings_hint">זמן ההמתנה בין בשר לחלב: %1$s (ניתן לשנות בהגדרות - ⚙)</string>
+    <string name="meat_timer_first_run_toast">הטיימר הופעל ל-%1$s. ניתן לשנות את משך ההמתנה בהגדרות.</string>
 
 </resources>

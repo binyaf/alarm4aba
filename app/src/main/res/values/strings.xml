@@ -46,6 +46,7 @@
     <string name="lang_iw">Hebrew</string>
     <string name="lang_fr">French</string>
     <string name="lang_es">Spanish</string>
+    <string name="lang_yi">Yiddish</string>
     <string name="not_selected">Not selected</string>
 
     <string name="shabbat_shalom">Shabbat Shalom</string>
@@ -55,9 +56,13 @@
     <string name="one_hour">1 hour</string>
     <string name="hours">%d hours</string>
     <string name="and_minutes">and %1$d minutes</string>
+    <string name="and_one_minute">and 1 minute</string>
 
     <!-- Preference Titles -->
     <string name="pref_alarm_duration_title">Default alarm duration for Shabbat(sec.)</string>
+    <string name="pref_meat_dairy_title">Hours between meat and dairy</string>
+    <string name="hours_label">Hours</string>
+    <string name="minutes_label">Minutes</string>
     <string name="pref_alarm_time_title">Default alarm time</string>
     <string name="pref_enable_notifications_title">Reminders enabled</string>
     <string name="defaults_header">Defaults</string>
@@ -188,5 +193,14 @@
 
     <!-- share -->
     <string name="share_msg">I\'m not sure why this will interest you, but I\'m waking up on %1$s at %2$s  with DosAlarm! \n\n\Don\'t  have yet dos-alarm? download here: https://tinyurl.com/52esu8dx</string>
+
+    <!-- Meat/Dairy Timer -->
+    <string name="meat_timer_btn_text">I just finished eating meat</string>
+    <string name="meat_timer_time_until_coffee">time until coffee</string>
+    <string name="meat_timer_notification_title">Time for dairy!</string>
+    <string name="meat_timer_notification_text">You can now eat dairy or drink coffee!</string>
+    <string name="meat_timer_reset">Reset</string>
+    <string name="meat_timer_settings_hint">Waiting duration: %1$s (Tap to change ⚙)</string>
+    <string name="meat_timer_first_run_toast">Timer started for %1$s. You can adjust the duration in Settings.</string>
 
 </resources>

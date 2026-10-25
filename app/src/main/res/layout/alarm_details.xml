@@ -123,141 +123,171 @@
             android:orientation="vertical"
             android:padding="12dp">
 
+            <!-- Collapsible Remind Me Header -->
             <LinearLayout
+                android:id="@+id/remindMeHeaderLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingVertical="2dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/remind_me_about"
+                        android:textColor="?attr/colorPrimary"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/reminders_advanced_settings"
+                        android:textColor="@color/grey"
+                        android:textSize="11sp" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/remindMeToggleImageView"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:padding="2dp"
+                    android:src="@drawable/ic_expand_less"
+                    android:contentDescription="@string/remind_me_about" />
+            </LinearLayout>
+
+            <!-- Collapsible Content -->
+            <LinearLayout
+                android:id="@+id/remindMeContentLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
+                <!-- prayer reminders -->
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/remind_me_about"
-                    android:textColor="?attr/colorPrimary"
-                    android:textStyle="bold"
-                    android:textSize="16sp" />
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingTop="8dp">
 
-                <TextView
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/shacharit_vatikin"
+                            android:textSize="12sp"
+                            android:textColor="@color/black"
+                            android:gravity="center"
+                            android:layout_marginBottom="2dp"/>
+
+                        <com.google.android.material.switchmaterial.SwitchMaterial
+                            android:id="@+id/shacharit_reminder_switch"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:scaleX="0.8"
+                            android:scaleY="0.8"
+                            android:contentDescription="@string/shacharit_switch_desc" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/mincha"
+                            android:textSize="12sp"
+                            android:textColor="@color/black"
+                            android:gravity="center"
+                            android:layout_marginBottom="2dp"/>
+
+                        <com.google.android.material.switchmaterial.SwitchMaterial
+                            android:id="@+id/mincha_reminder_switch"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:scaleX="0.8"
+                            android:scaleY="0.8"
+                            android:contentDescription="@string/mincha_switch_desc" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/maariv"
+                            android:textSize="12sp"
+                            android:textColor="@color/black"
+                            android:gravity="center"
+                            android:layout_marginBottom="2dp"/>
+
+                        <com.google.android.material.switchmaterial.SwitchMaterial
+                            android:id="@+id/maariv_reminder_switch"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:scaleX="0.8"
+                            android:scaleY="0.8"
+                            android:contentDescription="@string/maariv_switch_desc" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/candle_lighting"
+                            android:textSize="12sp"
+                            android:textColor="@color/black"
+                            android:gravity="center"
+                            android:layout_marginBottom="2dp"/>
+
+                        <com.google.android.material.switchmaterial.SwitchMaterial
+                            android:id="@+id/candle_lighting_reminder_switch"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:scaleX="0.8"
+                            android:scaleY="0.8"
+                            android:contentDescription="@string/candle_switch_desc" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/reminders_advanced_settings"
-                    android:textColor="@color/grey"
-                    android:textSize="11sp" />
+                    android:layout_height="1dp"
+                    android:layout_marginVertical="12dp"
+                    android:background="@color/very_light_grey" />
             </LinearLayout>
-
-            <!-- prayer reminders -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:paddingTop="8dp">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/shacharit_vatikin"
-                        android:textSize="12sp"
-                        android:textColor="@color/black"
-                        android:gravity="center"
-                        android:layout_marginBottom="2dp"/>
-
-                    <com.google.android.material.switchmaterial.SwitchMaterial
-                        android:id="@+id/shacharit_reminder_switch"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:scaleX="0.8"
-                        android:scaleY="0.8"
-                        android:contentDescription="@string/shacharit_switch_desc" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/mincha"
-                        android:textSize="12sp"
-                        android:textColor="@color/black"
-                        android:gravity="center"
-                        android:layout_marginBottom="2dp"/>
-
-                    <com.google.android.material.switchmaterial.SwitchMaterial
-                        android:id="@+id/mincha_reminder_switch"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:scaleX="0.8"
-                        android:scaleY="0.8"
-                        android:contentDescription="@string/mincha_switch_desc" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/maariv"
-                        android:textSize="12sp"
-                        android:textColor="@color/black"
-                        android:gravity="center"
-                        android:layout_marginBottom="2dp"/>
-
-                    <com.google.android.material.switchmaterial.SwitchMaterial
-                        android:id="@+id/maariv_reminder_switch"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:scaleX="0.8"
-                        android:scaleY="0.8"
-                        android:contentDescription="@string/maariv_switch_desc" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/candle_lighting"
-                        android:textSize="12sp"
-                        android:textColor="@color/black"
-                        android:gravity="center"
-                        android:layout_marginBottom="2dp"/>
-
-                    <com.google.android.material.switchmaterial.SwitchMaterial
-                        android:id="@+id/candle_lighting_reminder_switch"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:scaleX="0.8"
-                        android:scaleY="0.8"
-                        android:contentDescription="@string/candle_switch_desc" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginVertical="12dp"
-                android:background="@color/very_light_grey" />
 
             <!-- bottom buttons -->
             <LinearLayout
@@ -281,6 +311,117 @@
                     android:text="@string/todays_zmanim"
                     android:textStyle="bold"
                     android:textColor="?attr/colorPrimary" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="12dp"
+                android:background="@color/very_light_grey" />
+
+            <!-- Meat/Dairy Timer Section -->
+            <LinearLayout
+                android:id="@+id/meatTimerContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <!-- Idle State: Button with icon -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/meatTimerBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:text="@string/meat_timer_btn_text"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    app:backgroundTint="?attr/colorPrimary"
+                    app:cornerRadius="14dp"
+                    app:icon="@drawable/ic_meat"
+                    app:iconGravity="textStart"
+                    app:iconPadding="8dp" />
+
+                <TextView
+                    android:id="@+id/meatTimerSettingsHintTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"
+                    android:textColor="@color/grey"
+                    android:textSize="11sp" />
+
+                <!-- Active State: Ring Progress & Timer -->
+                <LinearLayout
+                    android:id="@+id/meatTimerActiveLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <FrameLayout
+                        android:layout_width="160dp"
+                        android:layout_height="160dp"
+                        android:layout_gravity="center">
+
+                        <com.google.android.material.progressindicator.CircularProgressIndicator
+                            android:id="@+id/meatTimerProgressIndicator"
+                            android:layout_width="160dp"
+                            android:layout_height="160dp"
+                            android:layout_gravity="center"
+                            app:indicatorColor="?attr/colorPrimary"
+                            app:indicatorSize="160dp"
+                            app:trackColor="@color/very_light_grey"
+                            app:trackCornerRadius="8dp"
+                            app:trackThickness="10dp" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:src="@drawable/ic_coffee"
+                                android:contentDescription="@string/meat_timer_time_until_coffee" />
+
+                            <TextView
+                                android:id="@+id/meatTimerCountdownTextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:textColor="?attr/colorPrimary"
+                                android:textSize="22sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/meatTimerLabelTextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:text="@string/meat_timer_time_until_coffee"
+                                android:textColor="@color/grey"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+                    </FrameLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/meatTimerCancelBtn"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/meat_timer_reset"
+                        android:textAllCaps="false"
+                        android:textColor="@color/light_red"
+                        android:textSize="13sp" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>

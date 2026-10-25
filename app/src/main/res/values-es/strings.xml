@@ -46,6 +46,7 @@
     <string name="lang_iw">Hebreo</string>
     <string name="lang_fr">Francés</string>
     <string name="lang_es">Español</string>
+    <string name="lang_yi">Yiddish</string>
     <string name="not_selected">No seleccionado</string>
 
     <string name="shabbat_shalom">Shabat Shalom</string>
@@ -55,9 +56,13 @@
     <string name="one_hour">1 hora</string>
     <string name="hours">%d horas</string>
     <string name="and_minutes">y %1$d minutos</string>
+    <string name="and_one_minute">y 1 minuto</string>
 
     <!-- Preference Titles -->
     <string name="pref_alarm_duration_title">Duración de alarma predeterminada para Shabat (seg.)</string>
+    <string name="pref_meat_dairy_title">Horas entre carne y leche</string>
+    <string name="hours_label">Horas</string>
+    <string name="minutes_label">Minutos</string>
     <string name="pref_alarm_time_title">Hora de alarma predeterminada</string>
     <string name="pref_enable_notifications_title">Recordatorios activados</string>
     <string name="defaults_header">Valores predeterminados</string>
@@ -184,6 +189,15 @@
     <string name="prayer_reminder_maariv_text">¡Maariv! No se duerma, es hora de rezar Maariv</string>
     <string name="swipe_to_dismiss">deslizar para detener</string>
 
-    <string name="share_msg">¡No estoy seguro de por qué te interesará esto, pero me despierto el %1$s a las %2$s con DosAlarm! \n\n¿Aún no tienes dos-alarm? descárgalo aquí: https://tinyurl.com/52esu8dx</string>
+    <string name="share_msg">¡No estoy seguro de por qué te interesará esto, pero me despierto el %1$s a las %2$s con DosAlarm! \n\n¿Aún no tienes two-alarm? descárgalo aquí: https://tinyurl.com/52esu8dx</string>
+
+    <!-- Meat/Dairy Timer -->
+    <string name="meat_timer_btn_text">Acabo de comer carne</string>
+    <string name="meat_timer_time_until_coffee">tiempo hasta el café</string>
+    <string name="meat_timer_notification_title">¡Hora de comer lácteos!</string>
+    <string name="meat_timer_notification_text">¡Ya puedes comer lácteos o tomar café!</string>
+    <string name="meat_timer_reset">Reiniciar</string>
+    <string name="meat_timer_settings_hint">Tiempo de espera: %1$s (Toca para cambiar ⚙)</string>
+    <string name="meat_timer_first_run_toast">Temporizador iniciado para %1$s. Puedes ajustar la duración en Ajustes.</string>
 
 </resources>
